@@ -71,7 +71,7 @@ public abstract class SidsTab extends TabBase {
 				try {
 					if (dirEntry.endsWith("/")) {
 						new MyDirectoryRequest(file).execute();
-					} else if (dirEntry.endsWith(".sid")) {
+					} else if (dirEntry.endsWith(".sid")||dirEntry.endsWith(".mus")||dirEntry.endsWith(".str")) {
 						showSid(file.getPath());
 						tabHost.setCurrentTabByTag(SidTab.class.getSimpleName());
 					} else {
