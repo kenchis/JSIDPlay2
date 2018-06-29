@@ -23,7 +23,7 @@ public class GeneralTab extends TabBase {
 	private static final String DEFAULT_PASSWORD = "jsidplay2!";
 
 	public class GeneralUIHelper extends UIHelper {
-		public GeneralUIHelper(final SharedPreferences preferences) {
+		private GeneralUIHelper(final SharedPreferences preferences) {
 			super(preferences);
 		}
 
@@ -42,24 +42,19 @@ public class GeneralTab extends TabBase {
 		}
 	}
 
-	private SharedPreferences preferences;
-	private UIHelper ui;
-
-	private EditText hostname, port, username, password;
-
 	public GeneralTab(final Activity activity, final String appName,
 					  final IConfiguration configuration, TabHost tabHost) {
 		super(activity, appName, configuration, tabHost);
-		preferences = PreferenceManager.getDefaultSharedPreferences(activity);
-		ui = new GeneralUIHelper(preferences);
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
+		UIHelper ui = new GeneralUIHelper(preferences);
 		tabHost.addTab(tabHost.newTabSpec(GeneralTab.class.getSimpleName())
 				.setIndicator(activity.getString(R.string.tab_connection))
 				.setContent(R.id.general));
 
-		hostname = activity.findViewById(R.id.hostname);
-		port = activity.findViewById(R.id.port);
-		username = activity.findViewById(R.id.username);
-		password = activity.findViewById(R.id.password);
+		EditText hostname = activity.findViewById(R.id.hostname);
+		EditText port = activity.findViewById(R.id.port);
+		EditText username = activity.findViewById(R.id.username);
+		EditText password = activity.findViewById(R.id.password);
 
 		ui.setupEditText(hostname, PAR_HOSTNAME, DEFAULT_HOSTNAME);
 		ui.setupEditText(port, PAR_PORT, DEFAULT_PORT);

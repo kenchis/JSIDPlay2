@@ -16,13 +16,27 @@ import jsidplay2.haendel.de.jsidplay2app.R;
 import jsidplay2.haendel.de.jsidplay2app.common.TabBase;
 import jsidplay2.haendel.de.jsidplay2app.config.IConfiguration;
 import jsidplay2.haendel.de.jsidplay2app.request.DirectoryRequest;
-import jsidplay2.haendel.de.jsidplay2app.request.JSIDPlay2RESTRequest;
 
 public abstract class SidsTab extends TabBase {
 
+	private class MyDirectoryRequest extends DirectoryRequest {
+
+		MyDirectoryRequest(File dir) throws IOException {
+			super(SidsTab.this.appName, SidsTab.this.configuration, RequestType.DIRECTORY, dir.getCanonicalPath().isEmpty()?"/":dir.getCanonicalPath());
+		}
+
+		@Override
+		protected void onPostExecute(List<String> childs) {
+			if (childs == null) {
+
+				return;
+			}
+			viewDirectory(childs);
+		}
+	}
 	private ListView directory;
 
-	public SidsTab(final Activity activity, final String appName,
+	protected SidsTab(final Activity activity, final String appName,
 				   final IConfiguration configuration, TabHost tabHost) {
 		super(activity, appName, configuration, tabHost);
 		tabHost.addTab(tabHost.newTabSpec(SidsTab.class.getSimpleName())
@@ -38,23 +52,13 @@ public abstract class SidsTab extends TabBase {
 		}
 	}
 
-	public void requestDirectory(final File dir)
+	private void requestDirectory(final File dir)
 			throws IOException {
-		new DirectoryRequest(appName, configuration, JSIDPlay2RESTRequest.RequestType.DIRECTORY,
-				dir.getCanonicalPath()) {
-
-			@Override
-			protected void onPostExecute(List<String> childs) {
-				if (childs == null) {
-					return;
-				}
-				viewDirectory(childs);
-			}
-		}.execute();
+		new MyDirectoryRequest(dir).execute();
 	}
 
 	private void viewDirectory(List<String> childs) {
-		directory.setAdapter(new ArrayAdapter<String>(activity,
+		directory.setAdapter(new ArrayAdapter<>(activity,
 				android.R.layout.simple_list_item_1, childs));
 		directory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -65,27 +69,13 @@ public abstract class SidsTab extends TabBase {
 						.getItemAtPosition(position);
 				File file = new File(dirEntry);
 				try {
-					String canonicalPath = file.getCanonicalPath();
-					if (canonicalPath.isEmpty()) {
-						canonicalPath="/";
-					}
 					if (dirEntry.endsWith("/")) {
-						new DirectoryRequest(appName, configuration,
-								JSIDPlay2RESTRequest.RequestType.DIRECTORY, canonicalPath) {
-
-							@Override
-							protected void onPostExecute(List<String> childs) {
-								if (childs == null) {
-									return;
-								}
-								viewDirectory(childs);
-							}
-						}.execute();
+						new MyDirectoryRequest(file).execute();
 					} else if (dirEntry.endsWith(".sid")) {
-						showSid(canonicalPath);
+						showSid(file.getPath());
 						tabHost.setCurrentTabByTag(SidTab.class.getSimpleName());
 					} else {
-						showMedia(canonicalPath);
+						showMedia(file.getPath());
 					}
 				} catch (IOException e) {
 					Log.e(appName, e.getMessage(), e);
@@ -93,14 +83,6 @@ public abstract class SidsTab extends TabBase {
 			}
 
 		});
-	}
-
-	public void viewDirectory(final File dir) {
-		try {
-			requestDirectory(dir);
-		} catch (IOException e) {
-			Log.e(appName, e.getMessage(), e);
-		}
 	}
 
 	protected abstract void showMedia(String canonicalPath);

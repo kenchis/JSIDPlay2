@@ -24,7 +24,7 @@ public abstract class PlayListTab extends TabBase {
 	
 	public class PlayListUIHelper extends UIHelper {
 
-		public PlayListUIHelper(SharedPreferences preferences) {
+		private PlayListUIHelper(SharedPreferences preferences) {
 			super(preferences);
 		}
 
@@ -38,16 +38,12 @@ public abstract class PlayListTab extends TabBase {
 
 	private ScrollView favoritesScroll;
 	private TableLayout favorites;
-	private CheckBox random;
-	
-	private SharedPreferences preferences;
-	private UIHelper ui;
 
-	public PlayListTab(final MainActivity activity, final String appName,
+	protected PlayListTab(final MainActivity activity, final String appName,
 					   final IConfiguration configuration, TabHost tabHost) {
 		super(activity, appName, configuration, tabHost);
-		preferences = PreferenceManager.getDefaultSharedPreferences(activity);
-		ui = new PlayListUIHelper(preferences);
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
+		UIHelper ui = new PlayListUIHelper(preferences);
 
 		tabHost.addTab(tabHost.newTabSpec(PlayListTab.class.getSimpleName())
 				.setIndicator(activity.getString(R.string.tab_playlist))
@@ -56,13 +52,13 @@ public abstract class PlayListTab extends TabBase {
 		favoritesScroll = activity
 				.findViewById(R.id.favoritesScroll);
 		favorites = activity.findViewById(R.id.favorites);
-		random = activity.findViewById(R.id.random);
+		CheckBox random = activity.findViewById(R.id.random);
 
 		ui.setupCheckBox(random, PAR_RANDOM, DEFAULT_RANDOM);
 
 	}
 
-	public PlayListEntry addRow(final PlayListEntry entry) {
+	public void addRow(final PlayListEntry entry) {
 		final TableRow row = new TableRow(activity);
 		row.setOnClickListener(new OnClickListener() {
 
@@ -93,7 +89,6 @@ public abstract class PlayListTab extends TabBase {
 				favoritesScroll.scrollTo(0, row.getTop());
 			}
 		});
-		return entry;
 	}
 
 	public void removeLast() {

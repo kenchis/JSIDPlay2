@@ -23,6 +23,47 @@ import jsidplay2.haendel.de.jsidplay2app.request.TuneInfoRequest;
 
 public class SidTab extends TabBase {
 
+	private class MyPhotoRequest extends PhotoRequest {
+		private MyPhotoRequest(String canonicalPath) {
+			super(SidTab.this.appName, SidTab.this.configuration, RequestType.PHOTO, canonicalPath);
+		}
+
+		@Override
+		protected void onPostExecute(byte[] photo) {
+			if (photo == null) {
+				return;
+			}
+			viewPhoto(photo);
+		}
+	}
+
+	private class MyTuneInfoRequest extends TuneInfoRequest {
+		private MyTuneInfoRequest(String canonicalPath) {
+			super(SidTab.this.appName, SidTab.this.configuration, RequestType.INFO, canonicalPath);
+		}
+
+		public String getString(String key) {
+			key = key.replaceAll("[.]", "_");
+			for (Field field : R.string.class.getDeclaredFields()) {
+				if (field.getName().equals(key)) {
+					try {
+						return activity.getString(field.getInt(null));
+					} catch (IllegalArgumentException | IllegalAccessException ignored) {
+					}
+				}
+			}
+			return "???";
+		}
+
+		@Override
+		protected void onPostExecute(List<Pair<String, String>> out) {
+			if (out == null) {
+				return;
+			}
+			viewTuneInfos(out);
+		}
+	}
+
 	private TextView resource;
 	private ImageView image;
 	private TableLayout table;
@@ -40,12 +81,12 @@ public class SidTab extends TabBase {
 		table = activity.findViewById(R.id.table);
 	}
 
-	public void viewPhoto(byte[] photo) {
+	private void viewPhoto(byte[] photo) {
 		Bitmap bitmap = BitmapFactory.decodeByteArray(photo, 0, photo.length);
 		image.setImageBitmap(bitmap);
 	}
 
-	void viewTuneInfos(List<Pair<String, String>> rows) {
+	private void viewTuneInfos(List<Pair<String, String>> rows) {
 		table.removeAllViews();
 		for (Pair<String, String> r : rows) {
 			TableRow tr = new TableRow(activity);
@@ -78,45 +119,14 @@ public class SidTab extends TabBase {
 		return resource.getText().toString();
 	}
 
-	public void setCurrentTune(String canonicalPath) {
+	private void setCurrentTune(String canonicalPath) {
 		resource.setText(canonicalPath);
 	}
 
 	public void requestSidDetails(String canonicalPath) {
 		setCurrentTune(canonicalPath);
-		new PhotoRequest(appName, configuration, JSIDPlay2RESTRequest.RequestType.PHOTO,
-				canonicalPath) {
-			@Override
-			protected void onPostExecute(byte[] photo) {
-				if (photo == null) {
-					return;
-				}
-				viewPhoto(photo);
-			}
-		}.execute();
-		new TuneInfoRequest(appName, configuration, JSIDPlay2RESTRequest.RequestType.INFO,
-				canonicalPath) {
-			public String getString(String key) {
-				key = key.replaceAll("[.]", "_");
-				for (Field field : R.string.class.getDeclaredFields()) {
-					if (field.getName().equals(key)) {
-						try {
-							return activity.getString(field.getInt(null));
-						} catch (IllegalArgumentException e) {
-						} catch (IllegalAccessException e) {
-						}
-					}
-				}
-				return "???";
-			}
-
-			@Override
-			protected void onPostExecute(List<Pair<String, String>> out) {
-				if (out == null) {
-					return;
-				}
-				viewTuneInfos(out);
-			}
-		}.execute();
+		new MyPhotoRequest(canonicalPath).execute();
+		new MyTuneInfoRequest(canonicalPath).execute();
 	}
+
 }

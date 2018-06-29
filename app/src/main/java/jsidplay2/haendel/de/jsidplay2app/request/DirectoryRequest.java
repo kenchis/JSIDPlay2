@@ -13,12 +13,12 @@ public abstract class DirectoryRequest extends JSIDPlay2RESTRequest<List<String>
 	private static final String FILTER_PAR = "filter";
 	private static final String TUNE_FILTER = ".*\\.(sid|dat|mus|str|mp3|mp4|jpg)$";
 
-	private static final Map<String, String> parameters = new HashMap<String, String>();
+	private static final Map<String, String> parameters = new HashMap<>();
 	static {
 		parameters.put(FILTER_PAR, TUNE_FILTER);
 	}
 
-	public DirectoryRequest(String appName, IConfiguration configuration, RequestType type, String url) {
+	protected DirectoryRequest(String appName, IConfiguration configuration, RequestType type, String url) {
 		super(appName, configuration, type, url, parameters);
 	}
 

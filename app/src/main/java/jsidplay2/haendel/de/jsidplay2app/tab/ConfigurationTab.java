@@ -18,9 +18,6 @@ import jsidplay2.haendel.de.jsidplay2app.common.TabBase;
 import jsidplay2.haendel.de.jsidplay2app.common.UIHelper;
 import jsidplay2.haendel.de.jsidplay2app.config.IConfiguration;
 import jsidplay2.haendel.de.jsidplay2app.request.FiltersRequest;
-import jsidplay2.haendel.de.jsidplay2app.request.JSIDPlay2RESTRequest.RequestType;
-import jsidplay2.haendel.de.jsidplay2app.common.TabBase;
-import jsidplay2.haendel.de.jsidplay2app.common.UIHelper;
 
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DECIMATE;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_BUFFER_SIZE;
@@ -78,7 +75,7 @@ public class ConfigurationTab extends TabBase {
 
 	public class ConfigurationUIHelper extends UIHelper {
 
-		public ConfigurationUIHelper(SharedPreferences preferences) {
+		private ConfigurationUIHelper(SharedPreferences preferences) {
 			super(preferences);
 		}
 
@@ -137,6 +134,7 @@ public class ConfigurationTab extends TabBase {
 			}
 		}
 
+
 		@Override
 		protected void editTextUpdated(String parName, String newValue) {
 			if (PAR_BUFFER_SIZE.equals(parName)) {
@@ -166,31 +164,108 @@ public class ConfigurationTab extends TabBase {
 		}
 
 		private void updateFiltersVisibility(View[] views, boolean visible) {
-			for (int i = 0; i < views.length; i++) {
-				View view = views[i];
+			for (View view : views) {
 				view.setVisibility(visible ? View.VISIBLE : View.GONE);
 			}
 		}
 
 	}
 
-	private EditText bufferSize, bufferSizeWlan, defaultLength;
-	private CheckBox enableDatabase, singleSong, loop, digiBoosted8580;
-	private Spinner emulation, defaultModel;
+    private class MyFiltersRequest extends FiltersRequest {
+        private MyFiltersRequest() {
+            super(ConfigurationTab.this.appName, ConfigurationTab.this.configuration, RequestType.FILTERS, "");
+        }
+
+        @Override
+        protected void onPostExecute(List<String> filters) {
+            if (filters == null) {
+                return;
+            }
+            List<String> filter6581List = determineFilterList(filters,
+                    PREFIX_FILTER_6581);
+            List<String> filter8580List = determineFilterList(filters,
+                    PREFIX_FILTER_8580);
+            List<String> reSidFpFilter6581List = determineFilterList(
+                    filters, PREFIX_RESIDFP_FILTER_6581);
+            List<String> reSidFpFilter8580List = determineFilterList(
+                    filters, PREFIX_RESIDFP_FILTER_8580);
+
+            ui.setupSpinner(activity, filter6581, filter6581List
+                    .toArray(new String[0]), PAR_FILTER_6581, preferences
+                    .getString(PAR_FILTER_6581, DEFAULT_FILTER_6581));
+            ui.setupSpinner(activity, filter8580, filter8580List
+                    .toArray(new String[0]), PAR_FILTER_8580, preferences
+                    .getString(PAR_FILTER_8580, DEFAULT_FILTER_8580));
+            ui.setupSpinner(activity, reSIDfpFilter6581,
+                    reSidFpFilter6581List.toArray(new String[0]),
+                    PAR_RESIDFP_FILTER_6581, preferences.getString(
+                            PAR_RESIDFP_FILTER_6581,
+                            DEFAULT_RESIDFP_FILTER_6581));
+            ui.setupSpinner(activity, reSIDfpFilter8580,
+                    reSidFpFilter8580List.toArray(new String[0]),
+                    PAR_RESIDFP_FILTER_8580, preferences.getString(
+                            PAR_RESIDFP_FILTER_8580,
+                            DEFAULT_RESIDFP_FILTER_8580));
+
+            ui.setupSpinner(activity, stereoFilter6581, filter6581List
+                            .toArray(new String[0]), PAR_STEREO_FILTER_6581,
+                    preferences.getString(PAR_STEREO_FILTER_6581,
+                            DEFAULT_FILTER_6581));
+            ui.setupSpinner(activity, stereoFilter8580, filter8580List
+                            .toArray(new String[0]), PAR_STEREO_FILTER_8580,
+                    preferences.getString(PAR_STEREO_FILTER_8580,
+                            DEFAULT_FILTER_8580));
+            ui.setupSpinner(activity, reSIDfpStereoFilter6581,
+                    reSidFpFilter6581List.toArray(new String[0]),
+                    PAR_RESIDFP_STEREO_FILTER_6581, preferences.getString(
+                            PAR_RESIDFP_STEREO_FILTER_6581,
+                            DEFAULT_RESIDFP_FILTER_6581));
+            ui.setupSpinner(activity, reSIDfpStereoFilter8580,
+                    reSidFpFilter8580List.toArray(new String[0]),
+                    PAR_RESIDFP_STEREO_FILTER_8580, preferences.getString(
+                            PAR_RESIDFP_STEREO_FILTER_8580,
+                            DEFAULT_RESIDFP_FILTER_8580));
+
+
+            ui.setupSpinner(activity, thirdFilter6581, filter6581List
+                            .toArray(new String[0]), PAR_THIRD_FILTER_6581,
+                    preferences.getString(PAR_THIRD_FILTER_6581,
+                            DEFAULT_FILTER_6581));
+            ui.setupSpinner(activity, thirdFilter8580, filter8580List
+                            .toArray(new String[0]), PAR_THIRD_FILTER_8580,
+                    preferences.getString(PAR_THIRD_FILTER_8580,
+                            DEFAULT_FILTER_8580));
+            ui.setupSpinner(activity, reSIDfpThirdFilter6581,
+                    reSidFpFilter6581List.toArray(new String[0]),
+                    PAR_RESIDFP_THIRD_FILTER_6581, preferences.getString(
+                            PAR_RESIDFP_THIRD_FILTER_6581,
+                            DEFAULT_RESIDFP_FILTER_6581));
+            ui.setupSpinner(activity, reSIDfpThirdFilter8580,
+                    reSidFpFilter8580List.toArray(new String[0]),
+                    PAR_RESIDFP_THIRD_FILTER_8580, preferences.getString(
+                            PAR_RESIDFP_THIRD_FILTER_8580,
+                            DEFAULT_RESIDFP_FILTER_8580));
+
+        }
+    }
 
 	private Spinner filter6581, filter8580, reSIDfpFilter6581,
 			reSIDfpFilter8580;
 	private TextView filter6581txt, filter8580txt, reSIDfpFilter6581txt,
 			reSIDfpFilter8580txt;
 
-	private Spinner samplingMethod, frequency, stereoFilter6581,
-	stereoFilter8580, reSIDfpStereoFilter6581, reSIDfpStereoFilter8580, thirdFilter6581,
-	thirdFilter8580, reSIDfpThirdFilter6581, reSIDfpThirdFilter8580;
+	private Spinner stereoFilter6581;
+	private Spinner stereoFilter8580;
+	private Spinner reSIDfpStereoFilter6581;
+	private Spinner reSIDfpStereoFilter8580;
+	private Spinner thirdFilter6581;
+	private Spinner thirdFilter8580;
+	private Spinner reSIDfpThirdFilter6581;
+	private Spinner reSIDfpThirdFilter8580;
 	private TextView stereoFilter6581txt, stereoFilter8580txt,
 	reSIDfpStereoFilter6581txt, reSIDfpStereoFilter8580txt,
 	thirdFilter6581txt, thirdFilter8580txt,
-	reSIDfpThirdFilter6581txt, reSIDfpThirdFilter8580txt;
-	private EditText cbr, vbr;
+			reSIDfpThirdFilter6581txt, reSIDfpThirdFilter8580txt;
 
 	private SharedPreferences preferences;
 	private UIHelper ui;
@@ -206,18 +281,18 @@ public class ConfigurationTab extends TabBase {
 				.setIndicator(activity.getString(R.string.tab_cfg))
 				.setContent(R.id.settings));
 
-		bufferSize = activity.findViewById(R.id.bufferSize);
-		bufferSizeWlan = activity.findViewById(R.id.bufferSizeWlan);
-		defaultLength = activity.findViewById(R.id.defaultLength);
-		enableDatabase = activity.findViewById(R.id.enableDatabase);
-		singleSong = activity.findViewById(R.id.singleSong);
-		loop = activity.findViewById(R.id.loop);
-		digiBoosted8580 = activity
+		EditText bufferSize = activity.findViewById(R.id.bufferSize);
+		EditText bufferSizeWlan = activity.findViewById(R.id.bufferSizeWlan);
+		EditText defaultLength = activity.findViewById(R.id.defaultLength);
+		CheckBox enableDatabase = activity.findViewById(R.id.enableDatabase);
+		CheckBox singleSong = activity.findViewById(R.id.singleSong);
+		CheckBox loop = activity.findViewById(R.id.loop);
+		CheckBox digiBoosted8580 = activity
 				.findViewById(R.id.digiBoosted8580);
-		emulation = activity.findViewById(R.id.emulation);
-		defaultModel = activity.findViewById(R.id.defaultModel);
-		samplingMethod = activity.findViewById(R.id.samplingMethod);
-		frequency = activity.findViewById(R.id.frequency);
+		Spinner emulation = activity.findViewById(R.id.emulation);
+		Spinner defaultModel = activity.findViewById(R.id.defaultModel);
+		Spinner samplingMethod = activity.findViewById(R.id.samplingMethod);
+		Spinner frequency = activity.findViewById(R.id.frequency);
 
 		filter6581 = activity.findViewById(R.id.filter6581);
 		filter6581txt = activity.findViewById(R.id.filter6581txt);
@@ -265,9 +340,9 @@ public class ConfigurationTab extends TabBase {
 				.findViewById(R.id.reSIDfpThirdFilter8580);
 		reSIDfpThirdFilter8580txt = activity
 				.findViewById(R.id.reSIDfpThirdFilter8580txt);
-		
-		cbr = activity.findViewById(R.id.cbr);
-		vbr = activity.findViewById(R.id.vbr);
+
+		EditText cbr = activity.findViewById(R.id.cbr);
+		EditText vbr = activity.findViewById(R.id.vbr);
 
 		ui.setupEditText(bufferSize, PAR_BUFFER_SIZE, DEFAULT_BUFFER_SIZE);
 
@@ -298,83 +373,11 @@ public class ConfigurationTab extends TabBase {
 	}
 
 	private void requestFilters() {
-		new FiltersRequest(appName, configuration, RequestType.FILTERS, "") {
-			@Override
-			protected void onPostExecute(List<String> filters) {
-				if (filters == null) {
-					return;
-				}
-				List<String> filter6581List = determineFilterList(filters,
-						PREFIX_FILTER_6581);
-				List<String> filter8580List = determineFilterList(filters,
-						PREFIX_FILTER_8580);
-				List<String> reSidFpFilter6581List = determineFilterList(
-						filters, PREFIX_RESIDFP_FILTER_6581);
-				List<String> reSidFpFilter8580List = determineFilterList(
-						filters, PREFIX_RESIDFP_FILTER_8580);
-
-				ui.setupSpinner(activity, filter6581, filter6581List
-						.toArray(new String[0]), PAR_FILTER_6581, preferences
-						.getString(PAR_FILTER_6581, DEFAULT_FILTER_6581));
-				ui.setupSpinner(activity, filter8580, filter8580List
-						.toArray(new String[0]), PAR_FILTER_8580, preferences
-						.getString(PAR_FILTER_8580, DEFAULT_FILTER_8580));
-				ui.setupSpinner(activity, reSIDfpFilter6581,
-						reSidFpFilter6581List.toArray(new String[0]),
-						PAR_RESIDFP_FILTER_6581, preferences.getString(
-								PAR_RESIDFP_FILTER_6581,
-								DEFAULT_RESIDFP_FILTER_6581));
-				ui.setupSpinner(activity, reSIDfpFilter8580,
-						reSidFpFilter8580List.toArray(new String[0]),
-						PAR_RESIDFP_FILTER_8580, preferences.getString(
-								PAR_RESIDFP_FILTER_8580,
-								DEFAULT_RESIDFP_FILTER_8580));
-
-				ui.setupSpinner(activity, stereoFilter6581, filter6581List
-						.toArray(new String[0]), PAR_STEREO_FILTER_6581,
-						preferences.getString(PAR_STEREO_FILTER_6581,
-								DEFAULT_FILTER_6581));
-				ui.setupSpinner(activity, stereoFilter8580, filter8580List
-						.toArray(new String[0]), PAR_STEREO_FILTER_8580,
-						preferences.getString(PAR_STEREO_FILTER_8580,
-								DEFAULT_FILTER_8580));
-				ui.setupSpinner(activity, reSIDfpStereoFilter6581,
-						reSidFpFilter6581List.toArray(new String[0]),
-						PAR_RESIDFP_STEREO_FILTER_6581, preferences.getString(
-								PAR_RESIDFP_STEREO_FILTER_6581,
-								DEFAULT_RESIDFP_FILTER_6581));
-				ui.setupSpinner(activity, reSIDfpStereoFilter8580,
-						reSidFpFilter8580List.toArray(new String[0]),
-						PAR_RESIDFP_STEREO_FILTER_8580, preferences.getString(
-								PAR_RESIDFP_STEREO_FILTER_8580,
-								DEFAULT_RESIDFP_FILTER_8580));
-
-
-				ui.setupSpinner(activity, thirdFilter6581, filter6581List
-						.toArray(new String[0]), PAR_THIRD_FILTER_6581,
-						preferences.getString(PAR_THIRD_FILTER_6581,
-								DEFAULT_FILTER_6581));
-				ui.setupSpinner(activity, thirdFilter8580, filter8580List
-						.toArray(new String[0]), PAR_THIRD_FILTER_8580,
-						preferences.getString(PAR_THIRD_FILTER_8580,
-								DEFAULT_FILTER_8580));
-				ui.setupSpinner(activity, reSIDfpThirdFilter6581,
-						reSidFpFilter6581List.toArray(new String[0]),
-						PAR_RESIDFP_THIRD_FILTER_6581, preferences.getString(
-								PAR_RESIDFP_THIRD_FILTER_6581,
-								DEFAULT_RESIDFP_FILTER_6581));
-				ui.setupSpinner(activity, reSIDfpThirdFilter8580,
-						reSidFpFilter8580List.toArray(new String[0]),
-						PAR_RESIDFP_THIRD_FILTER_8580, preferences.getString(
-								PAR_RESIDFP_THIRD_FILTER_8580,
-								DEFAULT_RESIDFP_FILTER_8580));
-			
-			}
-		}.execute();
+		new MyFiltersRequest().execute();
 	}
 
 	private List<String> determineFilterList(List<String> filters, String prefix) {
-		List<String> result = new ArrayList<String>();
+		List<String> result = new ArrayList<>();
 		for (String filter : filters) {
 			if (filter.startsWith(prefix)) {
 				result.add(filter.substring(prefix.length()));

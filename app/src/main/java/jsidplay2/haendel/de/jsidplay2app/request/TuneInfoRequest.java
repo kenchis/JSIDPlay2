@@ -11,7 +11,7 @@ import jsidplay2.haendel.de.jsidplay2app.config.IConfiguration;
 
 public abstract class TuneInfoRequest extends JSIDPlay2RESTRequest<List<Pair<String, String>>>
 		implements JSIDPlay2RESTRequest.IKeyLocalizer {
-	public TuneInfoRequest(String appName, IConfiguration configuration, RequestType type, String url) {
+	protected TuneInfoRequest(String appName, IConfiguration configuration, RequestType type, String url) {
 		super(appName, configuration, type, url, null);
 	}
 

@@ -8,7 +8,7 @@ import java.net.URLConnection;
 import jsidplay2.haendel.de.jsidplay2app.config.IConfiguration;
 
 public class PhotoRequest extends JSIDPlay2RESTRequest<byte[]> {
-	public PhotoRequest(String appName, IConfiguration configuration, RequestType type, String url) {
+	protected PhotoRequest(String appName, IConfiguration configuration, RequestType type, String url) {
 		super(appName, configuration, type, url, null);
 	}
 
