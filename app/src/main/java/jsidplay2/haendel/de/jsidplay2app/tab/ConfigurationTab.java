@@ -73,7 +73,7 @@ public class ConfigurationTab extends TabBase {
 	private static final String PREFIX_RESIDFP_FILTER_6581 = "RESIDFP_MOS6581_";
 	private static final String PREFIX_RESIDFP_FILTER_8580 = "RESIDFP_MOS8580_";
 
-	public class ConfigurationUIHelper extends UIHelper {
+	protected class ConfigurationUIHelper extends UIHelper {
 
 		private ConfigurationUIHelper(SharedPreferences preferences) {
 			super(preferences);
@@ -82,84 +82,112 @@ public class ConfigurationTab extends TabBase {
 		@Override
 		protected void spinnerUpdated(final String parName,
 				final String newValue) {
-			if (PAR_EMULATION.equals(parName)) {
-				boolean isReSid = newValue.equals("RESID");
-				updateFiltersVisibility(
-						new View[] { filter6581txt, filter6581, filter8580txt,
-								filter8580, stereoFilter6581txt,
-								stereoFilter6581, stereoFilter8580txt,
-								stereoFilter8580, thirdFilter6581txt,
-								thirdFilter6581, thirdFilter8580txt,
-								thirdFilter8580 }, isReSid);
+			switch (parName) {
+				case PAR_EMULATION:
+					boolean isReSid = newValue.equals("RESID");
+					updateFiltersVisibility(
+							new View[]{filter6581txt, filter6581, filter8580txt,
+									filter8580, stereoFilter6581txt,
+									stereoFilter6581, stereoFilter8580txt,
+									stereoFilter8580, thirdFilter6581txt,
+									thirdFilter6581, thirdFilter8580txt,
+									thirdFilter8580}, isReSid);
 
-				boolean isReSidFp = newValue.equals("RESIDFP");
-				updateFiltersVisibility(new View[] { reSIDfpFilter6581txt,
-						reSIDfpFilter6581, reSIDfpFilter8580txt,
-						reSIDfpFilter8580, reSIDfpStereoFilter6581txt,
-						reSIDfpStereoFilter6581, reSIDfpStereoFilter8580txt,
-						reSIDfpStereoFilter8580, reSIDfpThirdFilter6581txt,
-						reSIDfpThirdFilter6581, reSIDfpThirdFilter8580txt,
-						reSIDfpThirdFilter8580 }, isReSidFp);
-				configuration.setDefaultEmulation(newValue);
-			} else if (PAR_DEFAULT_MODEL.equals(parName)) {
-				configuration.setDefaultModel(newValue);
-			} else if (PAR_FREQUENCY.equals(parName)) {
-				configuration.setFrequency(newValue);
-			} else if (PAR_SAMPLING_METHOD.equals(parName)) {
-				configuration.setSamplingMethod(newValue);
-			} else if (PAR_FILTER_6581.equals(parName)) {
-				configuration.setFilter6581(newValue);
-			} else if (PAR_FILTER_8580.equals(parName)) {
-				configuration.setFilter8580(newValue);
-			} else if (PAR_RESIDFP_FILTER_6581.equals(parName)) {
-				configuration.setReSIDfpFilter6581(newValue);
-			} else if (PAR_RESIDFP_FILTER_8580.equals(parName)) {
-				configuration.setReSIDfpFilter8580(newValue);
-			} else if (PAR_STEREO_FILTER_6581.equals(parName)) {
-				configuration.setStereoFilter6581(newValue);
-			} else if (PAR_STEREO_FILTER_8580.equals(parName)) {
-				configuration.setStereoFilter8580(newValue);
-			} else if (PAR_RESIDFP_STEREO_FILTER_6581.equals(parName)) {
-				configuration.setReSIDfpStereoFilter6581(newValue);
-			} else if (PAR_RESIDFP_STEREO_FILTER_8580.equals(parName)) {
-				configuration.setReSIDfpStereoFilter8580(newValue);
-			} else if (PAR_THIRD_FILTER_6581.equals(parName)) {
-				configuration.setThirdFilter6581(newValue);
-			} else if (PAR_THIRD_FILTER_8580.equals(parName)) {
-				configuration.setThirdFilter8580(newValue);
-			} else if (PAR_RESIDFP_THIRD_FILTER_6581.equals(parName)) {
-				configuration.setReSIDfpThirdFilter6581(newValue);
-			} else if (PAR_RESIDFP_THIRD_FILTER_8580.equals(parName)) {
-				configuration.setReSIDfpThirdFilter8580(newValue);
+					boolean isReSidFp = newValue.equals("RESIDFP");
+					updateFiltersVisibility(new View[]{reSIDfpFilter6581txt,
+							reSIDfpFilter6581, reSIDfpFilter8580txt,
+							reSIDfpFilter8580, reSIDfpStereoFilter6581txt,
+							reSIDfpStereoFilter6581, reSIDfpStereoFilter8580txt,
+							reSIDfpStereoFilter8580, reSIDfpThirdFilter6581txt,
+							reSIDfpThirdFilter6581, reSIDfpThirdFilter8580txt,
+							reSIDfpThirdFilter8580}, isReSidFp);
+					configuration.setDefaultEmulation(newValue);
+					break;
+				case PAR_DEFAULT_MODEL:
+					configuration.setDefaultModel(newValue);
+					break;
+				case PAR_FREQUENCY:
+					configuration.setFrequency(newValue);
+					break;
+				case PAR_SAMPLING_METHOD:
+					configuration.setSamplingMethod(newValue);
+					break;
+				case PAR_FILTER_6581:
+					configuration.setFilter6581(newValue);
+					break;
+				case PAR_FILTER_8580:
+					configuration.setFilter8580(newValue);
+					break;
+				case PAR_RESIDFP_FILTER_6581:
+					configuration.setReSIDfpFilter6581(newValue);
+					break;
+				case PAR_RESIDFP_FILTER_8580:
+					configuration.setReSIDfpFilter8580(newValue);
+					break;
+				case PAR_STEREO_FILTER_6581:
+					configuration.setStereoFilter6581(newValue);
+					break;
+				case PAR_STEREO_FILTER_8580:
+					configuration.setStereoFilter8580(newValue);
+					break;
+				case PAR_RESIDFP_STEREO_FILTER_6581:
+					configuration.setReSIDfpStereoFilter6581(newValue);
+					break;
+				case PAR_RESIDFP_STEREO_FILTER_8580:
+					configuration.setReSIDfpStereoFilter8580(newValue);
+					break;
+				case PAR_THIRD_FILTER_6581:
+					configuration.setThirdFilter6581(newValue);
+					break;
+				case PAR_THIRD_FILTER_8580:
+					configuration.setThirdFilter8580(newValue);
+					break;
+				case PAR_RESIDFP_THIRD_FILTER_6581:
+					configuration.setReSIDfpThirdFilter6581(newValue);
+					break;
+				case PAR_RESIDFP_THIRD_FILTER_8580:
+					configuration.setReSIDfpThirdFilter8580(newValue);
+					break;
 			}
 		}
 
 
 		@Override
 		protected void editTextUpdated(String parName, String newValue) {
-			if (PAR_BUFFER_SIZE.equals(parName)) {
-				configuration.setBufferSize(newValue);
-			} else if (PAR_BUFFER_SIZE_WLAN.equals(parName)) {
-				configuration.setBufferSizeWlan(newValue);
-			} else if (PAR_DEFAULT_PLAY_LENGTH.equals(parName)) {
-				configuration.setDefaultLength(newValue);
-			} else if (PAR_CBR.equals(parName)) {
-				configuration.setCbr(newValue);
-			} else if (PAR_VBR.equals(parName)) {
-				configuration.setVbr(newValue);
+			switch (parName) {
+				case PAR_BUFFER_SIZE:
+					configuration.setBufferSize(newValue);
+					break;
+				case PAR_BUFFER_SIZE_WLAN:
+					configuration.setBufferSizeWlan(newValue);
+					break;
+				case PAR_DEFAULT_PLAY_LENGTH:
+					configuration.setDefaultLength(newValue);
+					break;
+				case PAR_CBR:
+					configuration.setCbr(newValue);
+					break;
+				case PAR_VBR:
+					configuration.setVbr(newValue);
+					break;
 			}
 		}
 
 		@Override
 		protected void checkBoxUpdated(String parName, boolean newValue) {
-			if (PAR_DIGI_BOOSTED_8580.equals(parName)) {
-				configuration.setDigiBoosted8580(newValue);
-			} else if (PAR_ENABLE_DATABASE.equals(parName)) {
-				configuration.setEnableDatabase(newValue);
-			} else if (PAR_LOOP.equals(parName)) {
-				configuration.setLoop(newValue);
-			} else if (PAR_SINGLE_SONG.equals(parName)) {
-				configuration.setSingleSong(newValue);
+			switch (parName) {
+				case PAR_DIGI_BOOSTED_8580:
+					configuration.setDigiBoosted8580(newValue);
+					break;
+				case PAR_ENABLE_DATABASE:
+					configuration.setEnableDatabase(newValue);
+					break;
+				case PAR_LOOP:
+					configuration.setLoop(newValue);
+					break;
+				case PAR_SINGLE_SONG:
+					configuration.setSingleSong(newValue);
+					break;
 			}
 		}
 

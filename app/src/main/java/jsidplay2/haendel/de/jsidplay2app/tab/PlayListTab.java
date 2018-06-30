@@ -21,8 +21,8 @@ public abstract class PlayListTab extends TabBase {
 
 	private static final String PAR_RANDOM = "random";
 	private static final String DEFAULT_RANDOM = Boolean.FALSE.toString();
-	
-	public class PlayListUIHelper extends UIHelper {
+
+	protected class PlayListUIHelper extends UIHelper {
 
 		private PlayListUIHelper(SharedPreferences preferences) {
 			super(preferences);

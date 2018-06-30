@@ -18,7 +18,7 @@ public class UIHelper {
 
 	private SharedPreferences preferences;
 
-	public UIHelper(SharedPreferences preferences) {
+	protected UIHelper(SharedPreferences preferences) {
 		this.preferences = preferences;
 	}
 
@@ -30,7 +30,7 @@ public class UIHelper {
 				String newValue = editText.getText().toString();
 				SharedPreferences.Editor editor = preferences.edit();
 				editor.putString(parName, newValue);
-				editor.commit();
+				editor.apply();
 				editTextUpdated(parName, newValue);
 			}
 
@@ -57,7 +57,7 @@ public class UIHelper {
 				boolean newValue = checkBox.isChecked();
 				SharedPreferences.Editor editor = preferences.edit();
 				editor.putString(parName, Boolean.toString(newValue));
-				editor.commit();
+				editor.apply();
 				checkBoxUpdated(parName, newValue);
 			}
 
@@ -69,7 +69,7 @@ public class UIHelper {
 	public final void setupSpinner(final Context context,
 			final Spinner spinner, final String[] items, final String parName,
 			final String defaultValue) {
-		spinner.setAdapter(new ArrayAdapter<String>(context,
+		spinner.setAdapter(new ArrayAdapter<>(context,
 				android.R.layout.simple_spinner_item, items));
 		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
@@ -78,7 +78,7 @@ public class UIHelper {
 				String newValue = spinner.getSelectedItem().toString();
 				SharedPreferences.Editor editor = preferences.edit();
 				editor.putString(parName, newValue);
-				editor.commit();
+				editor.apply();
 				spinnerUpdated(parName, newValue);
 			}
 

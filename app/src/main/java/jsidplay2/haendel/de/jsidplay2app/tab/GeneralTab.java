@@ -22,7 +22,7 @@ public class GeneralTab extends TabBase {
 	private static final String DEFAULT_USERNAME = "jsidplay2";
 	private static final String DEFAULT_PASSWORD = "jsidplay2!";
 
-	public class GeneralUIHelper extends UIHelper {
+	protected class GeneralUIHelper extends UIHelper {
 		private GeneralUIHelper(final SharedPreferences preferences) {
 			super(preferences);
 		}
@@ -30,14 +30,19 @@ public class GeneralTab extends TabBase {
 		@Override
 		protected void editTextUpdated(final String parName,
 				final String newValue) {
-			if (PAR_HOSTNAME.equals(parName)) {
-				configuration.setHostname(newValue);
-			} else if (PAR_PORT.equals(parName)) {
-				configuration.setPort(newValue);
-			} else if (PAR_USERNAME.equals(parName)) {
-				configuration.setUsername(newValue);
-			} else if (PAR_PASSWORD.equals(parName)) {
-				configuration.setPassword(newValue);
+			switch (parName) {
+				case PAR_HOSTNAME:
+					configuration.setHostname(newValue);
+					break;
+				case PAR_PORT:
+					configuration.setPort(newValue);
+					break;
+				case PAR_USERNAME:
+					configuration.setUsername(newValue);
+					break;
+				case PAR_PASSWORD:
+					configuration.setPassword(newValue);
+					break;
 			}
 		}
 	}

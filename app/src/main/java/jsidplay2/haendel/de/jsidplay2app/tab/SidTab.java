@@ -17,7 +17,6 @@ import java.util.List;
 import jsidplay2.haendel.de.jsidplay2app.R;
 import jsidplay2.haendel.de.jsidplay2app.common.TabBase;
 import jsidplay2.haendel.de.jsidplay2app.config.IConfiguration;
-import jsidplay2.haendel.de.jsidplay2app.request.JSIDPlay2RESTRequest;
 import jsidplay2.haendel.de.jsidplay2app.request.PhotoRequest;
 import jsidplay2.haendel.de.jsidplay2app.request.TuneInfoRequest;
 

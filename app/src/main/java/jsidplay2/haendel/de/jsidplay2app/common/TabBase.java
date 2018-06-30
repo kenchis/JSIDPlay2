@@ -3,7 +3,6 @@ package jsidplay2.haendel.de.jsidplay2app.common;
 import android.app.Activity;
 import android.widget.TabHost;
 import jsidplay2.haendel.de.jsidplay2app.config.IConfiguration;
-import jsidplay2.haendel.de.jsidplay2app.config.IConfiguration;
 
 public class TabBase {
 

@@ -50,8 +50,8 @@ import jsidplay2.haendel.de.jsidplay2app.tab.SidsTab;
 public class MainActivity extends Activity implements PlayListener {
 
     private static final String PLAYLIST_DOWNLOAD_URL = "http://haendel.ddns.net/~ken/jsidplay2.js2";
-    final static int REQUEST_WRITE_STORAGE = 112;
-    final static int REQUEST_BATTERY_OPTIMIZATION = 113;
+    private final static int REQUEST_WRITE_STORAGE = 112;
+    private final static int REQUEST_BATTERY_OPTIMIZATION = 113;
 
     private class PlayListDownload extends AsyncTask<Void, Void, List<String>> {
         private String requestUrl;
@@ -233,7 +233,7 @@ public class MainActivity extends Activity implements PlayListener {
         return super.onOptionsItemSelected(item);
     }
 
-    public static boolean isOverMarshmallow() {
+    private static boolean isOverMarshmallow() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
     }
 
@@ -299,7 +299,7 @@ public class MainActivity extends Activity implements PlayListener {
         alert.show();
     }
 
-    public void setRandomized(boolean randomized) {
+    private void setRandomized(boolean randomized) {
         this.randomized = randomized;
         if (jsidplay2service != null) {
             jsidplay2service.setRandomized(randomized);
@@ -341,7 +341,7 @@ public class MainActivity extends Activity implements PlayListener {
     }
 
     // connect to the service
-    final ServiceConnection jsidplay2Connection = new ServiceConnection() {
+    private final ServiceConnection jsidplay2Connection = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {

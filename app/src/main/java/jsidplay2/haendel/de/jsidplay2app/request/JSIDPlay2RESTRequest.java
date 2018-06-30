@@ -22,7 +22,7 @@ import jsidplay2.haendel.de.jsidplay2app.config.IConfiguration;
 
 public abstract class JSIDPlay2RESTRequest<ResultType> extends AsyncTask<String, Void, ResultType> {
 
-    public interface IKeyLocalizer {
+    interface IKeyLocalizer {
         /**
          * Get localized tune info name
          *
@@ -61,8 +61,8 @@ public abstract class JSIDPlay2RESTRequest<ResultType> extends AsyncTask<String,
 
     private static final int RETRY_PERIOD_S = 10;
 
-    protected final String appName;
-    protected IConfiguration configuration;
+    private final String appName;
+    private IConfiguration configuration;
     private String url;
     private Map<String, String> properties;
 
