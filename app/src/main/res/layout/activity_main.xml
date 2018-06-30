@@ -93,6 +93,7 @@
                             android:id="@+id/editText3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:labelFor="@id/bufferSize"
                             android:text="@string/bufferSize" />
 
                         <EditText
@@ -107,6 +108,7 @@
                             android:id="@+id/editText4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:labelFor="@id/bufferSizeWlan"
                             android:text="@string/bufferSizeWlan" />
 
                         <EditText
@@ -398,6 +400,7 @@
                             android:id="@+id/cbrTxt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:labelFor="@id/cbr"
                             android:text="@string/cbr" />
 
                         <EditText
@@ -406,12 +409,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:ems="10"
+                            android:labelFor="@id/vbrTxt"
                             android:inputType="number" />
 
                         <TextView
                             android:id="@+id/vbrTxt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:labelFor="@id/vbr"
                             android:text="@string/vbr" />
 
                         <EditText
@@ -443,7 +448,8 @@
                         android:layout_weight="2.41"
                         android:ems="10"
                         android:hint="@string/hostname"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:inputType="text" />
 
                     <EditText
                         android:id="@+id/port"
@@ -452,7 +458,8 @@
                         android:layout_weight="0.23"
                         android:ems="10"
                         android:hint="@string/port"
-                        android:text="@string/portNum" />
+                        android:text="@string/portNum"
+                        android:inputType="number" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -466,7 +473,8 @@
                         android:layout_weight="1"
                         android:ems="10"
                         android:hint="@string/username"
-                        android:text="@string/user_jsidplay2" />
+                        android:text="@string/user_jsidplay2"
+                        android:inputType="text" />
 
                     <EditText
                         android:id="@+id/password"
@@ -605,7 +613,7 @@
                         android:maxWidth="5dp"
                         android:minHeight="5dp"
                         android:minWidth="5dp"
-                        android:src="@drawable/ic_launcher" />
+                        android:src="@drawable/jsidplay2" />
 
                     <Button
                         android:id="@+id/asSid"

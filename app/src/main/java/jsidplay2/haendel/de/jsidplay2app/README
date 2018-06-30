@@ -1,3 +1,6 @@
+Linux: Build project
+====================
+
 Download here:
 https://developer.android.com/sdk/index.html
 
@@ -20,5 +23,7 @@ sudo apt install qemu-kvm
 
 sudo chown ken /dev/kvm
 
+Tip: Always uninstall before launch
+===================================
 From the Run menu -> Edit Configurations... -> Before Launch -> Add Gradle-aware Make -> ":app:uninstallAll"
 
