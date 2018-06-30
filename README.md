@@ -4,7 +4,7 @@ App for JSIDPlay2
 This App connects to C-64 edmulator JSIDPlay2 running on any host port 8080.
 Just install latest version of  JSIDPlay2 (http://haendel.ddns.net/~ken/jsidplay2-3.9.zip)
 On the main window click on "built-in App Server" then click Start
-For furtherrequirements and explanations click on "RESTful Services Usage"
+For further requirements and explanations click on "RESTful Services Usage"
 
 Launch the app (install latest build from here: http://haendel.ddns.net/~ken/jsidplay2app.apk)
 
