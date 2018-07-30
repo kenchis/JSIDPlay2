@@ -2,12 +2,12 @@
 <TabHost xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/tabhost"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <TabWidget
             android:id="@android:id/tabs"
@@ -17,7 +17,7 @@
         <FrameLayout
             android:id="@android:id/tabcontent"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" >
+            android:layout_height="fill_parent">
 
             <ScrollView
                 android:id="@+id/ConfigurationScroll"
@@ -29,23 +29,29 @@
                 android:scrollbarAlwaysDrawVerticalTrack="true"
                 android:scrollbarFadeDuration="0"
                 android:scrollbarStyle="outsideInset"
-                android:scrollbars="horizontal|vertical" >
+                android:scrollbars="horizontal|vertical">
 
                 <LinearLayout
                     android:id="@+id/settings"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical" >
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
+                        android:layout_height="wrap_content">
 
                         <CheckBox
                             android:id="@+id/enableDatabase"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/enableDatabase" />
+
+                        <TextView
+                            android:id="@+id/defaultLengthtxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/defaultLength" />
 
                         <EditText
                             android:id="@+id/defaultLength"
@@ -57,9 +63,47 @@
                             android:inputType="number" />
                     </LinearLayout>
 
+
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/fadeIntxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/fadeIn" />
+
+
+                        <EditText
+                            android:id="@+id/fadeIn"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="@string/fadeIn"
+                            android:inputType="number" />
+
+                        <TextView
+                            android:id="@+id/fadeOuttxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/fadeOut" />
+
+
+                        <EditText
+                            android:id="@+id/fadeOut"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="@string/fadeOut"
+                            android:inputType="number" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
                         <CheckBox
                             android:id="@+id/singleSong"
@@ -76,18 +120,24 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
+                        android:layout_height="wrap_content">
 
                         <CheckBox
                             android:id="@+id/digiBoosted8580"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/digiBoosted8580" />
+
+                        <CheckBox
+                            android:id="@+id/fakeStereo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/fakeStereo" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:id="@+id/editText3"
@@ -122,7 +172,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:id="@+id/editText2"
@@ -139,7 +189,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:id="@+id/samplingMethodtxt"
@@ -156,7 +206,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:id="@+id/frequencytxt"
@@ -173,7 +223,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:id="@+id/textView1"
@@ -190,7 +240,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:id="@+id/filter6581txt"
@@ -207,7 +257,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:id="@+id/filter8580txt"
@@ -224,7 +274,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:id="@+id/reSIDfpFilter6581txt"
@@ -241,7 +291,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:id="@+id/reSIDfpFilter8580txt"
@@ -258,7 +308,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:id="@+id/stereoFilter6581txt"
@@ -275,7 +325,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:id="@+id/stereoFilter8580txt"
@@ -292,7 +342,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:id="@+id/reSIDfpStereoFilter6581txt"
@@ -309,7 +359,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:id="@+id/reSIDfpStereoFilter8580txt"
@@ -326,7 +376,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:id="@+id/thirdFilter6581txt"
@@ -343,7 +393,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:id="@+id/thirdFilter8580txt"
@@ -360,7 +410,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:id="@+id/reSIDfpThirdFilter6581txt"
@@ -377,7 +427,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:id="@+id/reSIDfpThirdFilter8580txt"
@@ -394,7 +444,110 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/mainBalanceTxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mainBalance" />
+
+                        <Spinner
+                            android:id="@+id/mainBalance"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/secondBalanceTxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/secondBalance" />
+
+                        <Spinner
+                            android:id="@+id/secondBalance"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/thirdBalanceTxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/thirdBalance" />
+
+                        <Spinner
+                            android:id="@+id/thirdBalance"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/mainDelayTxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mainDelay" />
+
+                        <Spinner
+                            android:id="@+id/mainDelay"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/secondDelayTxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/secondDelay" />
+
+                        <Spinner
+                            android:id="@+id/secondDelay"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/thirdDelayTxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/thirdDelay" />
+
+                        <Spinner
+                            android:id="@+id/thirdDelay"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:id="@+id/cbrTxt"
@@ -409,8 +562,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:ems="10"
-                            android:labelFor="@id/vbrTxt"
-                            android:inputType="number" />
+                            android:inputType="number"
+                            android:labelFor="@id/vbrTxt" />
 
                         <TextView
                             android:id="@+id/vbrTxt"
@@ -434,12 +587,12 @@
                 android:id="@+id/general"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:orientation="vertical" >
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal">
 
                     <EditText
                         android:id="@+id/hostname"
@@ -448,8 +601,8 @@
                         android:layout_weight="2.41"
                         android:ems="10"
                         android:hint="@string/hostname"
-                        android:singleLine="true"
-                        android:inputType="text" />
+                        android:inputType="text"
+                        android:singleLine="true" />
 
                     <EditText
                         android:id="@+id/port"
@@ -458,13 +611,13 @@
                         android:layout_weight="0.23"
                         android:ems="10"
                         android:hint="@string/port"
-                        android:text="@string/portNum"
-                        android:inputType="number" />
+                        android:inputType="number"
+                        android:text="@string/portNum" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content">
 
                     <EditText
                         android:id="@+id/username"
@@ -473,8 +626,8 @@
                         android:layout_weight="1"
                         android:ems="10"
                         android:hint="@string/username"
-                        android:text="@string/user_jsidplay2"
-                        android:inputType="text" />
+                        android:inputType="text"
+                        android:text="@string/user_jsidplay2" />
 
                     <EditText
                         android:id="@+id/password"
@@ -509,11 +662,11 @@
                 android:id="@+id/playlist"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:orientation="vertical" >
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content">
 
                     <Button
                         android:id="@+id/remove"
@@ -543,9 +696,11 @@
                         android:text="@string/random" />
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content">
+
                     <Button
                         android:id="@+id/downloadPlayList"
                         android:layout_width="wrap_content"
@@ -566,23 +721,22 @@
                     android:scrollbarAlwaysDrawVerticalTrack="true"
                     android:scrollbarFadeDuration="0"
                     android:scrollbarStyle="outsideInset"
-                    android:scrollbars="horizontal|vertical" >
+                    android:scrollbars="horizontal|vertical">
 
                     <HorizontalScrollView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:scrollbars="horizontal|vertical" >
+                        android:scrollbars="horizontal|vertical">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="fill_parent"
-                            android:orientation="vertical" >
+                            android:orientation="vertical">
 
                             <TableLayout
                                 android:id="@+id/favorites"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent" >
-                            </TableLayout>
+                                android:layout_height="match_parent" />
                         </LinearLayout>
                     </HorizontalScrollView>
                 </ScrollView>
@@ -592,7 +746,7 @@
                 android:id="@+id/tune"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:orientation="vertical" >
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/resource"
@@ -602,7 +756,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content">
 
                     <ImageView
                         android:id="@+id/image"
@@ -651,23 +805,22 @@
                     android:scrollbarAlwaysDrawVerticalTrack="true"
                     android:scrollbarFadeDuration="0"
                     android:scrollbarStyle="outsideInset"
-                    android:scrollbars="horizontal|vertical" >
+                    android:scrollbars="horizontal|vertical">
 
                     <HorizontalScrollView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:scrollbars="horizontal|vertical" >
+                        android:scrollbars="horizontal|vertical">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="fill_parent"
-                            android:orientation="vertical" >
+                            android:orientation="vertical">
 
                             <TableLayout
                                 android:id="@+id/table"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent" >
-                            </TableLayout>
+                                android:layout_height="match_parent" />
                         </LinearLayout>
                     </HorizontalScrollView>
                 </ScrollView>
@@ -677,13 +830,12 @@
                 android:id="@+id/sids"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:orientation="vertical" >
+                android:orientation="vertical">
 
                 <ListView
                     android:id="@+id/directory"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
-                </ListView>
+                    android:layout_height="wrap_content" />
             </LinearLayout>
         </FrameLayout>
     </LinearLayout>

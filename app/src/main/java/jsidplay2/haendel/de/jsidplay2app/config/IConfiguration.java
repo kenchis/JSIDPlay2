@@ -3,13 +3,16 @@ package jsidplay2.haendel.de.jsidplay2app.config;
 public interface IConfiguration {
 	String PAR_BUFFER_SIZE = "bufferSize";
 	String PAR_BUFFER_SIZE_WLAN = "bufferSizeWlan";
-	String PAR_EMULATION = "emulation";
-	String PAR_ENABLE_DATABASE = "enableDatabase";
-	String PAR_DEFAULT_PLAY_LENGTH = "defaultPlayLength";
-	String PAR_DEFAULT_MODEL = "defaultSidModel";
+	String PAR_EMULATION = "defaultEmulation";
+	String PAR_ENABLE_DATABASE = "enableSidDatabase";
+	String PAR_DEFAULT_PLAY_LENGTH = "defaultLength";
+	String PAR_FADE_IN = "fadeIn";
+	String PAR_FADE_OUT = "fadeOut";
+	String PAR_DEFAULT_MODEL = "defaultModel";
 	String PAR_SINGLE_SONG = "single";
 	String PAR_LOOP = "loop";
-	String PAR_SAMPLING_METHOD = "samplingMethod";
+	String PAR_FAKE_STEREO = "fakeStereo";
+	String PAR_SAMPLING_METHOD = "sampling";
 	String PAR_FREQUENCY = "frequency";
 	String PAR_FILTER_6581 = "filter6581";
 	String PAR_STEREO_FILTER_6581 = "stereoFilter6581";
@@ -23,10 +26,19 @@ public interface IConfiguration {
 	String PAR_RESIDFP_FILTER_8580 = "reSIDfpFilter8580";
 	String PAR_RESIDFP_STEREO_FILTER_8580 = "reSIDfpStereoFilter8580";
 	String PAR_RESIDFP_THIRD_FILTER_8580 = "reSIDfpThirdFilter8580";
+
+	String PAR_MAIN_BALANCE = "mainBalance";
+	String PAR_SECOND_BALANCE = "secondBalance";
+	String PAR_THIRD_BALANCE = "thirdBalance";
+
+	String PAR_MAIN_DELAY = "mainDelay";
+	String PAR_SECOND_DELAY = "secondDelay";
+	String PAR_THIRD_DELAY = "thirdDelay";
+
 	String PAR_DIGI_BOOSTED_8580 = "digiBoosted8580";
-	String PAR_IS_VBR = "isVbr";
+	String PAR_IS_VBR = "vbr";
 	String PAR_CBR = "cbr";
-	String PAR_VBR = "vbr";
+	String PAR_VBR = "vbrQuality";
 
 	String RESID = "RESID";
 	String RESIDFP = "RESIDFP";
@@ -37,21 +49,33 @@ public interface IConfiguration {
 	String DECIMATE = "DECIMATE";
 	String RESAMPLE = "RESAMPLE";
 
-	String _44100 = "44100";
-	String _48000 = "48000";
-	String _96000 = "96000";
+	String _44100 = "LOW";
+	String _48000 = "MEDIUM";
+	String _96000 = "HIGH";
 
 	String DEFAULT_BUFFER_SIZE = "6553600";
 	String DEFAULT_BUFFER_SIZE_WLAN = "2500";
 	String DEFAULT_PLAY_LENGTH = "180";
+	String DEFAULT_FADE_IN = "3";
+	String DEFAULT_FADE_OUT = "3";
 	String DEFAULT_ENABLE_DATABASE = Boolean.TRUE.toString();
 	String DEFAULT_SINGLE_SONG = Boolean.TRUE.toString();
 	String DEFAULT_LOOP = Boolean.FALSE.toString();
+	String DEFAULT_FAKE_STEREO = Boolean.FALSE.toString();
 	String DEFAULT_DIGI_BOOSTED_8580 = Boolean.FALSE.toString();
 	String DEFAULT_FILTER_6581 = "FilterAverage6581";
 	String DEFAULT_FILTER_8580 = "FilterAverage8580";
 	String DEFAULT_RESIDFP_FILTER_6581 = "FilterAlankila6581R4AR_3789";
 	String DEFAULT_RESIDFP_FILTER_8580 = "FilterTrurl8580R5_3691";
+
+	String DEFAULT_MAIN_BALANCE = "0.3";
+	String DEFAULT_SECOND_BALANCE = "0.7";
+	String DEFAULT_THIRD_BALANCE = "0.5";
+
+	String DEFAULT_MAIN_DELAY = "0";
+	String DEFAULT_SECOND_DELAY = "30";
+	String DEFAULT_THIRD_DELAY = "0";
+
 	String DEFAULT_CBR = "64";
 	String DEFAULT_VBR = "0";
 
@@ -91,6 +115,14 @@ public interface IConfiguration {
 
 	void setDefaultLength(String defaultLength);
 
+	String getFadeIn();
+
+	void setFadeIn(String fadeIn);
+
+	String getFadeOut();
+
+	void setFadeOut(String fadeOut);
+
 	String getDefaultModel();
 
 	void setDefaultModel(String defaultModel);
@@ -102,6 +134,10 @@ public interface IConfiguration {
 	boolean isLoop();
 
 	void setLoop(boolean loop);
+
+	boolean isFakeStereo();
+
+	void setFakeStereo(boolean fakeStereo);
 
 	String getFilter6581();
 
@@ -134,6 +170,34 @@ public interface IConfiguration {
 	String getReSIDfpStereoFilter8580();
 
 	void setReSIDfpStereoFilter8580(String residFpFilter8580);
+
+
+
+	String getMainBalance();
+
+	void setMainBalance(String mainBalance);
+
+	String getSecondBalance();
+
+	void setSecondBalance(String secondBalance);
+
+	String getThirdBalance();
+
+	void setThirdBalance(String thirdBalance);
+
+
+
+	String getMainDelay();
+
+	void setMainDelay(String mainDelay);
+
+	String getSecondDelay();
+
+	void setSecondDelay(String secondDelay);
+
+	String getThirdDelay();
+
+	void setThirdDelay(String thirdDelay);
 
 
 

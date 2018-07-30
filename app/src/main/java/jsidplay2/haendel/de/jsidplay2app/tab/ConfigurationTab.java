@@ -28,7 +28,16 @@ import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_EN
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_FILTER_6581;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_FILTER_8580;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_LOOP;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_FAKE_STEREO;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MAIN_BALANCE;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_SECOND_BALANCE;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_THIRD_BALANCE;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MAIN_DELAY;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_SECOND_DELAY;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_THIRD_DELAY;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_PLAY_LENGTH;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_FADE_IN;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_FADE_OUT;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_RESIDFP_FILTER_6581;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_RESIDFP_FILTER_8580;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_SINGLE_SONG;
@@ -40,9 +49,12 @@ import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_BUFFER
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_CBR;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DEFAULT_MODEL;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DEFAULT_PLAY_LENGTH;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FADE_IN;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FADE_OUT;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DIGI_BOOSTED_8580;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_EMULATION;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_ENABLE_DATABASE;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FAKE_STEREO;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FILTER_6581;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FILTER_8580;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FREQUENCY;
@@ -66,6 +78,12 @@ import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.RESIDFP;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration._44100;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration._48000;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration._96000;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MAIN_BALANCE;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_SECOND_BALANCE;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_BALANCE;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MAIN_DELAY;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_SECOND_DELAY;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_DELAY;
 
 public class ConfigurationTab extends TabBase {
 	private static final String PREFIX_FILTER_6581 = "RESID_MOS6581_";
@@ -148,6 +166,25 @@ public class ConfigurationTab extends TabBase {
 				case PAR_RESIDFP_THIRD_FILTER_8580:
 					configuration.setReSIDfpThirdFilter8580(newValue);
 					break;
+				case PAR_MAIN_BALANCE:
+					configuration.setMainBalance(newValue);
+					break;
+				case PAR_SECOND_BALANCE:
+					configuration.setSecondBalance(newValue);
+					break;
+				case PAR_THIRD_BALANCE:
+					configuration.setThirdBalance(newValue);
+					break;
+
+				case PAR_MAIN_DELAY:
+					configuration.setMainDelay(newValue);
+					break;
+				case PAR_SECOND_DELAY:
+					configuration.setSecondDelay(newValue);
+					break;
+				case PAR_THIRD_DELAY:
+					configuration.setThirdDelay(newValue);
+					break;
 			}
 		}
 
@@ -163,6 +200,12 @@ public class ConfigurationTab extends TabBase {
 					break;
 				case PAR_DEFAULT_PLAY_LENGTH:
 					configuration.setDefaultLength(newValue);
+					break;
+				case PAR_FADE_IN:
+					configuration.setFadeIn(newValue);
+					break;
+				case PAR_FADE_OUT:
+					configuration.setFadeOut(newValue);
 					break;
 				case PAR_CBR:
 					configuration.setCbr(newValue);
@@ -184,6 +227,9 @@ public class ConfigurationTab extends TabBase {
 					break;
 				case PAR_LOOP:
 					configuration.setLoop(newValue);
+					break;
+				case PAR_FAKE_STEREO:
+					configuration.setFakeStereo(newValue);
 					break;
 				case PAR_SINGLE_SONG:
 					configuration.setSingleSong(newValue);
@@ -274,7 +320,39 @@ public class ConfigurationTab extends TabBase {
                             PAR_RESIDFP_THIRD_FILTER_8580,
                             DEFAULT_RESIDFP_FILTER_8580));
 
-        }
+			ui.setupSpinner(activity, mainBalance,
+					new String[] {"0.0","0.1","0.2","0.3","0.4","0.5","0.6","0.7","0.8","0.9","1.0"},
+					PAR_MAIN_BALANCE, preferences.getString(
+							PAR_MAIN_BALANCE,
+							DEFAULT_MAIN_BALANCE));
+			ui.setupSpinner(activity, secondBalance,
+					new String[] {"0.0","0.1","0.2","0.3","0.4","0.5","0.6","0.7","0.8","0.9","1.0"},
+					PAR_SECOND_BALANCE, preferences.getString(
+							PAR_SECOND_BALANCE,
+							DEFAULT_SECOND_BALANCE));
+			ui.setupSpinner(activity, thirdBalance,
+					new String[] {"0.0","0.1","0.2","0.3","0.4","0.5","0.6","0.7","0.8","0.9","1.0"},
+					PAR_THIRD_BALANCE, preferences.getString(
+							PAR_THIRD_BALANCE,
+							DEFAULT_THIRD_BALANCE));
+
+			ui.setupSpinner(activity, mainDelay,
+					new String[] {"0","10","20","30","40","50","60","70","80","90","100","110","120","130","140","150","160","170","180","190","200"},
+					PAR_MAIN_DELAY, preferences.getString(
+							PAR_MAIN_DELAY,
+							DEFAULT_MAIN_DELAY));
+			ui.setupSpinner(activity, secondDelay,
+					new String[] {"0","10","20","30","40","50","60","70","80","90","100","110","120","130","140","150","160","170","180","190","200"},
+					PAR_SECOND_DELAY, preferences.getString(
+							PAR_SECOND_DELAY,
+							DEFAULT_SECOND_DELAY));
+			ui.setupSpinner(activity, thirdDelay,
+					new String[] {"0","10","20","30","40","50","60","70","80","90","100","110","120","130","140","150","160","170","180","190","200"},
+					PAR_THIRD_DELAY, preferences.getString(
+							PAR_THIRD_DELAY,
+							DEFAULT_THIRD_DELAY));
+
+		}
     }
 
 	private Spinner filter6581, filter8580, reSIDfpFilter6581,
@@ -290,6 +368,10 @@ public class ConfigurationTab extends TabBase {
 	private Spinner thirdFilter8580;
 	private Spinner reSIDfpThirdFilter6581;
 	private Spinner reSIDfpThirdFilter8580;
+
+	private Spinner mainBalance,secondBalance,thirdBalance;
+	private Spinner mainDelay,secondDelay,thirdDelay;
+
 	private TextView stereoFilter6581txt, stereoFilter8580txt,
 	reSIDfpStereoFilter6581txt, reSIDfpStereoFilter8580txt,
 	thirdFilter6581txt, thirdFilter8580txt,
@@ -312,9 +394,12 @@ public class ConfigurationTab extends TabBase {
 		EditText bufferSize = activity.findViewById(R.id.bufferSize);
 		EditText bufferSizeWlan = activity.findViewById(R.id.bufferSizeWlan);
 		EditText defaultLength = activity.findViewById(R.id.defaultLength);
+		EditText fadeIn = activity.findViewById(R.id.fadeIn);
+		EditText fadeOut = activity.findViewById(R.id.fadeOut);
 		CheckBox enableDatabase = activity.findViewById(R.id.enableDatabase);
 		CheckBox singleSong = activity.findViewById(R.id.singleSong);
 		CheckBox loop = activity.findViewById(R.id.loop);
+		CheckBox fakeStereo = activity.findViewById(R.id.fakeStereo);
 		CheckBox digiBoosted8580 = activity
 				.findViewById(R.id.digiBoosted8580);
 		Spinner emulation = activity.findViewById(R.id.emulation);
@@ -352,6 +437,20 @@ public class ConfigurationTab extends TabBase {
 		reSIDfpStereoFilter8580txt = activity
 				.findViewById(R.id.reSIDfpStereoFilter8580txt);
 
+		mainBalance = activity
+				.findViewById(R.id.mainBalance);
+		secondBalance = activity
+				.findViewById(R.id.secondBalance);
+		thirdBalance = activity
+				.findViewById(R.id.thirdBalance);
+
+		mainDelay = activity
+				.findViewById(R.id.mainDelay);
+		secondDelay = activity
+				.findViewById(R.id.secondDelay);
+		thirdDelay = activity
+				.findViewById(R.id.thirdDelay);
+
 		thirdFilter6581 = activity
 				.findViewById(R.id.thirdFilter6581);
 		thirdFilter6581txt = activity
@@ -379,10 +478,16 @@ public class ConfigurationTab extends TabBase {
 		ui.setupEditText(defaultLength, PAR_DEFAULT_PLAY_LENGTH,
 				DEFAULT_PLAY_LENGTH);
 
+		ui.setupEditText(fadeIn, PAR_FADE_IN,
+				DEFAULT_FADE_IN);
+		ui.setupEditText(fadeOut, PAR_FADE_OUT,
+				DEFAULT_FADE_OUT);
+
 		ui.setupCheckBox(enableDatabase, PAR_ENABLE_DATABASE,
 				DEFAULT_ENABLE_DATABASE);
 		ui.setupCheckBox(singleSong, PAR_SINGLE_SONG, DEFAULT_SINGLE_SONG);
 		ui.setupCheckBox(loop, PAR_LOOP, DEFAULT_LOOP);
+		ui.setupCheckBox(fakeStereo, PAR_FAKE_STEREO, DEFAULT_FAKE_STEREO);
 		ui.setupCheckBox(digiBoosted8580, PAR_DIGI_BOOSTED_8580,
 				DEFAULT_DIGI_BOOSTED_8580);
 

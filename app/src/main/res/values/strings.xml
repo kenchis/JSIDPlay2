@@ -10,7 +10,8 @@
     <string name="user_jsidplay2">jsidplay2</string>
     <string name="password">password</string>
     <string name="btn_download">as SID</string>
-    <string name="btn_play">Play</string><string name="btn_mp3">add MP3 Stream to PlayList</string>
+    <string name="btn_play">Play</string>
+    <string name="btn_mp3">add MP3 Stream to PlayList</string>
     <string name="tune_hint">SID Tune</string>
     <string name="HVSCEntry.path">Full Path</string>
     <string name="HVSCEntry.name">File Name</string>
@@ -44,10 +45,11 @@
     <string name="HVSCEntry.relocNoPages">Reloc. no. pages</string>
     <string name="HVSCEntry.stilGlbComment">STIL glb. Comment</string>
     <string name="StilEntry.text">STIL</string>
-    <string name="enableDatabase">Detect Song Length</string>
-    <string name="defaultLength">Default in sec.</string>
+    <string name="enableDatabase">Detect Song Length or </string>
+    <string name="defaultLength"> default length in sec.</string>
     <string name="singleSong">Single Song</string>
     <string name="loop">Loop Song</string>
+    <string name="fakeStereo">Fake stereo</string>
     <string name="default_model">Default Model:</string>
     <string name="resid6581">Filter 6581:</string>
     <string name="resid8580">Filter 8580:</string>
@@ -61,6 +63,14 @@
     <string name="thirdResid8580">3-SID Filter 8580:</string>
     <string name="thirdResidfp6581">3-SID Filter 6581:</string>
     <string name="thirdResidfp8580">3-SID Filter 8580:</string>
+    <string name="mainBalance">Balance of SID in ms:</string>
+    <string name="secondBalance">Balance of Stereo SID in ms:</string>
+    <string name="thirdBalance">Balance of 3rd SID in ms:</string>
+    <string name="mainDelay">Delay of SID in ms:</string>
+    <string name="secondDelay">Delay of Stereo SID in ms:</string>
+    <string name="thirdDelay">Delay of 3rd SID in ms:</string>
+    <string name="fadeIn">Fade-in in sec.:</string>
+    <string name="fadeOut">Fade-out in sec.:</string>
     <string name="about">Android App of JSIDPlay2 - Music Player &amp; C64 SID Chip Emulator\n
 JSIDPlay2 is copyrighted to:\n
 2007-2018 Ken H&#228;ndel,\n
@@ -89,5 +99,4 @@ Source code can be found at:\n
     <string name="desc_service_jsidplay2">MediaPlayer of JSIDPlay2</string>
     <string name="cbr">CBR in Kb (mobile)</string>
     <string name="vbr">VBR Quality (WLAN)</string>
-
 </resources>

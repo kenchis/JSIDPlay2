@@ -43,6 +43,8 @@ import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_BUFFER
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_CBR;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DEFAULT_MODEL;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DEFAULT_PLAY_LENGTH;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FADE_IN;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FADE_OUT;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DIGI_BOOSTED_8580;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_EMULATION;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_ENABLE_DATABASE;
@@ -51,12 +53,19 @@ import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FILTER
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FREQUENCY;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_IS_VBR;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_LOOP;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FAKE_STEREO;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_FILTER_6581;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_FILTER_8580;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_STEREO_FILTER_6581;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_STEREO_FILTER_8580;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_THIRD_FILTER_6581;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_THIRD_FILTER_8580;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MAIN_BALANCE;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_SECOND_BALANCE;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_BALANCE;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MAIN_DELAY;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_SECOND_DELAY;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_DELAY;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_SAMPLING_METHOD;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_SINGLE_SONG;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_STEREO_FILTER_6581;
@@ -260,10 +269,13 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
         }
         query.append(PAR_EMULATION).append("=").append(configuration.getDefaultEmulation()).append("&");
         query.append(PAR_ENABLE_DATABASE).append("=").append(configuration.isEnableDatabase()).append("&");
-        query.append(PAR_DEFAULT_PLAY_LENGTH).append("=").append(getNumber(configuration.getDefaultLength())).append("&");
+        query.append(PAR_DEFAULT_PLAY_LENGTH).append("=").append(getTime(getNumber(configuration.getDefaultLength()))).append("&");
+        query.append(PAR_FADE_IN).append("=").append(getTime(getNumber(configuration.getFadeIn()))).append("&");
+        query.append(PAR_FADE_OUT).append("=").append(getTime(getNumber(configuration.getFadeOut()))).append("&");
         query.append(PAR_DEFAULT_MODEL).append("=").append(configuration.getDefaultModel()).append("&");
         query.append(PAR_SINGLE_SONG).append("=").append(configuration.isSingleSong()).append("&");
         query.append(PAR_LOOP).append("=").append(configuration.isLoop()).append("&");
+        query.append(PAR_FAKE_STEREO).append("=").append(configuration.isFakeStereo()).append("&");
 
         query.append(PAR_FILTER_6581).append("=").append(configuration.getFilter6581()).append("&");
         query.append(PAR_FILTER_8580).append("=").append(configuration.getFilter8580()).append("&");
@@ -279,6 +291,15 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
         query.append(PAR_THIRD_FILTER_8580).append("=").append(configuration.getThirdFilter8580()).append("&");
         query.append(PAR_RESIDFP_THIRD_FILTER_6581).append("=").append(configuration.getReSIDfpThirdFilter6581()).append("&");
         query.append(PAR_RESIDFP_THIRD_FILTER_8580).append("=").append(configuration.getReSIDfpThirdFilter8580()).append("&");
+
+        query.append(PAR_MAIN_BALANCE).append("=").append(configuration.getMainBalance()).append("&");
+        query.append(PAR_SECOND_BALANCE).append("=").append(configuration.getSecondBalance()).append("&");
+        query.append(PAR_THIRD_BALANCE).append("=").append(configuration.getThirdBalance()).append("&");
+
+        query.append(PAR_MAIN_DELAY).append("=").append(configuration.getMainDelay()).append("&");
+        query.append(PAR_SECOND_DELAY).append("=").append(configuration.getSecondDelay()).append("&");
+        query.append(PAR_THIRD_DELAY).append("=").append(configuration.getThirdDelay()).append("&");
+
         query.append(PAR_DIGI_BOOSTED_8580).append("=").append(configuration.isDigiBoosted8580()).append("&");
         query.append(PAR_SAMPLING_METHOD).append("=").append(configuration.getSamplingMethod()).append("&");
         query.append(PAR_FREQUENCY).append("=").append(configuration.getFrequency()).append("&");
@@ -292,6 +313,10 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
 
         return Uri.parse(new URI("http", null, configuration.getHostname(), getNumber(configuration.getPort()),
                 RequestType.CONVERT.getUrl() + resource, query.toString(), null).toString());
+    }
+
+    private String getTime(int number) {
+        return String.format("%02d:%02d", number / 60, number % 60);
     }
 
     private boolean isWifiConnected() {

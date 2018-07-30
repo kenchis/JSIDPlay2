@@ -78,6 +78,30 @@ public class Configuration implements IConfiguration {
 		this.defaultLength = defaultLength;
 	}
 
+	private String fadeIn;
+
+	@Override
+	public String getFadeIn() {
+		return fadeIn;
+	}
+
+	@Override
+	public void setFadeIn(String fadeIn) {
+		this.fadeIn = fadeIn;
+	}
+
+	private String fadeOut;
+
+	@Override
+	public String getFadeOut() {
+		return fadeOut;
+	}
+
+	@Override
+	public void setFadeOut(String fadeOut) {
+		this.fadeOut = fadeOut;
+	}
+
 	private String defaultModel;
 
 	@Override
@@ -112,6 +136,19 @@ public class Configuration implements IConfiguration {
 	@Override
 	public void setLoop(boolean loop) {
 		this.loop = loop;
+
+	}
+
+	private boolean fakeStereo;
+
+	@Override
+	public boolean isFakeStereo() {
+		return fakeStereo;
+	}
+
+	@Override
+	public void setFakeStereo(boolean fakeStereo) {
+		this.fakeStereo = fakeStereo;
 
 	}
 
@@ -261,6 +298,83 @@ public class Configuration implements IConfiguration {
 	public void setReSIDfpThirdFilter8580(String residFpFilter8580) {
 		this.reSIDfpThirdFilter8580 = residFpFilter8580;
 	}
+
+
+	public String mainBalance;
+
+	@Override
+	public String getMainBalance() {
+		return mainBalance;
+	}
+
+	@Override
+	public void setMainBalance(String mainBalance) {
+		this.mainBalance=mainBalance;
+	}
+
+	public String secondBalance;
+
+	@Override
+	public String getSecondBalance() {
+		return secondBalance;
+	}
+
+	@Override
+	public void setSecondBalance(String secondBalance) {
+		this.secondBalance = secondBalance;
+	}
+
+	public String thirdBalance;
+
+	@Override
+	public String getThirdBalance() {
+		return thirdBalance;
+	}
+
+	@Override
+	public void setThirdBalance(String thirdBalance) {
+		this.thirdBalance = thirdBalance;
+	}
+
+
+
+	public String mainDelay;
+
+	@Override
+	public String getMainDelay() {
+		return mainDelay;
+	}
+
+	@Override
+	public void setMainDelay(String mainDelay) {
+		this.mainDelay = mainDelay;
+	}
+
+	public String secondDelay;
+
+	@Override
+	public 	String getSecondDelay() {
+		return secondDelay;
+	}
+
+	@Override
+	public void setSecondDelay(String secondDelay) {
+		this.secondDelay = secondDelay;
+	}
+
+	public String thirdDelay;
+
+	@Override
+	public String getThirdDelay() {
+		return thirdDelay;
+	}
+
+	@Override
+	public void setThirdDelay(String thirdDelay) {
+		this.thirdDelay = thirdDelay;
+	}
+
+
 
 	private boolean digiBoosted8580;
 
