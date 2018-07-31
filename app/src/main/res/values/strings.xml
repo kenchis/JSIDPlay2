@@ -63,9 +63,9 @@
     <string name="thirdResid8580">3-SID Filter 8580:</string>
     <string name="thirdResidfp6581">3-SID Filter 6581:</string>
     <string name="thirdResidfp8580">3-SID Filter 8580:</string>
-    <string name="mainBalance">Balance of SID in ms:</string>
-    <string name="secondBalance">Balance of Stereo SID in ms:</string>
-    <string name="thirdBalance">Balance of 3rd SID in ms:</string>
+    <string name="mainBalance">Balance of SID [0(left)..1(right)]:</string>
+    <string name="secondBalance">Balance of Stereo SID [0(left)..1(right)]:</string>
+    <string name="thirdBalance">Balance of 3rd SID [0(left)..1(right)]:</string>
     <string name="mainVolume">Volume of SID in db:</string>
     <string name="secondVolume">Volume of Stereo SID in db:</string>
     <string name="thirdVolume">Volume of 3rd SID in db:</string>
