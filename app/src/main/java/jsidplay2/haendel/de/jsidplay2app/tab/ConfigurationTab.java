@@ -29,6 +29,9 @@ import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_FI
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_FILTER_8580;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_LOOP;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_FAKE_STEREO;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MAIN_VOLUME;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_SECOND_VOLUME;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_THIRD_VOLUME;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MAIN_BALANCE;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_SECOND_BALANCE;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_THIRD_BALANCE;
@@ -78,6 +81,9 @@ import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.RESIDFP;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration._44100;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration._48000;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration._96000;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MAIN_VOLUME;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_SECOND_VOLUME;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_VOLUME;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MAIN_BALANCE;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_SECOND_BALANCE;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_BALANCE;
@@ -166,6 +172,16 @@ public class ConfigurationTab extends TabBase {
 				case PAR_RESIDFP_THIRD_FILTER_8580:
 					configuration.setReSIDfpThirdFilter8580(newValue);
 					break;
+				case PAR_MAIN_VOLUME:
+					configuration.setMainVolume(newValue);
+					break;
+				case PAR_SECOND_VOLUME:
+					configuration.setSecondVolume(newValue);
+					break;
+				case PAR_THIRD_VOLUME:
+					configuration.setThirdVolume(newValue);
+					break;
+
 				case PAR_MAIN_BALANCE:
 					configuration.setMainBalance(newValue);
 					break;
@@ -320,6 +336,22 @@ public class ConfigurationTab extends TabBase {
                             PAR_RESIDFP_THIRD_FILTER_8580,
                             DEFAULT_RESIDFP_FILTER_8580));
 
+			ui.setupSpinner(activity, mainVolume,
+					new String[] {"-6.0","-5.0","-4.0","-3.0","-2.0","-1.0","0.0","1.0","2.0","3.0","4.0","5.0","6.0"},
+					PAR_MAIN_VOLUME, preferences.getString(
+							PAR_MAIN_VOLUME,
+							DEFAULT_MAIN_VOLUME));
+			ui.setupSpinner(activity, secondVolume,
+					new String[] {"-6.0","-5.0","-4.0","-3.0","-2.0","-1.0","0.0","1.0","2.0","3.0","4.0","5.0","6.0"},
+					PAR_SECOND_VOLUME, preferences.getString(
+							PAR_SECOND_VOLUME,
+							DEFAULT_SECOND_VOLUME));
+			ui.setupSpinner(activity, thirdVolume,
+					new String[] {"-6.0","-5.0","-4.0","-3.0","-2.0","-1.0","0.0","1.0","2.0","3.0","4.0","5.0","6.0"},
+					PAR_THIRD_VOLUME, preferences.getString(
+							PAR_THIRD_VOLUME,
+							DEFAULT_THIRD_VOLUME));
+
 			ui.setupSpinner(activity, mainBalance,
 					new String[] {"0.0","0.1","0.2","0.3","0.4","0.5","0.6","0.7","0.8","0.9","1.0"},
 					PAR_MAIN_BALANCE, preferences.getString(
@@ -369,6 +401,7 @@ public class ConfigurationTab extends TabBase {
 	private Spinner reSIDfpThirdFilter6581;
 	private Spinner reSIDfpThirdFilter8580;
 
+	private Spinner mainVolume,secondVolume,thirdVolume;
 	private Spinner mainBalance,secondBalance,thirdBalance;
 	private Spinner mainDelay,secondDelay,thirdDelay;
 
@@ -436,6 +469,13 @@ public class ConfigurationTab extends TabBase {
 				.findViewById(R.id.reSIDfpStereoFilter8580);
 		reSIDfpStereoFilter8580txt = activity
 				.findViewById(R.id.reSIDfpStereoFilter8580txt);
+
+		mainVolume = activity
+				.findViewById(R.id.mainVolume);
+		secondVolume = activity
+				.findViewById(R.id.secondVolume);
+		thirdVolume = activity
+				.findViewById(R.id.thirdVolume);
 
 		mainBalance = activity
 				.findViewById(R.id.mainBalance);

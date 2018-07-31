@@ -60,6 +60,9 @@ import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDF
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_STEREO_FILTER_8580;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_THIRD_FILTER_6581;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_THIRD_FILTER_8580;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MAIN_VOLUME;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_SECOND_VOLUME;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_VOLUME;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MAIN_BALANCE;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_SECOND_BALANCE;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_BALANCE;
@@ -291,6 +294,10 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
         query.append(PAR_THIRD_FILTER_8580).append("=").append(configuration.getThirdFilter8580()).append("&");
         query.append(PAR_RESIDFP_THIRD_FILTER_6581).append("=").append(configuration.getReSIDfpThirdFilter6581()).append("&");
         query.append(PAR_RESIDFP_THIRD_FILTER_8580).append("=").append(configuration.getReSIDfpThirdFilter8580()).append("&");
+
+        query.append(PAR_MAIN_VOLUME).append("=").append(configuration.getMainVolume()).append("&");
+        query.append(PAR_SECOND_VOLUME).append("=").append(configuration.getSecondVolume()).append("&");
+        query.append(PAR_THIRD_VOLUME).append("=").append(configuration.getThirdVolume()).append("&");
 
         query.append(PAR_MAIN_BALANCE).append("=").append(configuration.getMainBalance()).append("&");
         query.append(PAR_SECOND_BALANCE).append("=").append(configuration.getSecondBalance()).append("&");

@@ -300,6 +300,44 @@ public class Configuration implements IConfiguration {
 	}
 
 
+	public String mainVolume;
+
+	@Override
+	public String getMainVolume() {
+		return mainVolume;
+	}
+
+	@Override
+	public void setMainVolume(String mainVolume) {
+		this.mainVolume=mainVolume;
+	}
+
+	public String secondVolume;
+
+	@Override
+	public String getSecondVolume() {
+		return secondVolume;
+	}
+
+	@Override
+	public void setSecondVolume(String secondVolume) {
+		this.secondVolume = secondVolume;
+	}
+
+	public String thirdVolume;
+
+	@Override
+	public String getThirdVolume() {
+		return thirdVolume;
+	}
+
+	@Override
+	public void setThirdVolume(String thirdVolume) {
+		this.thirdVolume = thirdVolume;
+	}
+
+
+
 	public String mainBalance;
 
 	@Override

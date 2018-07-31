@@ -27,6 +27,10 @@ public interface IConfiguration {
 	String PAR_RESIDFP_STEREO_FILTER_8580 = "reSIDfpStereoFilter8580";
 	String PAR_RESIDFP_THIRD_FILTER_8580 = "reSIDfpThirdFilter8580";
 
+	String PAR_MAIN_VOLUME = "mainVolume";
+	String PAR_SECOND_VOLUME = "secondVolume";
+	String PAR_THIRD_VOLUME = "thirdVolume";
+
 	String PAR_MAIN_BALANCE = "mainBalance";
 	String PAR_SECOND_BALANCE = "secondBalance";
 	String PAR_THIRD_BALANCE = "thirdBalance";
@@ -53,7 +57,7 @@ public interface IConfiguration {
 	String _48000 = "MEDIUM";
 	String _96000 = "HIGH";
 
-	String DEFAULT_BUFFER_SIZE = "6553600";
+	String DEFAULT_BUFFER_SIZE = "6400000";
 	String DEFAULT_BUFFER_SIZE_WLAN = "2500";
 	String DEFAULT_PLAY_LENGTH = "180";
 	String DEFAULT_FADE_IN = "3";
@@ -67,6 +71,10 @@ public interface IConfiguration {
 	String DEFAULT_FILTER_8580 = "FilterAverage8580";
 	String DEFAULT_RESIDFP_FILTER_6581 = "FilterAlankila6581R4AR_3789";
 	String DEFAULT_RESIDFP_FILTER_8580 = "FilterTrurl8580R5_3691";
+
+	String DEFAULT_MAIN_VOLUME = "0.0";
+	String DEFAULT_SECOND_VOLUME = "0.0";
+	String DEFAULT_THIRD_VOLUME = "0.0";
 
 	String DEFAULT_MAIN_BALANCE = "0.3";
 	String DEFAULT_SECOND_BALANCE = "0.7";
@@ -170,6 +178,20 @@ public interface IConfiguration {
 	String getReSIDfpStereoFilter8580();
 
 	void setReSIDfpStereoFilter8580(String residFpFilter8580);
+
+
+
+	String getMainVolume();
+
+	void setMainVolume(String mainVolume);
+
+	String getSecondVolume();
+
+	void setSecondVolume(String secondVolume);
+
+	String getThirdVolume();
+
+	void setThirdVolume(String thirdVolume);
 
 
 
