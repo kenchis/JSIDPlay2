@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -26,13 +25,9 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.TabHost;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -40,6 +35,7 @@ import jsidplay2.haendel.de.jsidplay2app.JSIDPlay2Service.JSIDPlay2Binder;
 import jsidplay2.haendel.de.jsidplay2app.JSIDPlay2Service.PlayListEntry;
 import jsidplay2.haendel.de.jsidplay2app.JSIDPlay2Service.PlayListener;
 import jsidplay2.haendel.de.jsidplay2app.config.Configuration;
+import jsidplay2.haendel.de.jsidplay2app.request.FavoritesRequest;
 import jsidplay2.haendel.de.jsidplay2app.request.JSIDPlay2RESTRequest.RequestType;
 import jsidplay2.haendel.de.jsidplay2app.tab.ConfigurationTab;
 import jsidplay2.haendel.de.jsidplay2app.tab.GeneralTab;
@@ -49,35 +45,25 @@ import jsidplay2.haendel.de.jsidplay2app.tab.SidsTab;
 
 public class MainActivity extends Activity implements PlayListener {
 
-    private static final String PLAYLIST_DOWNLOAD_URL = "http://haendel.ddns.net/~ken/jsidplay2.js2";
     private final static int REQUEST_WRITE_STORAGE = 112;
     private final static int REQUEST_BATTERY_OPTIMIZATION = 113;
 
-    private class PlayListDownload extends AsyncTask<Void, Void, List<String>> {
-        private String requestUrl;
-        private PlayListTab playListTab;
 
-        private PlayListDownload(String requestUrl, PlayListTab playListTab) {
-            this.requestUrl = requestUrl;
-            this.playListTab = playListTab;
+    private class MyFavoritesDownloadRequest extends FavoritesRequest {
+        private MyFavoritesDownloadRequest() {
+            super(appName, configuration, RequestType.FAVORITES, "");
+        }
+
+        public String getString(String key) {
+            return key;
         }
 
         @Override
-        protected List<String> doInBackground(Void... objects) {
-            List<String> downloadedFavorites = new ArrayList<>();
-            try (BufferedReader in = new BufferedReader(new InputStreamReader(new URL(requestUrl).openStream()))) {
-                String str;
-                while ((str = in.readLine()) != null) {
-                    downloadedFavorites.add("/C64Music" + str);
-                }
-            } catch (IOException ignored) {
+        protected void onPostExecute(List<String> favorites) {
+            if (favorites == null) {
+                return;
             }
-            return downloadedFavorites;
-        }
-
-        @Override
-        protected void onPostExecute(List<String> downloadedFavorites) {
-            for (String favorite : downloadedFavorites) {
+            for (String favorite : favorites) {
                 playListTab.addRow(jsidplay2service.add(favorite));
             }
             try {
@@ -286,7 +272,7 @@ public class MainActivity extends Activity implements PlayListener {
                     Log.e(appName, e.getMessage(), e);
                 }
                 playListTab.removeAll();
-                new PlayListDownload(PLAYLIST_DOWNLOAD_URL, playListTab).execute();
+                new MyFavoritesDownloadRequest().execute();
                 dialog.cancel();
             }
         });

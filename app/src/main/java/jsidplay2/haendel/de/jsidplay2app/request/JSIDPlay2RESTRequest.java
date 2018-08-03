@@ -34,7 +34,7 @@ public abstract class JSIDPlay2RESTRequest<ResultType> extends AsyncTask<String,
 
     public enum RequestType {
         DOWNLOAD(REST_DOWNLOAD_URL), CONVERT(REST_CONVERT_URL), DIRECTORY(REST_DIRECTORY_URL), PHOTO(
-                REST_PHOTO_URL), INFO(REST_INFO), FILTERS(REST_FILTERS_URL);
+                REST_PHOTO_URL), INFO(REST_INFO), FILTERS(REST_FILTERS_URL), FAVORITES(REST_FAVORITES_URL);
 
         private String url;
 
@@ -58,6 +58,7 @@ public abstract class JSIDPlay2RESTRequest<ResultType> extends AsyncTask<String,
     private static final String REST_PHOTO_URL = ROOT_URL + "/photo";
     private static final String REST_INFO = ROOT_URL + "/info";
     private static final String REST_FILTERS_URL = ROOT_URL + "/filters";
+    private static final String REST_FAVORITES_URL = ROOT_URL + "/favorites";
 
     private static final int RETRY_PERIOD_S = 10;
 
