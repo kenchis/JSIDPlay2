@@ -369,17 +369,17 @@ public class ConfigurationTab extends TabBase {
 							DEFAULT_THIRD_BALANCE));
 
 			ui.setupSpinner(activity, mainDelay,
-					new String[] {"0","10","20","30","40","50","60","70","80","90","100","110","120","130","140","150","160","170","180","190","200"},
+					new String[] {"0","10","20","30","40","50","60","70","80","90","100"},
 					PAR_MAIN_DELAY, preferences.getString(
 							PAR_MAIN_DELAY,
 							DEFAULT_MAIN_DELAY));
 			ui.setupSpinner(activity, secondDelay,
-					new String[] {"0","10","20","30","40","50","60","70","80","90","100","110","120","130","140","150","160","170","180","190","200"},
+					new String[] {"0","10","20","30","40","50","60","70","80","90","100"},
 					PAR_SECOND_DELAY, preferences.getString(
 							PAR_SECOND_DELAY,
 							DEFAULT_SECOND_DELAY));
 			ui.setupSpinner(activity, thirdDelay,
-					new String[] {"0","10","20","30","40","50","60","70","80","90","100","110","120","130","140","150","160","170","180","190","200"},
+					new String[] {"0","10","20","30","40","50","60","70","80","90","100"},
 					PAR_THIRD_DELAY, preferences.getString(
 							PAR_THIRD_DELAY,
 							DEFAULT_THIRD_DELAY));
