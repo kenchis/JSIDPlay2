@@ -60,8 +60,8 @@ public interface IConfiguration {
 	String DEFAULT_BUFFER_SIZE = "6400000";
 	String DEFAULT_BUFFER_SIZE_WLAN = "2500";
 	String DEFAULT_PLAY_LENGTH = "180";
-	String DEFAULT_FADE_IN = "3";
-	String DEFAULT_FADE_OUT = "3";
+	String DEFAULT_FADE_IN = "5";
+	String DEFAULT_FADE_OUT = "5";
 	String DEFAULT_ENABLE_DATABASE = Boolean.TRUE.toString();
 	String DEFAULT_SINGLE_SONG = Boolean.TRUE.toString();
 	String DEFAULT_LOOP = Boolean.FALSE.toString();
