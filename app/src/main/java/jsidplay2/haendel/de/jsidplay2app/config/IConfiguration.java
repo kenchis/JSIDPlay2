@@ -81,7 +81,7 @@ public interface IConfiguration {
 	String DEFAULT_THIRD_BALANCE = "0.5";
 
 	String DEFAULT_MAIN_DELAY = "0";
-	String DEFAULT_SECOND_DELAY = "30";
+	String DEFAULT_SECOND_DELAY = "20";
 	String DEFAULT_THIRD_DELAY = "0";
 
 	String DEFAULT_CBR = "64";
