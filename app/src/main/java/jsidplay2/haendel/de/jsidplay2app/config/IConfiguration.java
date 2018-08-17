@@ -62,7 +62,7 @@ public interface IConfiguration {
 	String _48000 = "MEDIUM";
 	String _96000 = "HIGH";
 
-	String DEFAULT_BUFFER_SIZE = "6400000";
+	String DEFAULT_BUFFER_SIZE = "65536";
 	String DEFAULT_BUFFER_SIZE_WLAN = "2500";
 	String DEFAULT_PLAY_LENGTH = "180";
 	String DEFAULT_FADE_IN = "5";
