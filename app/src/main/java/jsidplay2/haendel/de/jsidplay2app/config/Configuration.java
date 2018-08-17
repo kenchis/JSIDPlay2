@@ -438,6 +438,16 @@ public class Configuration implements IConfiguration {
 		this.samplingMethod = samplingMethod;
 	}
 
+	private String connectionType;
+
+	@Override
+	public String getConnectionType() { return connectionType!=null?connectionType:HTTP; }
+
+	@Override
+	public void setConnectionType(String connectionType) {
+		this.connectionType = connectionType;
+	}
+
 	private String frequency;
 
 	@Override

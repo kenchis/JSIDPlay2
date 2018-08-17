@@ -107,8 +107,8 @@ public class MainActivity extends Activity implements PlayListener {
             protected void showMedia(String cannonicalPath) {
                 try {
                     String authorization = configuration.getUsername() + ":" + configuration.getPassword();
-                    URI myUri = new URI("http", authorization, configuration.getHostname(),
-                            Integer.valueOf(configuration.getPort()), RequestType.DOWNLOAD.getUrl() + cannonicalPath,
+                    URI myUri = new URI(configuration.getConnectionType().toLowerCase(Locale.US), authorization, configuration.getHostname(),
+                            Integer.parseInt(configuration.getPort()), RequestType.DOWNLOAD.getUrl() + cannonicalPath,
                             null, null);
 
                     Intent intent = new Intent();
@@ -295,8 +295,8 @@ public class MainActivity extends Activity implements PlayListener {
     public void asSid(View view) {
         try {
             String authorization = configuration.getUsername() + ":" + configuration.getPassword();
-            URI myUri = new URI("http", authorization, configuration.getHostname(),
-                    Integer.valueOf(configuration.getPort()), RequestType.DOWNLOAD.getUrl() + sidTab.getCurrentTune(),
+            URI myUri = new URI(configuration.getConnectionType().toLowerCase(Locale.US), authorization, configuration.getHostname(),
+                    Integer.parseInt(configuration.getPort()), RequestType.DOWNLOAD.getUrl() + sidTab.getCurrentTune(),
                     null, null);
 
             Intent intent = new Intent();

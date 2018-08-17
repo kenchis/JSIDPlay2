@@ -32,6 +32,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import jsidplay2.haendel.de.jsidplay2app.config.IConfiguration;
@@ -318,12 +319,12 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
         query.append(PAR_CBR).append("=").append(configuration.getCbr()).append("&");
         query.append(PAR_VBR).append("=").append(configuration.getVbr());
 
-        return Uri.parse(new URI("http", null, configuration.getHostname(), getNumber(configuration.getPort()),
+        return Uri.parse(new URI("https", null, configuration.getHostname(), 8443,
                 RequestType.CONVERT.getUrl() + resource, query.toString(), null).toString());
     }
 
     private String getTime(int number) {
-        return String.format("%02d:%02d", number / 60, number % 60);
+        return String.format(Locale.US, "%02d:%02d", number / 60, number % 60);
     }
 
     private boolean isWifiConnected() {

@@ -11,6 +11,7 @@ import java.net.URISyntaxException;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -85,7 +86,7 @@ public abstract class JSIDPlay2RESTRequest<ResultType> extends AsyncTask<String,
                         query.append("&").append(property.getKey()).append("=").append(property.getValue());
                     }
                 }
-                URI myUri = new URI("http", null, configuration.getHostname(), Integer.valueOf(configuration.getPort()),
+                URI myUri = new URI(configuration.getConnectionType().toLowerCase(Locale.US), null, configuration.getHostname(), Integer.parseInt(configuration.getPort()),
                         url, query.toString(), null);
 
                 Log.d(appName, "HTTP-GET: " + myUri);

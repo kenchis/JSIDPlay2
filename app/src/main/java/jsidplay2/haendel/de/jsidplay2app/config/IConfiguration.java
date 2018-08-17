@@ -13,6 +13,7 @@ public interface IConfiguration {
 	String PAR_LOOP = "loop";
 	String PAR_FAKE_STEREO = "fakeStereo";
 	String PAR_SAMPLING_METHOD = "sampling";
+	String PAR_CONNECTION_TYPE= "connectionType";
 	String PAR_FREQUENCY = "frequency";
 	String PAR_FILTER_6581 = "filter6581";
 	String PAR_STEREO_FILTER_6581 = "stereoFilter6581";
@@ -38,11 +39,15 @@ public interface IConfiguration {
 	String PAR_MAIN_DELAY = "mainDelay";
 	String PAR_SECOND_DELAY = "secondDelay";
 	String PAR_THIRD_DELAY = "thirdDelay";
+	String PAR_PORT = "port";
 
 	String PAR_DIGI_BOOSTED_8580 = "digiBoosted8580";
 	String PAR_IS_VBR = "vbr";
 	String PAR_CBR = "cbr";
 	String PAR_VBR = "vbrQuality";
+
+	String HTTP = "HTTP";
+	String HTTPS = "HTTPS";
 
 	String RESID = "RESID";
 	String RESIDFP = "RESIDFP";
@@ -71,6 +76,9 @@ public interface IConfiguration {
 	String DEFAULT_FILTER_8580 = "FilterAverage8580";
 	String DEFAULT_RESIDFP_FILTER_6581 = "FilterAlankila6581R4AR_3789";
 	String DEFAULT_RESIDFP_FILTER_8580 = "FilterTrurl8580R5_3691";
+	String DEFAULT_CONNECTION_TYPE = "HTTP";
+	String DEFAULT_PORT = "8080";
+	String DEFAULT_SECURE_PORT = "8443";
 
 	String DEFAULT_MAIN_VOLUME = "0.0";
 	String DEFAULT_SECOND_VOLUME = "0.0";
@@ -90,6 +98,10 @@ public interface IConfiguration {
 	String getHostname();
 
 	void setHostname(String hostname);
+
+	String getConnectionType();
+
+	void setConnectionType(String connectionType);
 
 	String getPort();
 

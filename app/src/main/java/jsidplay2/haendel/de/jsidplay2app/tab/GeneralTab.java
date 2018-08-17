@@ -19,6 +19,7 @@ public class GeneralTab extends TabBase {
 
 	private static final String DEFAULT_HOSTNAME = "haendel.ddns.net";
 	private static final String DEFAULT_PORT = "8080";
+	private static final String DEFAULT_SECURE_PORT = "8443";
 	private static final String DEFAULT_USERNAME = "jsidplay2";
 	private static final String DEFAULT_PASSWORD = "jsidplay2!";
 

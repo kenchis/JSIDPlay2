@@ -655,6 +655,12 @@
                         android:inputType="text"
                         android:singleLine="true" />
 
+                    <Spinner
+                        android:id="@+id/connectionType"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
                     <EditText
                         android:id="@+id/port"
                         android:layout_width="76dp"
@@ -662,8 +668,7 @@
                         android:layout_weight="0.23"
                         android:ems="10"
                         android:hint="@string/port"
-                        android:inputType="number"
-                        android:text="@string/portNum" />
+                        android:inputType="number" />
                 </LinearLayout>
 
                 <LinearLayout
