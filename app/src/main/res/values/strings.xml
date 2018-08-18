@@ -79,8 +79,14 @@ JSIDPlay2 is copyrighted to:\n
 &#x20;&#x20;Antti S. Lankila and Wilfred Bos\n\
 Distortion Simulation and 6581/8580 emulation:\n  Copyright &#169; 2005-2011 Antti S. Lankila\n
 ReSID engine and 6581/8580 emulation:\n  Copyright &#169; 1999-2011 Dag Lem\n
-Source code can be found at:\n
-&#x20;&#x20;http://sourceforge.net/projects/jsidplay2/</string>
+Source code of the app can be found at:\n
+&#x20;&#x20;https://github.com/kenchis/JSIDPlay2\n
+Source code of JSIDPlay2 and the built-in AppServer can be found at:\n
+&#x20;&#x20;https://sourceforge.net/projects/jsidplay2\n\
+This program is free software; you can redistribute it and/or modify\n
+  it under the terms of the GNU General Public License as published by\n
+  the Free Software Foundation; either version 2 of the License, or\n
+  (at your option) any later version.</string>
     <string name="digiBoosted8580">Digi Boost 8580</string>
     <string name="bufferSize">Buffer Size (mobile)</string>
     <string name="bufferSizeWlan">Buffer Size (WLAN)</string>
