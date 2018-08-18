@@ -319,7 +319,7 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
         query.append(PAR_CBR).append("=").append(configuration.getCbr()).append("&");
         query.append(PAR_VBR).append("=").append(configuration.getVbr());
 
-        return Uri.parse(new URI("https", null, configuration.getHostname(), 8443,
+        return Uri.parse(new URI(configuration.getConnectionType().toLowerCase(Locale.US), null, configuration.getHostname(), Integer.parseInt(configuration.getPort()),
                 RequestType.CONVERT.getUrl() + resource, query.toString(), null).toString());
     }
 
