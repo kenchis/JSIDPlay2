@@ -1,5 +1,43 @@
 package jsidplay2.haendel.de.jsidplay2app;
 
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_BUFFER_SIZE;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_CBR;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DEFAULT_MODEL;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DEFAULT_PLAY_LENGTH;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FADE_IN;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FADE_OUT;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DIGI_BOOSTED_8580;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_EMULATION;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_ENABLE_DATABASE;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FILTER_6581;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FILTER_8580;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FREQUENCY;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_IS_VBR;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_LOOP;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FAKE_STEREO;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_FILTER_6581;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_FILTER_8580;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_STEREO_FILTER_6581;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_STEREO_FILTER_8580;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_THIRD_FILTER_6581;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_THIRD_FILTER_8580;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MAIN_VOLUME;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_SECOND_VOLUME;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_VOLUME;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MAIN_BALANCE;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_SECOND_BALANCE;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_BALANCE;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MAIN_DELAY;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_SECOND_DELAY;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_DELAY;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_SAMPLING_METHOD;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_SINGLE_SONG;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_STEREO_FILTER_6581;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_STEREO_FILTER_8580;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_FILTER_6581;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_FILTER_8580;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_VBR;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -35,6 +73,7 @@ import jsidplay2.haendel.de.jsidplay2app.JSIDPlay2Service.JSIDPlay2Binder;
 import jsidplay2.haendel.de.jsidplay2app.JSIDPlay2Service.PlayListEntry;
 import jsidplay2.haendel.de.jsidplay2app.JSIDPlay2Service.PlayListener;
 import jsidplay2.haendel.de.jsidplay2app.config.Configuration;
+import jsidplay2.haendel.de.jsidplay2app.config.IConfiguration;
 import jsidplay2.haendel.de.jsidplay2app.request.FavoritesRequest;
 import jsidplay2.haendel.de.jsidplay2app.request.JSIDPlay2RESTRequest.RequestType;
 import jsidplay2.haendel.de.jsidplay2app.tab.ConfigurationTab;
@@ -106,20 +145,28 @@ public class MainActivity extends Activity implements PlayListener {
             @Override
             protected void showMedia(String cannonicalPath) {
                 try {
-                    String authorization = configuration.getUsername() + ":" + configuration.getPassword();
-                    URI myUri = new URI(configuration.getConnectionType().toLowerCase(Locale.US), authorization, configuration.getHostname(),
-                            Integer.parseInt(configuration.getPort()), RequestType.DOWNLOAD.getUrl() + cannonicalPath,
-                            null, null);
-
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_VIEW);
-
                     MimeTypeMap myMime = MimeTypeMap.getSingleton();
                     String mimeType = myMime.getMimeTypeFromExtension(
                             cannonicalPath.substring(cannonicalPath.lastIndexOf(".") + 1).toLowerCase(Locale.US));
-                    intent.setDataAndType(Uri.parse(myUri.toString()), mimeType);
+                    if (mimeType!=null) {
+                        String authorization = configuration.getUsername() + ":" + configuration.getPassword();
+                        URI myUri = new URI(configuration.getConnectionType().toLowerCase(Locale.US), authorization, configuration.getHostname(),
+                                Integer.parseInt(configuration.getPort()), RequestType.DOWNLOAD.getUrl() + cannonicalPath,
+                                null, null);
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_VIEW);
 
-                    startActivity(intent);
+                        intent.setDataAndType(Uri.parse(myUri.toString()), mimeType);
+
+                        startActivity(intent);
+                    } else {
+
+                        Uri uri = getURI(configuration, cannonicalPath);
+
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setData(uri);
+                        startActivity(i);
+                    }
                 } catch (NumberFormatException | URISyntaxException e) {
                     Log.e(appName, e.getMessage(), e);
                 }
@@ -151,6 +198,67 @@ public class MainActivity extends Activity implements PlayListener {
             }
         }
     }
+
+    private Uri getURI(IConfiguration configuration, String resource) throws URISyntaxException {
+        StringBuilder query = new StringBuilder();
+            query.append(PAR_BUFFER_SIZE).append("=").append(configuration.getBufferSizeWlan()).append("&");
+        query.append(PAR_EMULATION).append("=").append(configuration.getDefaultEmulation()).append("&");
+        query.append(PAR_ENABLE_DATABASE).append("=").append(configuration.isEnableDatabase()).append("&");
+        query.append(PAR_DEFAULT_PLAY_LENGTH).append("=").append(getTime(getNumber(configuration.getDefaultLength()))).append("&");
+        query.append(PAR_FADE_IN).append("=").append(getTime(getNumber(configuration.getFadeIn()))).append("&");
+        query.append(PAR_FADE_OUT).append("=").append(getTime(getNumber(configuration.getFadeOut()))).append("&");
+        query.append(PAR_DEFAULT_MODEL).append("=").append(configuration.getDefaultModel()).append("&");
+        query.append(PAR_SINGLE_SONG).append("=").append(configuration.isSingleSong()).append("&");
+        query.append(PAR_LOOP).append("=").append(configuration.isLoop()).append("&");
+        query.append(PAR_FAKE_STEREO).append("=").append(configuration.isFakeStereo()).append("&");
+
+        query.append(PAR_FILTER_6581).append("=").append(configuration.getFilter6581()).append("&");
+        query.append(PAR_FILTER_8580).append("=").append(configuration.getFilter8580()).append("&");
+        query.append(PAR_RESIDFP_FILTER_6581).append("=").append(configuration.getReSIDfpFilter6581()).append("&");
+        query.append(PAR_RESIDFP_FILTER_8580).append("=").append(configuration.getReSIDfpFilter8580()).append("&");
+
+        query.append(PAR_STEREO_FILTER_6581).append("=").append(configuration.getStereoFilter6581()).append("&");
+        query.append(PAR_STEREO_FILTER_8580).append("=").append(configuration.getStereoFilter8580()).append("&");
+        query.append(PAR_RESIDFP_STEREO_FILTER_6581).append("=").append(configuration.getReSIDfpStereoFilter6581()).append("&");
+        query.append(PAR_RESIDFP_STEREO_FILTER_8580).append("=").append(configuration.getReSIDfpStereoFilter8580()).append("&");
+
+        query.append(PAR_THIRD_FILTER_6581).append("=").append(configuration.getThirdFilter6581()).append("&");
+        query.append(PAR_THIRD_FILTER_8580).append("=").append(configuration.getThirdFilter8580()).append("&");
+        query.append(PAR_RESIDFP_THIRD_FILTER_6581).append("=").append(configuration.getReSIDfpThirdFilter6581()).append("&");
+        query.append(PAR_RESIDFP_THIRD_FILTER_8580).append("=").append(configuration.getReSIDfpThirdFilter8580()).append("&");
+
+        query.append(PAR_MAIN_VOLUME).append("=").append(configuration.getMainVolume()).append("&");
+        query.append(PAR_SECOND_VOLUME).append("=").append(configuration.getSecondVolume()).append("&");
+        query.append(PAR_THIRD_VOLUME).append("=").append(configuration.getThirdVolume()).append("&");
+
+        query.append(PAR_MAIN_BALANCE).append("=").append(configuration.getMainBalance()).append("&");
+        query.append(PAR_SECOND_BALANCE).append("=").append(configuration.getSecondBalance()).append("&");
+        query.append(PAR_THIRD_BALANCE).append("=").append(configuration.getThirdBalance()).append("&");
+
+        query.append(PAR_MAIN_DELAY).append("=").append(configuration.getMainDelay()).append("&");
+        query.append(PAR_SECOND_DELAY).append("=").append(configuration.getSecondDelay()).append("&");
+        query.append(PAR_THIRD_DELAY).append("=").append(configuration.getThirdDelay()).append("&");
+
+        query.append(PAR_DIGI_BOOSTED_8580).append("=").append(configuration.isDigiBoosted8580()).append("&");
+        query.append(PAR_SAMPLING_METHOD).append("=").append(configuration.getSamplingMethod()).append("&");
+        query.append(PAR_FREQUENCY).append("=").append(configuration.getFrequency());
+
+        String authorization = configuration.getUsername() + ":" + configuration.getPassword();
+        return Uri.parse(new URI(configuration.getConnectionType().toLowerCase(Locale.US), authorization, configuration.getHostname(), Integer.parseInt(configuration.getPort()),
+                RequestType.CONVERT.getUrl() + resource, query.toString(), null).toString());
+    }
+
+    private int getNumber(String txt) {
+        try {
+            return Integer.parseInt(txt);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+    private String getTime(int number) {
+        return String.format(Locale.US, "%02d:%02d", number / 60, number % 60);
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
