@@ -6,6 +6,7 @@ public interface IConfiguration {
 	String PAR_EMULATION = "defaultEmulation";
 	String PAR_ENABLE_DATABASE = "enableSidDatabase";
 	String PAR_DEFAULT_PLAY_LENGTH = "defaultLength";
+	String PAR_DEFAULT_START_TIME = "startTime";
 	String PAR_FADE_IN = "fadeIn";
 	String PAR_FADE_OUT = "fadeOut";
 	String PAR_DEFAULT_MODEL = "defaultModel";
@@ -65,6 +66,7 @@ public interface IConfiguration {
 	String DEFAULT_BUFFER_SIZE = "65536";
 	String DEFAULT_BUFFER_SIZE_WLAN = "2500";
 	String DEFAULT_PLAY_LENGTH = "180";
+	String DEFAULT_START_TIME = "45";
 	String DEFAULT_FADE_IN = "5";
 	String DEFAULT_FADE_OUT = "5";
 	String DEFAULT_ENABLE_DATABASE = Boolean.TRUE.toString();
@@ -134,6 +136,10 @@ public interface IConfiguration {
 	String getDefaultLength();
 
 	void setDefaultLength(String defaultLength);
+
+	String getStartTime();
+
+	void setStartTime(String startTime);
 
 	String getFadeIn();
 

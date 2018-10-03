@@ -1,9 +1,9 @@
 package jsidplay2.haendel.de.jsidplay2app;
 
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_BUFFER_SIZE;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_CBR;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DEFAULT_MODEL;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DEFAULT_PLAY_LENGTH;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DEFAULT_START_TIME;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FADE_IN;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FADE_OUT;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DIGI_BOOSTED_8580;
@@ -12,7 +12,6 @@ import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_ENABLE
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FILTER_6581;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FILTER_8580;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FREQUENCY;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_IS_VBR;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_LOOP;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FAKE_STEREO;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_FILTER_6581;
@@ -36,7 +35,6 @@ import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_STEREO
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_STEREO_FILTER_8580;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_FILTER_6581;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_FILTER_8580;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_VBR;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -205,6 +203,7 @@ public class MainActivity extends Activity implements PlayListener {
         query.append(PAR_EMULATION).append("=").append(configuration.getDefaultEmulation()).append("&");
         query.append(PAR_ENABLE_DATABASE).append("=").append(configuration.isEnableDatabase()).append("&");
         query.append(PAR_DEFAULT_PLAY_LENGTH).append("=").append(getTime(getNumber(configuration.getDefaultLength()))).append("&");
+        query.append(PAR_DEFAULT_START_TIME).append("=").append(getTime(getNumber(configuration.getStartTime()))).append("&");
         query.append(PAR_FADE_IN).append("=").append(getTime(getNumber(configuration.getFadeIn()))).append("&");
         query.append(PAR_FADE_OUT).append("=").append(getTime(getNumber(configuration.getFadeOut()))).append("&");
         query.append(PAR_DEFAULT_MODEL).append("=").append(configuration.getDefaultModel()).append("&");

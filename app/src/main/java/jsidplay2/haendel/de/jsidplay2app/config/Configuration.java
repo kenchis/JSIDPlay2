@@ -73,6 +73,18 @@ public class Configuration implements IConfiguration {
 		return defaultLength;
 	}
 
+	private String startTime;
+
+	@Override
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+
+	@Override
+	public String getStartTime() {
+		return startTime;
+	}
+
 	@Override
 	public void setDefaultLength(String defaultLength) {
 		this.defaultLength = defaultLength;

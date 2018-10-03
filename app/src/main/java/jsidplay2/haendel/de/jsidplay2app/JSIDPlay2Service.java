@@ -44,6 +44,7 @@ import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_BUFFER
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_CBR;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DEFAULT_MODEL;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DEFAULT_PLAY_LENGTH;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DEFAULT_START_TIME;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FADE_IN;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FADE_OUT;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DIGI_BOOSTED_8580;
@@ -274,6 +275,7 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
         query.append(PAR_EMULATION).append("=").append(configuration.getDefaultEmulation()).append("&");
         query.append(PAR_ENABLE_DATABASE).append("=").append(configuration.isEnableDatabase()).append("&");
         query.append(PAR_DEFAULT_PLAY_LENGTH).append("=").append(getTime(getNumber(configuration.getDefaultLength()))).append("&");
+        query.append(PAR_DEFAULT_START_TIME).append("=").append(getTime(getNumber(configuration.getStartTime()))).append("&");
         query.append(PAR_FADE_IN).append("=").append(getTime(getNumber(configuration.getFadeIn()))).append("&");
         query.append(PAR_FADE_OUT).append("=").append(getTime(getNumber(configuration.getFadeOut()))).append("&");
         query.append(PAR_DEFAULT_MODEL).append("=").append(configuration.getDefaultModel()).append("&");

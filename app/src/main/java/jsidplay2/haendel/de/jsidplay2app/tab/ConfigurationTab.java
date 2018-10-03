@@ -37,6 +37,7 @@ import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MA
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MAIN_DELAY;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MAIN_VOLUME;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_PLAY_LENGTH;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_START_TIME;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_PORT;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_RESIDFP_FILTER_6581;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_RESIDFP_FILTER_8580;
@@ -58,6 +59,7 @@ import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_CBR;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_CONNECTION_TYPE;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DEFAULT_MODEL;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DEFAULT_PLAY_LENGTH;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DEFAULT_START_TIME;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DIGI_BOOSTED_8580;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_EMULATION;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_ENABLE_DATABASE;
@@ -230,6 +232,9 @@ public class ConfigurationTab extends TabBase {
 					break;
 				case PAR_DEFAULT_PLAY_LENGTH:
 					configuration.setDefaultLength(newValue);
+					break;
+				case PAR_DEFAULT_START_TIME:
+					configuration.setStartTime(newValue);
 					break;
 				case PAR_FADE_IN:
 					configuration.setFadeIn(newValue);
@@ -445,6 +450,7 @@ public class ConfigurationTab extends TabBase {
 		EditText bufferSize = activity.findViewById(R.id.bufferSize);
 		EditText bufferSizeWlan = activity.findViewById(R.id.bufferSizeWlan);
 		EditText defaultLength = activity.findViewById(R.id.defaultLength);
+		EditText startTime = activity.findViewById(R.id.startTime);
 		port = activity.findViewById(R.id.port);
 		EditText fadeIn = activity.findViewById(R.id.fadeIn);
 		EditText fadeOut = activity.findViewById(R.id.fadeOut);
@@ -538,6 +544,9 @@ public class ConfigurationTab extends TabBase {
 
 		ui.setupEditText(defaultLength, PAR_DEFAULT_PLAY_LENGTH,
 				DEFAULT_PLAY_LENGTH);
+
+		ui.setupEditText(startTime, PAR_DEFAULT_START_TIME,
+				DEFAULT_START_TIME);
 
 		ui.setupEditText(fadeIn, PAR_FADE_IN,
 				DEFAULT_FADE_IN);

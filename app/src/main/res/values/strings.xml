@@ -44,8 +44,9 @@
     <string name="HVSCEntry.relocNoPages">Reloc. no. pages</string>
     <string name="HVSCEntry.stilGlbComment">STIL glb. Comment</string>
     <string name="StilEntry.text">STIL</string>
-    <string name="enableDatabase">Detect Song Length or </string>
-    <string name="defaultLength"> default length in sec.</string>
+    <string name="enableDatabase">Detect Song Length</string>
+    <string name="defaultLength">Default length in sec.</string>
+    <string name="startTime">Start time in sec.</string>
     <string name="singleSong">Single Song</string>
     <string name="loop">Loop Song</string>
     <string name="fakeStereo">Fake stereo</string>
