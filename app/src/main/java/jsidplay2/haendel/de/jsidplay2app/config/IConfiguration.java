@@ -66,7 +66,7 @@ public interface IConfiguration {
 	String DEFAULT_BUFFER_SIZE = "65536";
 	String DEFAULT_BUFFER_SIZE_WLAN = "2500";
 	String DEFAULT_PLAY_LENGTH = "180";
-	String DEFAULT_START_TIME = "45";
+	String DEFAULT_START_TIME = "0";
 	String DEFAULT_FADE_IN = "5";
 	String DEFAULT_FADE_OUT = "5";
 	String DEFAULT_ENABLE_DATABASE = Boolean.TRUE.toString();
