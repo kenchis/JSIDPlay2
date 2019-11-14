@@ -1,41 +1,5 @@
 package jsidplay2.haendel.de.jsidplay2app;
 
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_BUFFER_SIZE;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DEFAULT_MODEL;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DEFAULT_PLAY_LENGTH;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DEFAULT_START_TIME;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FADE_IN;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FADE_OUT;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DIGI_BOOSTED_8580;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_EMULATION;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_ENABLE_DATABASE;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FILTER_6581;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FILTER_8580;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FREQUENCY;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_LOOP;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FAKE_STEREO;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_FILTER_6581;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_FILTER_8580;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_STEREO_FILTER_6581;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_STEREO_FILTER_8580;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_THIRD_FILTER_6581;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_THIRD_FILTER_8580;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MAIN_VOLUME;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_SECOND_VOLUME;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_VOLUME;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MAIN_BALANCE;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_SECOND_BALANCE;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_BALANCE;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MAIN_DELAY;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_SECOND_DELAY;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_DELAY;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_SAMPLING_METHOD;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_SINGLE_SONG;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_STEREO_FILTER_6581;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_STEREO_FILTER_8580;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_FILTER_6581;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_FILTER_8580;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -62,8 +26,12 @@ import android.webkit.MimeTypeMap;
 import android.widget.TabHost;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Locale;
 
@@ -79,6 +47,42 @@ import jsidplay2.haendel.de.jsidplay2app.tab.GeneralTab;
 import jsidplay2.haendel.de.jsidplay2app.tab.PlayListTab;
 import jsidplay2.haendel.de.jsidplay2app.tab.SidTab;
 import jsidplay2.haendel.de.jsidplay2app.tab.SidsTab;
+
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_BUFFER_SIZE;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DEFAULT_MODEL;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DEFAULT_PLAY_LENGTH;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DEFAULT_START_TIME;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DIGI_BOOSTED_8580;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_EMULATION;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_ENABLE_DATABASE;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FADE_IN;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FADE_OUT;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FAKE_STEREO;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FILTER_6581;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FILTER_8580;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FREQUENCY;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_LOOP;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MAIN_BALANCE;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MAIN_DELAY;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MAIN_VOLUME;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_FILTER_6581;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_FILTER_8580;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_STEREO_FILTER_6581;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_STEREO_FILTER_8580;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_THIRD_FILTER_6581;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_THIRD_FILTER_8580;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_SAMPLING_METHOD;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_SECOND_BALANCE;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_SECOND_DELAY;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_SECOND_VOLUME;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_SINGLE_SONG;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_STEREO_FILTER_6581;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_STEREO_FILTER_8580;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_BALANCE;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_DELAY;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_FILTER_6581;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_FILTER_8580;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_VOLUME;
 
 public class MainActivity extends Activity implements PlayListener {
 
@@ -147,14 +151,36 @@ public class MainActivity extends Activity implements PlayListener {
                     String mimeType = myMime.getMimeTypeFromExtension(
                             cannonicalPath.substring(cannonicalPath.lastIndexOf(".") + 1).toLowerCase(Locale.US));
                     if (mimeType!=null) {
+                        StringBuilder newUrl = new StringBuilder();
+                        String[] splitted = cannonicalPath.split("((?<=/)|(?=/))");
+                        for (String split: splitted) {
+                            if (split.length()>0) {
+                                if (split.equals("/")) {
+                                    newUrl.append("/");
+                                } else {
+                                    String token = URLEncoder.encode(split, "UTF-8");
+                                    newUrl.append(token);
+                                }
+                            }
+                        }
+
+                        URI myUri = new URL(configuration.getConnectionType().toLowerCase(Locale.US), configuration.getHostname(), Integer.parseInt(configuration.getPort()),
+                                RequestType.DOWNLOAD.getUrl()+newUrl.toString()).toURI();
+
                         String authorization = configuration.getUsername() + ":" + configuration.getPassword();
-                        URI myUri = new URI(configuration.getConnectionType().toLowerCase(Locale.US), authorization, configuration.getHostname(),
-                                Integer.parseInt(configuration.getPort()), RequestType.DOWNLOAD.getUrl() + cannonicalPath,
-                                null, null);
+
                         Intent intent = new Intent();
                         intent.setAction(Intent.ACTION_VIEW);
 
-                        intent.setDataAndType(Uri.parse(myUri.toString()), mimeType);
+                        String uriToString = myUri.toString();
+                        if (uriToString.startsWith("http://")) {
+                            uriToString = "http://" + authorization+"@"+uriToString.substring("http://".length());
+                        } else if (uriToString.startsWith("https://")) {
+                            uriToString = "https://" + authorization+"@"+uriToString.substring("https://".length());
+                        }
+
+                        Uri parsed = Uri.parse(uriToString);
+                        intent.setDataAndType(parsed, mimeType);
 
                         startActivity(intent);
                     } else {
@@ -165,7 +191,7 @@ public class MainActivity extends Activity implements PlayListener {
                         i.setData(uri);
                         startActivity(i);
                     }
-                } catch (NumberFormatException | URISyntaxException e) {
+                } catch (NumberFormatException | URISyntaxException | UnsupportedEncodingException | MalformedURLException e) {
                     Log.e(appName, e.getMessage(), e);
                 }
             }

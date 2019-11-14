@@ -8,12 +8,15 @@ import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Scanner;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -82,12 +85,31 @@ public abstract class JSIDPlay2RESTRequest<ResultType> extends AsyncTask<String,
             try {
                 StringBuilder query = new StringBuilder();
                 if (properties != null) {
+                    int i=0;
                     for (Entry<String, String> property : properties.entrySet()) {
-                        query.append("&").append(property.getKey()).append("=").append(property.getValue());
+                        if (i==0) {
+                            query.append("?");
+                        } else {
+                            query.append("&");
+                        }
+                        query.append(property.getKey()).append("=").append(property.getValue());
+                        i++;
                     }
                 }
-                URI myUri = new URI(configuration.getConnectionType().toLowerCase(Locale.US), null, configuration.getHostname(), Integer.parseInt(configuration.getPort()),
-                        url, query.toString(), null);
+                StringBuilder newUrl = new StringBuilder();
+                String[] splitted = url.split("((?<=/)|(?=/))");
+                for (String split: splitted) {
+                    if (split.length()>0) {
+                        if (split.equals("/")) {
+                            newUrl.append("/");
+                        } else {
+                            String token = URLEncoder.encode(split, "UTF-8");
+                            newUrl.append(token);
+                        }
+                    }
+                }
+                URI myUri = new URL(configuration.getConnectionType().toLowerCase(Locale.US), configuration.getHostname(), Integer.parseInt(configuration.getPort()),
+                        newUrl.toString()+query.toString()).toURI();
 
                 Log.d(appName, "HTTP-GET: " + myUri);
 

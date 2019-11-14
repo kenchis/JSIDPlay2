@@ -11,7 +11,7 @@ import jsidplay2.haendel.de.jsidplay2app.config.IConfiguration;
 public abstract class DirectoryRequest extends JSIDPlay2RESTRequest<List<String>> {
 
 	private static final String FILTER_PAR = "filter";
-	private static final String TUNE_FILTER = ".*\\.(sid|dat|mus|str|mp3|mp4|jpg|prg|d64)$";
+	private static final String TUNE_FILTER = ".%2A%5C.%28sid%7Cdat%7Cmus%7Cstr%7Cmp3%7Cmp4%7Cjpg%7Cprg%7Cd64%29%24";
 
 	private static final Map<String, String> parameters = new HashMap<>();
 	static {
