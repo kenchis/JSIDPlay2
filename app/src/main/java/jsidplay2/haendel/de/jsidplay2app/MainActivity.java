@@ -26,12 +26,8 @@ import android.webkit.MimeTypeMap;
 import android.widget.TabHost;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.List;
 import java.util.Locale;
 
@@ -151,35 +147,17 @@ public class MainActivity extends Activity implements PlayListener {
                     String mimeType = myMime.getMimeTypeFromExtension(
                             cannonicalPath.substring(cannonicalPath.lastIndexOf(".") + 1).toLowerCase(Locale.US));
                     if (mimeType!=null) {
-                        StringBuilder newUrl = new StringBuilder();
-                        String[] splitted = cannonicalPath.split("((?<=/)|(?=/))");
-                        for (String split: splitted) {
-                            if (split.length()>0) {
-                                if (split.equals("/")) {
-                                    newUrl.append("/");
-                                } else {
-                                    String token = URLEncoder.encode(split, "UTF-8");
-                                    newUrl.append(token);
-                                }
-                            }
-                        }
-
-                        URI myUri = new URL(configuration.getConnectionType().toLowerCase(Locale.US), configuration.getHostname(), Integer.parseInt(configuration.getPort()),
-                                RequestType.DOWNLOAD.getUrl()+newUrl.toString()).toURI();
-
-                        String authorization = configuration.getUsername() + ":" + configuration.getPassword();
+                        URI myUri = new URI(
+                                configuration.getConnectionType().toLowerCase(Locale.US),
+                                configuration.getUsername() + ":" + configuration.getPassword(),
+                                configuration.getHostname(),
+                                Integer.parseInt(configuration.getPort()),
+                                RequestType.DOWNLOAD.getUrl() + cannonicalPath, null, null);
 
                         Intent intent = new Intent();
                         intent.setAction(Intent.ACTION_VIEW);
 
-                        String uriToString = myUri.toString();
-                        if (uriToString.startsWith("http://")) {
-                            uriToString = "http://" + authorization+"@"+uriToString.substring("http://".length());
-                        } else if (uriToString.startsWith("https://")) {
-                            uriToString = "https://" + authorization+"@"+uriToString.substring("https://".length());
-                        }
-
-                        Uri parsed = Uri.parse(uriToString);
+                        Uri parsed = Uri.parse(myUri.toString());
                         intent.setDataAndType(parsed, mimeType);
 
                         startActivity(intent);
@@ -191,7 +169,7 @@ public class MainActivity extends Activity implements PlayListener {
                         i.setData(uri);
                         startActivity(i);
                     }
-                } catch (NumberFormatException | URISyntaxException | UnsupportedEncodingException | MalformedURLException e) {
+                } catch (NumberFormatException | URISyntaxException e) {
                     Log.e(appName, e.getMessage(), e);
                 }
             }
