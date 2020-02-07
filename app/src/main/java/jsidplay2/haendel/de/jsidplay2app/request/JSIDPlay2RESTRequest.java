@@ -14,6 +14,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -82,13 +83,13 @@ public abstract class JSIDPlay2RESTRequest<ResultType> extends AsyncTask<String,
             try {
                 StringBuilder query = new StringBuilder();
                 if (properties != null) {
-                    int i=0;
-                    for (Entry<String, String> property : properties.entrySet()) {
-                        if (i > 0) {
+                    Iterator<Entry<String, String>> iterator = properties.entrySet().iterator();
+                    while (iterator.hasNext()) {
+                        Entry<String, String> property = iterator.next();
+                        query.append(property.getKey()).append("=").append(property.getValue());
+                        if (iterator.hasNext()) {
                             query.append("&");
                         }
-                        query.append(property.getKey()).append("=").append(property.getValue());
-                        i++;
                     }
                 }
                 URI myUri = new URI(  configuration.getConnectionType().toLowerCase(Locale.US),
