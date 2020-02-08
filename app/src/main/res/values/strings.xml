@@ -50,6 +50,7 @@
     <string name="singleSong">Single Song</string>
     <string name="loop">Loop Song</string>
     <string name="fakeStereo">Fake stereo</string>
+    <string name="reverb">Reverb</string>
     <string name="default_model">Default Model:</string>
     <string name="resid6581">Filter 6581:</string>
     <string name="resid8580">Filter 8580:</string>

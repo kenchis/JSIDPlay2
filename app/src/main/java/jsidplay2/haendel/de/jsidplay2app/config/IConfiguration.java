@@ -13,6 +13,7 @@ public interface IConfiguration {
 	String PAR_SINGLE_SONG = "single";
 	String PAR_LOOP = "loop";
 	String PAR_FAKE_STEREO = "fakeStereo";
+	String PAR_REVERB = "reverbBypass";
 	String PAR_SAMPLING_METHOD = "sampling";
 	String PAR_CONNECTION_TYPE= "connectionType";
 	String PAR_FREQUENCY = "frequency";
@@ -73,6 +74,7 @@ public interface IConfiguration {
 	String DEFAULT_SINGLE_SONG = Boolean.TRUE.toString();
 	String DEFAULT_LOOP = Boolean.FALSE.toString();
 	String DEFAULT_FAKE_STEREO = Boolean.FALSE.toString();
+	String DEFAULT_REVERB = Boolean.TRUE.toString();
 	String DEFAULT_DIGI_BOOSTED_8580 = Boolean.FALSE.toString();
 	String DEFAULT_FILTER_6581 = "FilterAverage6581";
 	String DEFAULT_FILTER_8580 = "FilterAverage8580";
@@ -164,6 +166,10 @@ public interface IConfiguration {
 	boolean isFakeStereo();
 
 	void setFakeStereo(boolean fakeStereo);
+
+	boolean isReverb();
+
+	void setReverb(boolean reverb);
 
 	String getFilter6581();
 

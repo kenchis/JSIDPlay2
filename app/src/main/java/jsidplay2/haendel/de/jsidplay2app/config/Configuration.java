@@ -164,6 +164,19 @@ public class Configuration implements IConfiguration {
 
 	}
 
+	private boolean reverb;
+
+	@Override
+	public boolean isReverb() {
+		return reverb;
+	}
+
+	@Override
+	public void setReverb(boolean reverb) {
+		this.reverb = reverb;
+
+	}
+
 	private String filter6581;
 
 	@Override

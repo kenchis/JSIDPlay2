@@ -148,6 +148,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/fakeStereo" />
+
+                        <CheckBox
+                            android:id="@+id/reverb"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/reverb" />
                     </LinearLayout>
 
                     <LinearLayout

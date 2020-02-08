@@ -30,6 +30,7 @@ import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_EN
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_FADE_IN;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_FADE_OUT;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_FAKE_STEREO;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_REVERB;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_FILTER_6581;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_FILTER_8580;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_LOOP;
@@ -66,6 +67,7 @@ import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_ENABLE
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FADE_IN;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FADE_OUT;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FAKE_STEREO;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_REVERB;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FILTER_6581;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FILTER_8580;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FREQUENCY;
@@ -269,6 +271,9 @@ public class ConfigurationTab extends TabBase {
 				case PAR_FAKE_STEREO:
 					configuration.setFakeStereo(newValue);
 					break;
+				case PAR_REVERB:
+					configuration.setReverb(newValue);
+					break;
 				case PAR_SINGLE_SONG:
 					configuration.setSingleSong(newValue);
 					break;
@@ -458,6 +463,7 @@ public class ConfigurationTab extends TabBase {
 		CheckBox singleSong = activity.findViewById(R.id.singleSong);
 		CheckBox loop = activity.findViewById(R.id.loop);
 		CheckBox fakeStereo = activity.findViewById(R.id.fakeStereo);
+		CheckBox reverb = activity.findViewById(R.id.reverb);
 		CheckBox digiBoosted8580 = activity
 				.findViewById(R.id.digiBoosted8580);
 		Spinner emulation = activity.findViewById(R.id.emulation);
@@ -558,6 +564,7 @@ public class ConfigurationTab extends TabBase {
 		ui.setupCheckBox(singleSong, PAR_SINGLE_SONG, DEFAULT_SINGLE_SONG);
 		ui.setupCheckBox(loop, PAR_LOOP, DEFAULT_LOOP);
 		ui.setupCheckBox(fakeStereo, PAR_FAKE_STEREO, DEFAULT_FAKE_STEREO);
+		ui.setupCheckBox(reverb, PAR_REVERB, DEFAULT_REVERB);
 		ui.setupCheckBox(digiBoosted8580, PAR_DIGI_BOOSTED_8580,
 				DEFAULT_DIGI_BOOSTED_8580);
 

@@ -51,6 +51,7 @@ import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_ENABLE
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FADE_IN;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FADE_OUT;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FAKE_STEREO;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_REVERB;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FILTER_6581;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FILTER_8580;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FREQUENCY;
@@ -282,6 +283,7 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
         query.append(PAR_SINGLE_SONG).append("=").append(configuration.isSingleSong()).append("&");
         query.append(PAR_LOOP).append("=").append(configuration.isLoop()).append("&");
         query.append(PAR_FAKE_STEREO).append("=").append(configuration.isFakeStereo()).append("&");
+        query.append(PAR_REVERB).append("=").append(configuration.isReverb()).append("&");
 
         query.append(PAR_FILTER_6581).append("=").append(configuration.getFilter6581()).append("&");
         query.append(PAR_FILTER_8580).append("=").append(configuration.getFilter8580()).append("&");
