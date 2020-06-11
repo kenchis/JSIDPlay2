@@ -31,6 +31,18 @@ import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_FA
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_FADE_OUT;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_FAKE_STEREO;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_REVERB;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MUTE_VOICE1;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MUTE_VOICE2;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MUTE_VOICE3;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MUTE_VOICE4;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MUTE_STEREO_VOICE1;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MUTE_STEREO_VOICE2;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MUTE_STEREO_VOICE3;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MUTE_STEREO_VOICE4;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MUTE_3SID_VOICE1;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MUTE_3SID_VOICE2;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MUTE_3SID_VOICE3;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MUTE_3SID_VOICE4;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_FILTER_6581;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_FILTER_8580;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_LOOP;
@@ -68,6 +80,18 @@ import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FADE_I
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FADE_OUT;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FAKE_STEREO;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_REVERB;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_VOICE1;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_VOICE2;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_VOICE3;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_VOICE4;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_STEREO_VOICE1;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_STEREO_VOICE2;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_STEREO_VOICE3;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_STEREO_VOICE4;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_3SID_VOICE1;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_3SID_VOICE2;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_3SID_VOICE3;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_3SID_VOICE4;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FILTER_6581;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FILTER_8580;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FREQUENCY;
@@ -274,6 +298,42 @@ public class ConfigurationTab extends TabBase {
 				case PAR_REVERB:
 					configuration.setReverb(newValue);
 					break;
+				case PAR_MUTE_VOICE1:
+					configuration.setMuteVoice1(newValue);
+					break;
+				case PAR_MUTE_VOICE2:
+					configuration.setMuteVoice2(newValue);
+					break;
+				case PAR_MUTE_VOICE3:
+					configuration.setMuteVoice3(newValue);
+					break;
+				case PAR_MUTE_VOICE4:
+					configuration.setMuteVoice4(newValue);
+					break;
+				case PAR_MUTE_STEREO_VOICE1:
+					configuration.setMuteStereoVoice1(newValue);
+					break;
+				case PAR_MUTE_STEREO_VOICE2:
+					configuration.setMuteStereoVoice2(newValue);
+					break;
+				case PAR_MUTE_STEREO_VOICE3:
+					configuration.setMuteStereoVoice3(newValue);
+					break;
+				case PAR_MUTE_STEREO_VOICE4:
+					configuration.setMuteStereoVoice4(newValue);
+					break;
+				case PAR_MUTE_3SID_VOICE1:
+					configuration.setMute3SidVoice1(newValue);
+					break;
+				case PAR_MUTE_3SID_VOICE2:
+					configuration.setMute3SidVoice2(newValue);
+					break;
+				case PAR_MUTE_3SID_VOICE3:
+					configuration.setMute3SidVoice3(newValue);
+					break;
+				case PAR_MUTE_3SID_VOICE4:
+					configuration.setMute3SidVoice4(newValue);
+					break;
 				case PAR_SINGLE_SONG:
 					configuration.setSingleSong(newValue);
 					break;
@@ -464,6 +524,18 @@ public class ConfigurationTab extends TabBase {
 		CheckBox loop = activity.findViewById(R.id.loop);
 		CheckBox fakeStereo = activity.findViewById(R.id.fakeStereo);
 		CheckBox reverb = activity.findViewById(R.id.reverb);
+		CheckBox muteVoice1 = activity.findViewById(R.id.muteSid1Voice1);
+		CheckBox muteVoice2 = activity.findViewById(R.id.muteSid1Voice2);
+		CheckBox muteVoice3 = activity.findViewById(R.id.muteSid1Voice3);
+		CheckBox muteVoice4 = activity.findViewById(R.id.muteSid1Voice4);
+		CheckBox muteStereoVoice1 = activity.findViewById(R.id.muteSid2Voice1);
+		CheckBox muteStereoVoice2 = activity.findViewById(R.id.muteSid2Voice2);
+		CheckBox muteStereoVoice3 = activity.findViewById(R.id.muteSid2Voice3);
+		CheckBox muteStereoVoice4 = activity.findViewById(R.id.muteSid2Voice4);
+		CheckBox mute3SidVoice1 = activity.findViewById(R.id.muteSid3Voice1);
+		CheckBox mute3SidVoice2 = activity.findViewById(R.id.muteSid3Voice2);
+		CheckBox mute3SidVoice3 = activity.findViewById(R.id.muteSid3Voice3);
+		CheckBox mute3SidVoice4 = activity.findViewById(R.id.muteSid3Voice4);
 		CheckBox digiBoosted8580 = activity
 				.findViewById(R.id.digiBoosted8580);
 		Spinner emulation = activity.findViewById(R.id.emulation);
@@ -565,6 +637,18 @@ public class ConfigurationTab extends TabBase {
 		ui.setupCheckBox(loop, PAR_LOOP, DEFAULT_LOOP);
 		ui.setupCheckBox(fakeStereo, PAR_FAKE_STEREO, DEFAULT_FAKE_STEREO);
 		ui.setupCheckBox(reverb, PAR_REVERB, DEFAULT_REVERB);
+		ui.setupCheckBox(muteVoice1, PAR_MUTE_VOICE1, DEFAULT_MUTE_VOICE1);
+		ui.setupCheckBox(muteVoice2, PAR_MUTE_VOICE2, DEFAULT_MUTE_VOICE2);
+		ui.setupCheckBox(muteVoice3, PAR_MUTE_VOICE3, DEFAULT_MUTE_VOICE3);
+		ui.setupCheckBox(muteVoice4, PAR_MUTE_VOICE4, DEFAULT_MUTE_VOICE4);
+		ui.setupCheckBox(muteStereoVoice1, PAR_MUTE_STEREO_VOICE1, DEFAULT_MUTE_STEREO_VOICE1);
+		ui.setupCheckBox(muteStereoVoice2, PAR_MUTE_STEREO_VOICE2, DEFAULT_MUTE_STEREO_VOICE2);
+		ui.setupCheckBox(muteStereoVoice3, PAR_MUTE_STEREO_VOICE3, DEFAULT_MUTE_STEREO_VOICE3);
+		ui.setupCheckBox(muteStereoVoice4, PAR_MUTE_STEREO_VOICE4, DEFAULT_MUTE_STEREO_VOICE4);
+		ui.setupCheckBox(mute3SidVoice1, PAR_MUTE_3SID_VOICE1, DEFAULT_MUTE_3SID_VOICE1);
+		ui.setupCheckBox(mute3SidVoice2, PAR_MUTE_3SID_VOICE2, DEFAULT_MUTE_3SID_VOICE2);
+		ui.setupCheckBox(mute3SidVoice3, PAR_MUTE_3SID_VOICE3, DEFAULT_MUTE_3SID_VOICE3);
+		ui.setupCheckBox(mute3SidVoice4, PAR_MUTE_3SID_VOICE4, DEFAULT_MUTE_3SID_VOICE4);
 		ui.setupCheckBox(digiBoosted8580, PAR_DIGI_BOOSTED_8580,
 				DEFAULT_DIGI_BOOSTED_8580);
 

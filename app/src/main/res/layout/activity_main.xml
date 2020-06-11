@@ -159,6 +159,120 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/muting1"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <CheckBox
+                            android:id="@+id/muteSid1Voice1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/muteSid1Voice1" />
+
+                        <CheckBox
+                            android:id="@+id/muteSid1Voice2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/muteSid1Voice2" />
+
+                        <CheckBox
+                            android:id="@+id/muteSid1Voice3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/muteSid1Voice3" />
+
+                        <CheckBox
+                            android:id="@+id/muteSid1Voice4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/muteSid1Voice4" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/muting2"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <CheckBox
+                            android:id="@+id/muteSid2Voice1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/muteSid2Voice1" />
+
+                        <CheckBox
+                            android:id="@+id/muteSid2Voice2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/muteSid2Voice2" />
+
+                        <CheckBox
+                            android:id="@+id/muteSid2Voice3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/muteSid2Voice3" />
+
+                        <CheckBox
+                            android:id="@+id/muteSid2Voice4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/muteSid2Voice4" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/muting3"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <CheckBox
+                            android:id="@+id/muteSid3Voice1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/muteSid3Voice1" />
+
+                        <CheckBox
+                            android:id="@+id/muteSid3Voice2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/muteSid3Voice2" />
+
+                        <CheckBox
+                            android:id="@+id/muteSid3Voice3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/muteSid3Voice3" />
+
+                        <CheckBox
+                            android:id="@+id/muteSid3Voice4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/muteSid3Voice4" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:id="@+id/editText3"
@@ -862,6 +976,14 @@
                         android:layout_height="wrap_content"
                         android:onClick="justPlay"
                         android:text="@string/btn_play" />
+
+                    <Button
+                        android:id="@+id/justDownload"
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="justDownload"
+                        android:text="@string/btn_downloadMp3" />
 
                     <Button
                         android:id="@+id/asMp3"

@@ -54,6 +54,18 @@ import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_ENABLE
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FADE_IN;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FADE_OUT;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FAKE_STEREO;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_VOICE1;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_VOICE2;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_VOICE3;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_VOICE4;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_STEREO_VOICE1;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_STEREO_VOICE2;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_STEREO_VOICE3;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_STEREO_VOICE4;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_3SID_VOICE1;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_3SID_VOICE2;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_3SID_VOICE3;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_3SID_VOICE4;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_REVERB;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FILTER_6581;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FILTER_8580;
@@ -164,7 +176,7 @@ public class MainActivity extends Activity implements PlayListener {
                         startActivity(intent);
                     } else {
 
-                        Uri uri = getURI(configuration, cannonicalPath);
+                        Uri uri = getURI(configuration, cannonicalPath, false);
 
                         Intent i = new Intent(Intent.ACTION_VIEW);
                         i.setData(uri);
@@ -202,7 +214,7 @@ public class MainActivity extends Activity implements PlayListener {
         }
     }
 
-    private Uri getURI(IConfiguration configuration, String resource) throws URISyntaxException {
+    private Uri getURI(IConfiguration configuration, String resource, boolean download) throws URISyntaxException {
         StringBuilder query = new StringBuilder();
             query.append(PAR_BUFFER_SIZE).append("=").append(configuration.getBufferSizeWlan()).append("&");
         query.append(PAR_EMULATION).append("=").append(configuration.getDefaultEmulation()).append("&");
@@ -216,6 +228,18 @@ public class MainActivity extends Activity implements PlayListener {
         query.append(PAR_LOOP).append("=").append(configuration.isLoop()).append("&");
         query.append(PAR_FAKE_STEREO).append("=").append(configuration.isFakeStereo()).append("&");
         query.append(PAR_REVERB).append("=").append(configuration.isReverb()).append("&");
+        query.append(PAR_MUTE_VOICE1).append("=").append(configuration.isMuteVoice1()).append("&");
+        query.append(PAR_MUTE_VOICE2).append("=").append(configuration.isMuteVoice2()).append("&");
+        query.append(PAR_MUTE_VOICE3).append("=").append(configuration.isMuteVoice3()).append("&");
+        query.append(PAR_MUTE_VOICE4).append("=").append(configuration.isMuteVoice4()).append("&");
+        query.append(PAR_MUTE_STEREO_VOICE1).append("=").append(configuration.isMuteStereoVoice1()).append("&");
+        query.append(PAR_MUTE_STEREO_VOICE2).append("=").append(configuration.isMuteStereoVoice2()).append("&");
+        query.append(PAR_MUTE_STEREO_VOICE3).append("=").append(configuration.isMuteStereoVoice3()).append("&");
+        query.append(PAR_MUTE_STEREO_VOICE4).append("=").append(configuration.isMuteStereoVoice4()).append("&");
+        query.append(PAR_MUTE_3SID_VOICE1).append("=").append(configuration.isMute3SidVoice1()).append("&");
+        query.append(PAR_MUTE_3SID_VOICE2).append("=").append(configuration.isMute3SidVoice2()).append("&");
+        query.append(PAR_MUTE_3SID_VOICE3).append("=").append(configuration.isMute3SidVoice3()).append("&");
+        query.append(PAR_MUTE_3SID_VOICE4).append("=").append(configuration.isMute3SidVoice4()).append("&");
 
         query.append(PAR_FILTER_6581).append("=").append(configuration.getFilter6581()).append("&");
         query.append(PAR_FILTER_8580).append("=").append(configuration.getFilter8580()).append("&");
@@ -247,6 +271,9 @@ public class MainActivity extends Activity implements PlayListener {
         query.append(PAR_DIGI_BOOSTED_8580).append("=").append(configuration.isDigiBoosted8580()).append("&");
         query.append(PAR_SAMPLING_METHOD).append("=").append(configuration.getSamplingMethod()).append("&");
         query.append(PAR_FREQUENCY).append("=").append(configuration.getFrequency());
+        if (download) {
+            query.append("&download").append("=").append("true");
+        }
 
         String authorization = configuration.getUsername() + ":" + configuration.getPassword();
         return Uri.parse(new URI(configuration.getConnectionType().toLowerCase(Locale.US), authorization, configuration.getHostname(), Integer.parseInt(configuration.getPort()),
@@ -415,6 +442,19 @@ public class MainActivity extends Activity implements PlayListener {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);
             intent.setDataAndType(Uri.parse(myUri.toString()), "audio/mpeg");
+
+            startActivity(intent);
+        } catch (NumberFormatException | URISyntaxException e) {
+            Log.e(appName, e.getMessage(), e);
+        }
+    }
+
+    public void justDownload(View view) {
+        try {
+            String resource = sidTab.getCurrentTune();
+            Uri uri = getURI(configuration, resource, true);
+
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 
             startActivity(intent);
         } catch (NumberFormatException | URISyntaxException e) {

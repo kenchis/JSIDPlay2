@@ -177,6 +177,150 @@ public class Configuration implements IConfiguration {
 
 	}
 
+	private boolean muteVoice1;
+
+	@Override
+	public boolean isMuteVoice1() {
+		return muteVoice1;
+	}
+
+	@Override
+	public void setMuteVoice1(boolean muteVoice1) {
+		this.muteVoice1 = muteVoice1;
+	}
+
+	private boolean muteVoice2;
+
+	@Override
+	public boolean isMuteVoice2() {
+		return muteVoice2;
+	}
+
+	@Override
+	public void setMuteVoice2(boolean muteVoice2) {
+		this.muteVoice2 = muteVoice2;
+	}
+
+	private boolean muteVoice3;
+
+	@Override
+	public boolean isMuteVoice3() {
+		return muteVoice3;
+	}
+
+	@Override
+	public void setMuteVoice3(boolean muteVoice3) {
+		this.muteVoice3 = muteVoice3;
+	}
+
+	private boolean muteVoice4;
+
+	@Override
+	public boolean isMuteVoice4() {
+		return muteVoice4;
+	}
+
+	@Override
+	public void setMuteVoice4(boolean muteVoice4) {
+		this.muteVoice4 = muteVoice4;
+	}
+
+	private boolean muteStereoVoice1;
+
+	@Override
+	public boolean isMuteStereoVoice1() {
+		return muteStereoVoice1;
+	}
+
+	@Override
+	public void setMuteStereoVoice1(boolean muteStereoVoice1) {
+		this.muteStereoVoice1 = muteStereoVoice1;
+	}
+
+	private boolean muteStereoVoice2;
+
+	@Override
+	public boolean isMuteStereoVoice2() {
+		return muteStereoVoice2;
+	}
+
+	@Override
+	public void setMuteStereoVoice2(boolean muteStereoVoice2) {
+		this.muteStereoVoice2 = muteStereoVoice2;
+	}
+
+	private boolean muteStereoVoice3;
+
+	@Override
+	public boolean isMuteStereoVoice3() {
+		return muteStereoVoice3;
+	}
+
+	@Override
+	public void setMuteStereoVoice3(boolean muteStereoVoice3) {
+		this.muteStereoVoice3 = muteStereoVoice3;
+	}
+
+	private boolean muteStereoVoice4;
+
+	@Override
+	public boolean isMuteStereoVoice4() {
+		return muteStereoVoice4;
+	}
+
+	@Override
+	public void setMuteStereoVoice4(boolean muteStereoVoice4) {
+		this.muteStereoVoice4 = muteStereoVoice4;
+	}
+
+	private boolean mute3SidVoice1;
+
+	@Override
+	public boolean isMute3SidVoice1() {
+		return mute3SidVoice1;
+	}
+
+	@Override
+	public void setMute3SidVoice1(boolean mute3SidVoice1) {
+		this.mute3SidVoice1 = mute3SidVoice1;
+	}
+
+	private boolean mute3SidVoice2;
+
+	@Override
+	public boolean isMute3SidVoice2() {
+		return mute3SidVoice2;
+	}
+
+	@Override
+	public void setMute3SidVoice2(boolean mute3SidVoice2) {
+		this.mute3SidVoice2 = mute3SidVoice2;
+	}
+
+	private boolean mute3SidVoice3;
+
+	@Override
+	public boolean isMute3SidVoice3() {
+		return mute3SidVoice3;
+	}
+
+	@Override
+	public void setMute3SidVoice3(boolean mute3SidVoice3) {
+		this.mute3SidVoice3 = mute3SidVoice3;
+	}
+
+	private boolean mute3SidVoice4;
+
+	@Override
+	public boolean isMute3SidVoice4() {
+		return mute3SidVoice4;
+	}
+
+	@Override
+	public void setMute3SidVoice4(boolean mute3SidVoice4) {
+		this.mute3SidVoice4 = mute3SidVoice4;
+	}
+
 	private String filter6581;
 
 	@Override

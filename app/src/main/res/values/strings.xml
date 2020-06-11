@@ -10,6 +10,8 @@
     <string name="password">password</string>
     <string name="btn_download">as SID</string>
     <string name="btn_play">Play</string>
+    <string name="btn_downloadMp3">Download</string>
+
     <string name="btn_mp3">add MP3 Stream to PlayList</string>
     <string name="tune_hint">SID Tune</string>
     <string name="HVSCEntry.path">Full Path</string>
@@ -51,6 +53,21 @@
     <string name="loop">Loop Song</string>
     <string name="fakeStereo">Fake stereo</string>
     <string name="reverb">Bypass Reverb</string>
+    <string name="muting1">Mute Mono SID</string>
+    <string name="muteSid1Voice1">Voice 1</string>
+    <string name="muteSid1Voice2">Voice 2</string>
+    <string name="muteSid1Voice3">Voice 3</string>
+    <string name="muteSid1Voice4">Samples</string>
+    <string name="muting2">Mute Stereo SID</string>
+    <string name="muteSid2Voice1">Voice 1</string>
+    <string name="muteSid2Voice2">Voice 2</string>
+    <string name="muteSid2Voice3">Voice 3</string>
+    <string name="muteSid2Voice4">Samples</string>
+    <string name="muting3">Mute 3-SID</string>
+    <string name="muteSid3Voice1">Voice 1</string>
+    <string name="muteSid3Voice2">Voice 2</string>
+    <string name="muteSid3Voice3">Voice 3</string>
+    <string name="muteSid3Voice4">Samples</string>
     <string name="default_model">Default Model:</string>
     <string name="resid6581">Filter 6581:</string>
     <string name="resid8580">Filter 8580:</string>

@@ -14,6 +14,18 @@ public interface IConfiguration {
 	String PAR_LOOP = "loop";
 	String PAR_FAKE_STEREO = "fakeStereo";
 	String PAR_REVERB = "reverbBypass";
+	String PAR_MUTE_VOICE1 = "muteVoice1";
+	String PAR_MUTE_VOICE2 = "muteVoice2";
+	String PAR_MUTE_VOICE3 = "muteVoice3";
+	String PAR_MUTE_VOICE4 = "muteVoice4";
+	String PAR_MUTE_STEREO_VOICE1 = "muteStereoVoice1";
+	String PAR_MUTE_STEREO_VOICE2 = "muteStereoVoice2";
+	String PAR_MUTE_STEREO_VOICE3 = "muteStereoVoice3";
+	String PAR_MUTE_STEREO_VOICE4 = "muteStereoVoice4";
+	String PAR_MUTE_3SID_VOICE1 = "muteThirdSidVoice1";
+	String PAR_MUTE_3SID_VOICE2 = "muteThirdSidVoice2";
+	String PAR_MUTE_3SID_VOICE3 = "muteThirdSidVoice3";
+	String PAR_MUTE_3SID_VOICE4 = "muteThirdSidVoice4";
 	String PAR_SAMPLING_METHOD = "sampling";
 	String PAR_CONNECTION_TYPE= "connectionType";
 	String PAR_FREQUENCY = "frequency";
@@ -74,8 +86,20 @@ public interface IConfiguration {
 	String DEFAULT_SINGLE_SONG = Boolean.TRUE.toString();
 	String DEFAULT_LOOP = Boolean.FALSE.toString();
 	String DEFAULT_FAKE_STEREO = Boolean.FALSE.toString();
-	String DEFAULT_REVERB = Boolean.TRUE.toString();
 	String DEFAULT_DIGI_BOOSTED_8580 = Boolean.FALSE.toString();
+	String DEFAULT_REVERB = Boolean.TRUE.toString();
+	String DEFAULT_MUTE_VOICE1 = Boolean.FALSE.toString();
+	String DEFAULT_MUTE_VOICE2 = Boolean.FALSE.toString();
+	String DEFAULT_MUTE_VOICE3 = Boolean.FALSE.toString();
+	String DEFAULT_MUTE_VOICE4 = Boolean.FALSE.toString();
+	String DEFAULT_MUTE_STEREO_VOICE1 = Boolean.FALSE.toString();
+	String DEFAULT_MUTE_STEREO_VOICE2 = Boolean.FALSE.toString();
+	String DEFAULT_MUTE_STEREO_VOICE3 = Boolean.FALSE.toString();
+	String DEFAULT_MUTE_STEREO_VOICE4 = Boolean.FALSE.toString();
+	String DEFAULT_MUTE_3SID_VOICE1 = Boolean.FALSE.toString();
+	String DEFAULT_MUTE_3SID_VOICE2 = Boolean.FALSE.toString();
+	String DEFAULT_MUTE_3SID_VOICE3 = Boolean.FALSE.toString();
+	String DEFAULT_MUTE_3SID_VOICE4 = Boolean.FALSE.toString();
 	String DEFAULT_FILTER_6581 = "FilterAverage6581";
 	String DEFAULT_FILTER_8580 = "FilterAverage8580";
 	String DEFAULT_RESIDFP_FILTER_6581 = "FilterAlankila6581R4AR_3789";
@@ -170,6 +194,54 @@ public interface IConfiguration {
 	boolean isReverb();
 
 	void setReverb(boolean reverb);
+
+	boolean isMuteVoice1();
+
+	void setMuteVoice1(boolean muteVoice1);
+
+	boolean isMuteVoice2();
+
+	void setMuteVoice2(boolean muteVoice2);
+
+	boolean isMuteVoice3();
+
+	void setMuteVoice3(boolean muteVoice3);
+
+	boolean isMuteVoice4();
+
+	void setMuteVoice4(boolean muteVoice4);
+
+	boolean isMuteStereoVoice1();
+
+	void setMuteStereoVoice1(boolean muteStereoVoice1);
+
+	boolean isMuteStereoVoice2();
+
+	void setMuteStereoVoice2(boolean muteStereoVoice2);
+
+	boolean isMuteStereoVoice3();
+
+	void setMuteStereoVoice3(boolean muteStereoVoice3);
+
+	boolean isMuteStereoVoice4();
+
+	void setMuteStereoVoice4(boolean muteStereoVoice4);
+
+	boolean isMute3SidVoice1();
+
+	void setMute3SidVoice1(boolean mute3SidVoice1);
+
+	boolean isMute3SidVoice2();
+
+	void setMute3SidVoice2(boolean mute3SidVoice2);
+
+	boolean isMute3SidVoice3();
+
+	void setMute3SidVoice3(boolean mute3SidVoice3);
+
+	boolean isMute3SidVoice4();
+
+	void setMute3SidVoice4(boolean mute3SidVoice4);
 
 	String getFilter6581();
 
