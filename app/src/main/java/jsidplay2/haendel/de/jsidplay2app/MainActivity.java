@@ -45,6 +45,7 @@ import jsidplay2.haendel.de.jsidplay2app.tab.SidTab;
 import jsidplay2.haendel.de.jsidplay2app.tab.SidsTab;
 
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_BUFFER_SIZE;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_CBR;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DEFAULT_MODEL;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DEFAULT_PLAY_LENGTH;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DEFAULT_START_TIME;
@@ -54,6 +55,7 @@ import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_ENABLE
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FADE_IN;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FADE_OUT;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FAKE_STEREO;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_IS_VBR;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_VOICE1;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_VOICE2;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_VOICE3;
@@ -92,6 +94,7 @@ import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_FILTER_6581;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_FILTER_8580;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_VOLUME;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_VBR;
 
 public class MainActivity extends Activity implements PlayListener {
 
@@ -270,7 +273,10 @@ public class MainActivity extends Activity implements PlayListener {
 
         query.append(PAR_DIGI_BOOSTED_8580).append("=").append(configuration.isDigiBoosted8580()).append("&");
         query.append(PAR_SAMPLING_METHOD).append("=").append(configuration.getSamplingMethod()).append("&");
-        query.append(PAR_FREQUENCY).append("=").append(configuration.getFrequency());
+        query.append(PAR_FREQUENCY).append("=").append(configuration.getFrequency()).append("&");
+        query.append(PAR_IS_VBR + "=true&");
+        query.append(PAR_CBR).append("=").append(configuration.getCbr()).append("&");
+        query.append(PAR_VBR).append("=").append(configuration.getVbr());
         if (download) {
             query.append("&download").append("=").append("true");
         }
