@@ -232,6 +232,9 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
         if (currentEntry != null && currentEntry.getResource().endsWith("mp3")) {
             return;
         }
+        if (currentSong < 0 || currentSong >= playList.size()) {
+            return;
+        }
         playSong(playList.get(currentSong));
     }
 
