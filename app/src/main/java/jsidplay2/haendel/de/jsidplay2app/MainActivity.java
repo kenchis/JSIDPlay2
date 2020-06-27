@@ -10,6 +10,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -274,7 +276,11 @@ public class MainActivity extends Activity implements PlayListener {
         query.append(PAR_DIGI_BOOSTED_8580).append("=").append(configuration.isDigiBoosted8580()).append("&");
         query.append(PAR_SAMPLING_METHOD).append("=").append(configuration.getSamplingMethod()).append("&");
         query.append(PAR_FREQUENCY).append("=").append(configuration.getFrequency()).append("&");
-        query.append(PAR_IS_VBR + "=true&");
+        if (isWifiConnected()) {
+            query.append(PAR_IS_VBR + "=true&");
+        } else {
+            query.append(PAR_IS_VBR + "=false&");
+        }
         query.append(PAR_CBR).append("=").append(configuration.getCbr()).append("&");
         query.append(PAR_VBR).append("=").append(configuration.getVbr());
         if (download) {
@@ -283,6 +289,12 @@ public class MainActivity extends Activity implements PlayListener {
         String authorization = configuration.getUsername() + ":" + configuration.getPassword();
         return Uri.parse(new URI(configuration.getConnectionType().toLowerCase(Locale.US), authorization, configuration.getHostname(), Integer.parseInt(configuration.getPort()),
                 RequestType.CONVERT.getUrl() + resource, query.toString(), null).toString());
+    }
+
+    private boolean isWifiConnected() {
+        ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = connManager != null ? connManager.getActiveNetworkInfo() : null;
+        return (info != null && info.isConnected() && info.getType() == ConnectivityManager.TYPE_WIFI);
     }
 
     private int getNumber(String txt) {
