@@ -280,7 +280,6 @@ public class MainActivity extends Activity implements PlayListener {
         if (download) {
             query.append("&download").append("=").append("true");
         }
-
         String authorization = configuration.getUsername() + ":" + configuration.getPassword();
         return Uri.parse(new URI(configuration.getConnectionType().toLowerCase(Locale.US), authorization, configuration.getHostname(), Integer.parseInt(configuration.getPort()),
                 RequestType.CONVERT.getUrl() + resource, query.toString(), null).toString());
