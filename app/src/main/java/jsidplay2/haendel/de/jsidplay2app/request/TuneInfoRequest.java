@@ -17,16 +17,7 @@ public abstract class TuneInfoRequest extends JSIDPlay2RESTRequest<List<Pair<Str
 
 	@Override
 	protected List<Pair<String, String>> getResult(URLConnection connection) throws IllegalStateException, IOException {
-		List<Pair<String, String>> rows = receiveListOfKeyValues(connection, this);
-
-		Comparator<? super Pair<String, String>> rowC = new Comparator<Pair<String, String>>() {
-			@Override
-			public int compare(Pair<String, String> lhs, Pair<String, String> rhs) {
-				return lhs.first.compareTo(rhs.first);
-			}
-		};
-		Collections.sort(rows, rowC);
-		return rows;
+		return receiveListOfKeyValues(connection, this);
 	}
 
 	/**
