@@ -19,112 +19,8 @@ import jsidplay2.haendel.de.jsidplay2app.common.UIHelper;
 import jsidplay2.haendel.de.jsidplay2app.config.IConfiguration;
 import jsidplay2.haendel.de.jsidplay2app.request.FiltersRequest;
 
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_SECURE_PORT;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DECIMATE;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_BUFFER_SIZE;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_BUFFER_SIZE_WLAN;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_CBR;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_CONNECTION_TYPE;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_DIGI_BOOSTED_8580;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_ENABLE_DATABASE;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_FADE_IN;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_FADE_OUT;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_FAKE_STEREO;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_REVERB;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MUTE_VOICE1;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MUTE_VOICE2;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MUTE_VOICE3;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MUTE_VOICE4;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MUTE_STEREO_VOICE1;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MUTE_STEREO_VOICE2;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MUTE_STEREO_VOICE3;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MUTE_STEREO_VOICE4;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MUTE_3SID_VOICE1;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MUTE_3SID_VOICE2;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MUTE_3SID_VOICE3;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MUTE_3SID_VOICE4;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_FILTER_6581;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_FILTER_8580;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_LOOP;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MAIN_BALANCE;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MAIN_DELAY;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_MAIN_VOLUME;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_PLAY_LENGTH;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_START_TIME;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_PORT;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_RESIDFP_FILTER_6581;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_RESIDFP_FILTER_8580;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_SECOND_BALANCE;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_SECOND_DELAY;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_SECOND_VOLUME;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_SINGLE_SONG;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_THIRD_BALANCE;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_THIRD_DELAY;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_THIRD_VOLUME;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.DEFAULT_VBR;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.HTTP;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.HTTPS;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.MOS6581;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.MOS8580;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_BUFFER_SIZE;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_BUFFER_SIZE_WLAN;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_CBR;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_CONNECTION_TYPE;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DEFAULT_MODEL;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DEFAULT_PLAY_LENGTH;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DEFAULT_START_TIME;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_DIGI_BOOSTED_8580;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_EMULATION;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_ENABLE_DATABASE;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FADE_IN;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FADE_OUT;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FAKE_STEREO;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_REVERB;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_VOICE1;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_VOICE2;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_VOICE3;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_VOICE4;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_STEREO_VOICE1;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_STEREO_VOICE2;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_STEREO_VOICE3;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_STEREO_VOICE4;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_3SID_VOICE1;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_3SID_VOICE2;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_3SID_VOICE3;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_3SID_VOICE4;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FILTER_6581;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FILTER_8580;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FREQUENCY;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_LOOP;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MAIN_BALANCE;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MAIN_DELAY;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MAIN_VOLUME;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_PORT;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_FILTER_6581;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_FILTER_8580;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_STEREO_FILTER_6581;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_STEREO_FILTER_8580;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_THIRD_FILTER_6581;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_RESIDFP_THIRD_FILTER_8580;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_SAMPLING_METHOD;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_SECOND_BALANCE;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_SECOND_DELAY;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_SECOND_VOLUME;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_SINGLE_SONG;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_STEREO_FILTER_6581;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_STEREO_FILTER_8580;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_BALANCE;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_DELAY;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_FILTER_6581;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_FILTER_8580;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_VOLUME;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_VBR;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.RESAMPLE;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.RESID;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.RESIDFP;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration._44100;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration._48000;
-import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration._96000;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.*;
+
 public class ConfigurationTab extends TabBase {
 	private static final String PREFIX_FILTER_6581 = "RESID_MOS6581_";
 	private static final String PREFIX_FILTER_8580 = "RESID_MOS8580_";
@@ -270,6 +166,12 @@ public class ConfigurationTab extends TabBase {
 					break;
 				case PAR_CBR:
 					configuration.setCbr(newValue);
+					break;
+				case PAR_VC_BIT_RATE_MOBILE:
+					configuration.setVCBitRateMobile(newValue);
+					break;
+				case PAR_VC_BIT_RATE_WLAN:
+					configuration.setVCBitRateWLAN(newValue);
 					break;
 				case PAR_VBR:
 					configuration.setVbr(newValue);
@@ -616,6 +518,9 @@ public class ConfigurationTab extends TabBase {
 		EditText cbr = activity.findViewById(R.id.cbr);
 		EditText vbr = activity.findViewById(R.id.vbr);
 
+		EditText vcBitRateMobile = activity.findViewById(R.id.vcBitRateMobile);
+		EditText vcBitRateWLAN = activity.findViewById(R.id.vcBitRateWLAN);
+
 		ui.setupEditText(bufferSize, PAR_BUFFER_SIZE, DEFAULT_BUFFER_SIZE);
 
 		ui.setupEditText(bufferSizeWlan, PAR_BUFFER_SIZE_WLAN, DEFAULT_BUFFER_SIZE_WLAN);
@@ -666,6 +571,10 @@ public class ConfigurationTab extends TabBase {
 
 		ui.setupEditText(cbr, PAR_CBR, DEFAULT_CBR);
 		ui.setupEditText(vbr, PAR_VBR, DEFAULT_VBR);
+
+		ui.setupEditText(vcBitRateMobile, PAR_VC_BIT_RATE_MOBILE, DEFAULT_VC_BIT_RATE_MOBILE);
+		ui.setupEditText(vcBitRateWLAN, PAR_VC_BIT_RATE_WLAN, DEFAULT_VC_BIT_RATE_WLAN);
+
 		requestFilters();
 	}
 

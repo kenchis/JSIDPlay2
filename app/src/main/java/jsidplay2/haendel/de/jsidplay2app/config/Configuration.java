@@ -677,4 +677,28 @@ public class Configuration implements IConfiguration {
 		this.vbr = vbr;
 	}
 
+	private String vcBitRateMobile;
+
+	@Override
+	public String getVCBitRateMobile() {
+		return vcBitRateMobile;
+	}
+
+	@Override
+	public void setVCBitRateMobile(String vcBitRateMobile) {
+		this.vcBitRateMobile = vcBitRateMobile;
+	}
+
+	private String vcBitRateWLAN;
+
+	@Override
+	public String getVCBitRateWLAN() {
+		return vcBitRateWLAN;
+	}
+
+	@Override
+	public void setVCBitRateWLAN(String vcBitRateWLAN) {
+		this.vcBitRateWLAN = vcBitRateWLAN;
+	}
+
 }

@@ -344,8 +344,10 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
         query.append(PAR_FREQUENCY).append("=").append(configuration.getFrequency()).append("&");
         if (isWifiConnected()) {
             query.append(PAR_IS_VBR + "=true&");
+            query.append("vcBitRate=").append(configuration.getVCBitRateWLAN()).append("&");
         } else {
             query.append(PAR_IS_VBR + "=false&");
+            query.append("vcBitRate=").append(configuration.getVCBitRateMobile()).append("&");
         }
         query.append(PAR_CBR).append("=").append(configuration.getCbr()).append("&");
         query.append(PAR_VBR).append("=").append(configuration.getVbr());

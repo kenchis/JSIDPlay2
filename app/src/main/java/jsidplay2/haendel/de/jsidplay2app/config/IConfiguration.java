@@ -60,6 +60,9 @@ public interface IConfiguration {
 	String PAR_CBR = "cbr";
 	String PAR_VBR = "vbrQuality";
 
+	String PAR_VC_BIT_RATE_MOBILE = "vcBitRateMobile";
+	String PAR_VC_BIT_RATE_WLAN = "vcBitRateWLAN";
+
 	String HTTP = "HTTP";
 	String HTTPS = "HTTPS";
 
@@ -122,6 +125,10 @@ public interface IConfiguration {
 
 	String DEFAULT_CBR = "64";
 	String DEFAULT_VBR = "0";
+
+	String DEFAULT_VC_BIT_RATE_MOBILE = "480000";
+
+	String DEFAULT_VC_BIT_RATE_WLAN = "600000";
 
 	String getHostname();
 
@@ -356,5 +363,13 @@ public interface IConfiguration {
 	String getVbr();
 	
 	void setVbr(String newValue);
+
+	String getVCBitRateMobile();
+
+	void setVCBitRateMobile(String newValue);
+
+	String getVCBitRateWLAN();
+
+	void setVCBitRateWLAN(String newValue);
 
 }
