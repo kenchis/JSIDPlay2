@@ -161,33 +161,12 @@ public class MainActivity extends Activity implements PlayListener {
             @Override
             protected void showMedia(String cannonicalPath) {
                 try {
-                    MimeTypeMap myMime = MimeTypeMap.getSingleton();
-                    String mimeType = myMime.getMimeTypeFromExtension(
-                            cannonicalPath.substring(cannonicalPath.lastIndexOf(".") + 1).toLowerCase(Locale.US));
-                    if (mimeType!=null) {
-                        URI myUri = new URI(
-                                configuration.getConnectionType().toLowerCase(Locale.US),
-                                configuration.getUsername() + ":" + configuration.getPassword(),
-                                configuration.getHostname(),
-                                Integer.parseInt(configuration.getPort()),
-                                RequestType.DOWNLOAD.getUrl() + cannonicalPath, null, null);
+                    Uri uri = getURI(configuration, cannonicalPath, false);
 
-                        Intent intent = new Intent();
-                        intent.setAction(Intent.ACTION_VIEW);
-
-                        Uri parsed = Uri.parse(myUri.toString());
-                        intent.setDataAndType(parsed, mimeType);
-
-                        startActivity(intent);
-                    } else {
-
-                        Uri uri = getURI(configuration, cannonicalPath, false);
-
-                        Intent i = new Intent(Intent.ACTION_VIEW);
-                        i.setData(uri);
-                        startActivity(i);
-                    }
-                } catch (NumberFormatException | URISyntaxException e) {
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(uri);
+                    startActivity(i);
+                } catch (URISyntaxException e) {
                     Log.e(appName, e.getMessage(), e);
                 }
             }
