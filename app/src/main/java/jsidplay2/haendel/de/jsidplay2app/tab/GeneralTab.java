@@ -12,6 +12,7 @@ import jsidplay2.haendel.de.jsidplay2app.config.IConfiguration;
 
 public class GeneralTab extends TabBase {
 
+
 	private static final String PAR_HOSTNAME = "hostname";
 	private static final String PAR_PORT = "port";
 	private static final String PAR_USERNAME = "username";

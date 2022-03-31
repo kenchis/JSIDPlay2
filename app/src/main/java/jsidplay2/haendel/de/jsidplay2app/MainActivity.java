@@ -26,8 +26,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.TabHost;
+import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -45,6 +49,8 @@ import jsidplay2.haendel.de.jsidplay2app.tab.GeneralTab;
 import jsidplay2.haendel.de.jsidplay2app.tab.PlayListTab;
 import jsidplay2.haendel.de.jsidplay2app.tab.SidTab;
 import jsidplay2.haendel.de.jsidplay2app.tab.SidsTab;
+import sidblaster.hardsid.HardSIDImpl;
+import sidblaster.hardsid.WState;
 
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_BUFFER_SIZE;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_CBR;

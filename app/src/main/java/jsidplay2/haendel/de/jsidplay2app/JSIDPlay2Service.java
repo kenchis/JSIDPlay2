@@ -11,6 +11,7 @@ import android.media.MediaPlayer.OnPreparedListener;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.Environment;
 import android.os.IBinder;
@@ -21,14 +22,22 @@ import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.StringReader;
+import java.net.Authenticator;
+import java.net.HttpURLConnection;
+import java.net.PasswordAuthentication;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +46,8 @@ import java.util.Random;
 
 import jsidplay2.haendel.de.jsidplay2app.config.IConfiguration;
 import jsidplay2.haendel.de.jsidplay2app.request.JSIDPlay2RESTRequest.RequestType;
+import sidblaster.hardsid.HardSIDImpl;
+import sidblaster.hardsid.WState;
 
 import static android.media.MediaPlayer.MEDIA_ERROR_SERVER_DIED;
 import static android.media.MediaPlayer.MEDIA_ERROR_UNKNOWN;
@@ -129,6 +140,8 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
     private List<PlayListEntry> playList;
     private MediaPlayer player;
 
+    private volatile boolean aborted;
+
     public void setConfiguration(IConfiguration configuration) {
         this.configuration = configuration;
     }
@@ -201,25 +214,98 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
     }
 
     public void playSong(PlayListEntry entry) {
-        this.currentEntry = entry;
-
-        File file = new File(currentEntry.getResource());
-        Toast.makeText(this, file.getName(), Toast.LENGTH_SHORT).show();
-
-        player.reset();
-
         try {
-            byte[] toEncrypt = (configuration.getUsername() + ":" + configuration.getPassword()).getBytes();
-            String encoded = Base64.encodeToString(toEncrypt, Base64.DEFAULT);
-            HashMap<String, String> headers = new HashMap<>();
-            headers.put("Authorization", "Basic " + encoded);
 
-            Uri uri = getURI(configuration, currentEntry.getResource());
-            player.setDataSource(getApplicationContext(), uri, headers);
+            this.currentEntry = entry;
+
+            File file = new File(currentEntry.getResource());
+            Toast.makeText(this, file.getName(), Toast.LENGTH_SHORT).show();
+
+            stopMediaPlayer(player);
+
+            aborted = false;
+            final HardSIDImpl hardSID = new HardSIDImpl(this);
+            int count = hardSID.HardSID_Devices();
+            if (count > 0) {
+                Toast.makeText(this, "USB play", Toast.LENGTH_SHORT).show();
+
+                class RetrieveSidWrites extends AsyncTask<String, Void, StringBuilder> {
+
+                    private Exception exception;
+
+                    protected StringBuilder doInBackground(String... urls) {
+                        try {
+                            Authenticator.setDefault(new Authenticator() {
+                                protected PasswordAuthentication getPasswordAuthentication() {
+                                    return new PasswordAuthentication(configuration.getUsername(),
+                                            configuration.getPassword().toCharArray());
+                                }
+                            });
+                            Uri uri = getURI(configuration, currentEntry.getResource(), true);
+                            HttpURLConnection conn = (HttpURLConnection) new URL(uri.toString()).openConnection();
+                            conn.setUseCaches(false);
+                            conn.setRequestMethod("GET");
+                            int statusCode = conn.getResponseCode();
+                            if (statusCode == HttpURLConnection.HTTP_OK) {
+
+                                hardSID.HardSID_SetWriteBufferSize((byte) 0);
+                                hardSID.HardSID_Lock((byte) 0);
+                                hardSID.HardSID_Reset((byte) 0);
+
+                                try (BufferedReader br = new BufferedReader(
+                                        new InputStreamReader(conn.getInputStream()))) {
+                                    String line = br.readLine();
+                                    while ((line = br.readLine()) != null && !aborted) {
+                                        String[] cols = line.split(",");
+                                        int cycles = Integer.parseInt(cols[1].trim().substring(1, cols[1].length() - 2));
+                                        int reg = Integer.parseInt(cols[2].trim().substring(2, cols[2].length() - 2), 16);
+                                        int data = Integer.parseInt(cols[3].trim().substring(2, cols[3].length() - 2), 16);
+
+                                        while (hardSID.HardSID_Try_Write((byte) 0, (short) cycles, (byte) (reg & 0x1f),
+                                                (byte) (data)) == WState.BUSY)
+                                            ;
+                                    }
+                                }
+                                hardSID.HardSID_Reset((byte) 0);
+                                hardSID.HardSID_Unlock((byte) 0);
+                                hardSID.HardSID_Uninitialize();
+                                return null;
+                            } else return null;
+                        } catch (Exception e) {
+                            this.exception = e;
+
+                            return null;
+                        }
+                    }
+
+                    protected void onPostExecute(StringBuilder builder) {
+                        if (exception!=null) {
+                            ByteArrayOutputStream bout = new ByteArrayOutputStream();
+                            exception.printStackTrace(new PrintWriter(bout));
+                            Log.e(JSIDPlay2Service.class.getSimpleName(), bout.toString(), exception);
+                            return;
+                        }
+                    }
+                }
+                new RetrieveSidWrites().execute();
+            } else {
+                player.reset();
+
+                byte[] toEncrypt = (configuration.getUsername() + ":" + configuration.getPassword()).getBytes();
+                String encoded = Base64.encodeToString(toEncrypt, Base64.DEFAULT);
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Basic " + encoded);
+
+                Uri uri = getURI(configuration, currentEntry.getResource(), false);
+                player.setDataSource(getApplicationContext(), uri, headers);
+                player.prepareAsync();
+            }
         } catch (Exception e) {
+            ByteArrayOutputStream bout = new ByteArrayOutputStream();
+            e.printStackTrace(new PrintWriter(bout));
+            Toast.makeText(this, bout.toString(), Toast.LENGTH_SHORT).show();
             Log.e(JSIDPlay2Service.class.getSimpleName(), "Error setting data source!", e);
         }
-        player.prepareAsync();
     }
 
     public void playNextSong() {
@@ -239,6 +325,7 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
     }
 
     public void stop() {
+        aborted = true;
         Toast.makeText(this, "JSIDPlay2 Stopped...", Toast.LENGTH_SHORT).show();
         stopMediaPlayer(player);
     }
@@ -281,7 +368,7 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
         mp.release();
     }
 
-    private Uri getURI(IConfiguration configuration, String resource) throws URISyntaxException {
+    private Uri getURI(IConfiguration configuration, String resource, boolean realDeal) throws URISyntaxException {
         StringBuilder query = new StringBuilder();
         if (isWifiConnected()) {
             query.append(PAR_BUFFER_SIZE).append("=").append(configuration.getBufferSizeWlan()).append("&");
@@ -351,6 +438,9 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
         }
         query.append(PAR_CBR).append("=").append(configuration.getCbr()).append("&");
         query.append(PAR_VBR).append("=").append(configuration.getVbr());
+        if (realDeal) {
+            query.append("&audio=SID_REG");
+        }
 
         return Uri.parse(new URI(configuration.getConnectionType().toLowerCase(Locale.US), null, configuration.getHostname(), Integer.parseInt(configuration.getPort()),
                 RequestType.CONVERT.getUrl() + resource, query.toString(), null).toString());

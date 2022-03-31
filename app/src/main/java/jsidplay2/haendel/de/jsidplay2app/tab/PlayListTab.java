@@ -11,7 +11,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import jsidplay2.haendel.de.jsidplay2app.JSIDPlay2Service.PlayListEntry;
-import jsidplay2.haendel.de.jsidplay2app.MainActivity;
+import jsidplay2.haendel.de.jsidplay2app.ctivity;
 import jsidplay2.haendel.de.jsidplay2app.R;
 import jsidplay2.haendel.de.jsidplay2app.common.TabBase;
 import jsidplay2.haendel.de.jsidplay2app.common.UIHelper;
