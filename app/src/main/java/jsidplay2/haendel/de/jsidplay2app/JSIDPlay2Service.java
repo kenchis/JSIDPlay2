@@ -16,6 +16,7 @@ import android.os.Binder;
 import android.os.Environment;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.os.Process;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
@@ -213,6 +214,8 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
         listener.play(playList.indexOf(currentEntry), currentEntry);
     }
 
+    private static HardSIDImpl hardSID;
+
     public void playSong(PlayListEntry entry) {
         try {
 
@@ -221,12 +224,14 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
             File file = new File(currentEntry.getResource());
             Toast.makeText(this, file.getName(), Toast.LENGTH_SHORT).show();
 
-            stopMediaPlayer(player);
-
-            aborted = false;
-            final HardSIDImpl hardSID = new HardSIDImpl(this);
-            int count = hardSID.HardSID_Devices();
-            if (count > 0) {
+            aborted = true;
+            Thread.sleep(500);
+            if (hardSID==null) {
+                hardSID = new HardSIDImpl(this);
+                hardSID.HardSID_Devices();
+                hardSID.HardSID_SetWriteBufferSize((byte) 0);
+            }
+            if (hardSID != null && hardSID.HardSID_Devices() > 0) {
                 Toast.makeText(this, "USB play", Toast.LENGTH_SHORT).show();
 
                 class RetrieveSidWrites extends AsyncTask<String, Void, StringBuilder> {
@@ -234,6 +239,8 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
                     private Exception exception;
 
                     protected StringBuilder doInBackground(String... urls) {
+                        Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND + Process.THREAD_PRIORITY_MORE_FAVORABLE);
+
                         try {
                             Authenticator.setDefault(new Authenticator() {
                                 protected PasswordAuthentication getPasswordAuthentication() {
@@ -248,7 +255,7 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
                             int statusCode = conn.getResponseCode();
                             if (statusCode == HttpURLConnection.HTTP_OK) {
 
-                                hardSID.HardSID_SetWriteBufferSize((byte) 0);
+                                aborted = false;
                                 hardSID.HardSID_Lock((byte) 0);
                                 hardSID.HardSID_Reset((byte) 0);
 
@@ -268,17 +275,15 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
                                 }
                                 hardSID.HardSID_Reset((byte) 0);
                                 hardSID.HardSID_Unlock((byte) 0);
-                                hardSID.HardSID_Uninitialize();
-                                return null;
-                            } else return null;
+                            }
                         } catch (Exception e) {
                             this.exception = e;
-
-                            return null;
                         }
+                        return null;
                     }
 
                     protected void onPostExecute(StringBuilder builder) {
+                        aborted = false;
                         if (exception!=null) {
                             ByteArrayOutputStream bout = new ByteArrayOutputStream();
                             exception.printStackTrace(new PrintWriter(bout));
