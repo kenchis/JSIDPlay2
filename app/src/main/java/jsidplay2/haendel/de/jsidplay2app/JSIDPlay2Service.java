@@ -309,6 +309,7 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
                                             }
                                         }
                                     } catch (IOException e) {
+                                        e.printStackTrace();
                                     }
                                 }
                                 if (exSidStatus == 0) {
