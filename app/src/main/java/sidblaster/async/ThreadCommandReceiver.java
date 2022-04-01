@@ -12,7 +12,7 @@ import sidblaster.CommandEnum;
 
 public class ThreadCommandReceiver extends CommandReceiver implements Runnable {
 
-	private BlockingQueue<Command> queue = new ArrayBlockingQueue<Command>(256);
+	private BlockingQueue<Command> queue = new ArrayBlockingQueue<Command>(2048);
 
 	private boolean flush;
 

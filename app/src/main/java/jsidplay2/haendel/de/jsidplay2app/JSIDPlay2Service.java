@@ -106,6 +106,10 @@ import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_VBR;
 
 public class JSIDPlay2Service extends Service implements OnPreparedListener, OnErrorListener, OnCompletionListener {
 
+    private enum State {
+        INIT,PLAY,QUIT
+    }
+
     private static final String JSIDPLAY2_JS2 = "jsidplay2.js2";
 
     public interface PlayListener {
@@ -141,6 +145,9 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
     private List<PlayListEntry> playList;
     private MediaPlayer player;
 
+    private static HardSIDImpl hardSID;
+
+    private volatile State state = State.QUIT;
     private volatile boolean aborted;
 
     public void setConfiguration(IConfiguration configuration) {
@@ -214,8 +221,6 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
         listener.play(playList.indexOf(currentEntry), currentEntry);
     }
 
-    private static HardSIDImpl hardSID;
-
     public void playSong(PlayListEntry entry) {
         try {
 
@@ -225,7 +230,10 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
             Toast.makeText(this, file.getName(), Toast.LENGTH_SHORT).show();
 
             aborted = true;
-            Thread.sleep(500);
+            while(state != State.QUIT) {
+                Thread.yield();
+            }
+
             if (hardSID==null) {
                 hardSID = new HardSIDImpl(this);
                 hardSID.HardSID_Devices();
@@ -256,9 +264,11 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
                             if (statusCode == HttpURLConnection.HTTP_OK) {
 
                                 aborted = false;
+                                state = State.INIT;
                                 hardSID.HardSID_Lock((byte) 0);
                                 hardSID.HardSID_Reset((byte) 0);
 
+                                state = State.PLAY;
                                 try (InputStream is = conn.getInputStream()) {
                                     try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
                                         String line = br.readLine();
@@ -275,23 +285,32 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
                                     } catch (IOException e) {
                                     }
                                 }
+                                if (!aborted) {
+                                    hardSID.HardSID_Flush((byte) 0);
+                                }
                                 hardSID.HardSID_Reset((byte) 0);
                                 hardSID.HardSID_Unlock((byte) 0);
                             }
                         } catch (Exception e) {
                             this.exception = e;
+                        } finally {
+                            state = State.QUIT;
                         }
                         return null;
                     }
 
                     protected void onPostExecute(StringBuilder builder) {
-                        aborted = false;
                         if (exception!=null) {
                             ByteArrayOutputStream bout = new ByteArrayOutputStream();
                             exception.printStackTrace(new PrintWriter(bout));
                             Log.e(JSIDPlay2Service.class.getSimpleName(), bout.toString(), exception);
                             return;
+                        } else {
+                            if (!aborted) {
+                                playNextSong();
+                            }
                         }
+                        aborted = false;
                     }
                 }
                 new RetrieveSidWrites().execute();

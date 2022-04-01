@@ -62,10 +62,12 @@ public class CommandReceiver {
 		long nanos = command.getDelay();
 		if (nanos > 0) {
 			long millis = nanos / 1000000;
-			if (millis > 0) {
-				Thread.sleep(millis);
+			if (millis >= 3) {
+				long sleepTime = millis - 3;
+				Thread.sleep(sleepTime);
+				nanos -= sleepTime * 1000000;
 			}
-			nsleep(nanos % 1000000);
+			nsleep(nanos);
 		}
 		boolean bufferedWrites = devices.get(0).getWriteBufferSize() > 0;
 		int retval = 0;
