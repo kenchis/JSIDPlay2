@@ -259,18 +259,20 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
                                 hardSID.HardSID_Lock((byte) 0);
                                 hardSID.HardSID_Reset((byte) 0);
 
-                                try (BufferedReader br = new BufferedReader(
-                                        new InputStreamReader(conn.getInputStream()))) {
-                                    String line = br.readLine();
-                                    while ((line = br.readLine()) != null && !aborted) {
-                                        String[] cols = line.split(",");
-                                        int cycles = Integer.parseInt(cols[1].trim().substring(1, cols[1].length() - 2));
-                                        int reg = Integer.parseInt(cols[2].trim().substring(2, cols[2].length() - 2), 16);
-                                        int data = Integer.parseInt(cols[3].trim().substring(2, cols[3].length() - 2), 16);
+                                try (InputStream is = conn.getInputStream()) {
+                                    try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+                                        String line = br.readLine();
+                                        while ((line = br.readLine()) != null && !aborted) {
+                                            String[] cols = line.split(",");
+                                            int cycles = Integer.parseInt(cols[1].trim().substring(1, cols[1].length() - 1));
+                                            int reg = Integer.parseInt(cols[2].trim().substring(2, cols[2].length() - 1), 16);
+                                            int data = Integer.parseInt(cols[3].trim().substring(2, cols[3].length() - 1), 16);
 
-                                        while (hardSID.HardSID_Try_Write((byte) 0, (short) cycles, (byte) (reg & 0x1f),
-                                                (byte) (data)) == WState.BUSY)
-                                            ;
+                                            while (hardSID.HardSID_Try_Write((byte) 0, (short) cycles, (byte) (reg & 0x1f),
+                                                    (byte) (data)) == WState.BUSY)
+                                                ;
+                                        }
+                                    } catch (IOException e) {
                                     }
                                 }
                                 hardSID.HardSID_Reset((byte) 0);
