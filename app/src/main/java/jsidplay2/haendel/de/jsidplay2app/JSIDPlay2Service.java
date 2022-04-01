@@ -45,6 +45,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
+import exsid.AudioOp;
+import exsid.ChipSelect;
+import exsid.ClockSelect;
+import exsid.ExSID;
 import jsidplay2.haendel.de.jsidplay2app.config.IConfiguration;
 import jsidplay2.haendel.de.jsidplay2app.request.JSIDPlay2RESTRequest.RequestType;
 import sidblaster.hardsid.HardSIDImpl;
@@ -147,6 +151,9 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
 
     private static HardSIDImpl hardSID;
 
+    private static ExSID exSID;
+    private static int exSidStatus = -1;
+
     private volatile State state = State.QUIT;
     private volatile boolean aborted;
 
@@ -234,12 +241,18 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
                 Thread.yield();
             }
 
-            if (hardSID==null) {
+            if (hardSID == null) {
                 hardSID = new HardSIDImpl(this);
                 hardSID.HardSID_Devices();
                 hardSID.HardSID_SetWriteBufferSize((byte) 0);
+                System.err.println("hardsid: " + hardSID.HardSID_Devices());
             }
-            if (hardSID != null && hardSID.HardSID_Devices() > 0) {
+            if (exSID == null) {
+                exSID = new ExSID();
+                exSidStatus = exSID.exSID_init(this);
+                System.err.println("exSID: " + exSidStatus);
+            }
+            if ((hardSID != null && hardSID.HardSID_Devices() > 0) || (exSID != null && exSidStatus == 0)) {
                 Toast.makeText(this, "USB play", Toast.LENGTH_SHORT).show();
 
                 class RetrieveSidWrites extends AsyncTask<String, Void, StringBuilder> {
@@ -265,8 +278,17 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
 
                                 aborted = false;
                                 state = State.INIT;
-                                hardSID.HardSID_Lock((byte) 0);
-                                hardSID.HardSID_Reset((byte) 0);
+                                if (exSidStatus == 0) {
+                                    exSID.exSID_audio_op(AudioOp.XS_AU_MUTE.getAudioOp());
+                                    exSID.exSID_clockselect(ClockSelect.XS_CL_PAL.getClockSelect());
+                                    exSID.exSID_audio_op(AudioOp.XS_AU_6581_8580.getAudioOp());
+                                    exSID.exSID_audio_op(AudioOp.XS_AU_UNMUTE.getAudioOp());
+                                    exSID.exSID_reset((byte) 0x0f);
+                                    exSID.exSID_chipselect(ChipSelect.XS_CS_BOTH.getChipSelect());
+                                } else {
+                                    hardSID.HardSID_Lock((byte) 0);
+                                    hardSID.HardSID_Reset((byte) 0);
+                                }
 
                                 state = State.PLAY;
                                 try (InputStream is = conn.getInputStream()) {
@@ -278,18 +300,26 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
                                             int reg = Integer.parseInt(cols[2].trim().substring(2, cols[2].length() - 1), 16);
                                             int data = Integer.parseInt(cols[3].trim().substring(2, cols[3].length() - 1), 16);
 
-                                            while (hardSID.HardSID_Try_Write((byte) 0, (short) cycles, (byte) (reg & 0x1f),
-                                                    (byte) (data)) == WState.BUSY)
-                                                ;
+                                            if (exSidStatus == 0) {
+                                                exSID.exSID_clkdwrite(cycles, (byte) (reg & 0x1f), (byte) data);
+                                            } else {
+                                                while (hardSID.HardSID_Try_Write((byte) 0, (short) cycles, (byte) (reg & 0x1f),
+                                                        (byte) (data)) == WState.BUSY)
+                                                    ;
+                                            }
                                         }
                                     } catch (IOException e) {
                                     }
                                 }
-                                if (!aborted) {
-                                    hardSID.HardSID_Flush((byte) 0);
+                                if (exSidStatus == 0) {
+                                    exSID.exSID_reset((byte) 0x00);
+                                } else {
+                                    if (!aborted) {
+                                        hardSID.HardSID_Flush((byte) 0);
+                                    }
+                                    hardSID.HardSID_Reset((byte) 0);
+                                    hardSID.HardSID_Unlock((byte) 0);
                                 }
-                                hardSID.HardSID_Reset((byte) 0);
-                                hardSID.HardSID_Unlock((byte) 0);
                             }
                         } catch (Exception e) {
                             this.exception = e;
