@@ -206,16 +206,17 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
             File file = new File(currentEntry.getResource());
             Toast.makeText(this, file.getName(), Toast.LENGTH_SHORT).show();
 
+            Authenticator.setDefault(new Authenticator() {
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(configuration.getUsername(),
+                            configuration.getPassword().toCharArray());
+                }
+            });
+
             if (HardwarePlayer.getType(this) != HardwarePlayerType.NONE) {
                 Toast.makeText(this, "USB play", Toast.LENGTH_SHORT).show();
 
-                Authenticator.setDefault(new Authenticator() {
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(configuration.getUsername(),
-                                configuration.getPassword().toCharArray());
-                    }
-                });
-
+                listener.play(playList.indexOf(currentEntry), currentEntry);
                 if (hardwarePlayer != null) {
                     hardwarePlayer.terminate();
                 }
@@ -242,7 +243,7 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
         } catch (Exception e) {
             ByteArrayOutputStream bout = new ByteArrayOutputStream();
             e.printStackTrace(new PrintWriter(bout));
-            Toast.makeText(this, bout.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, new String(bout.toByteArray()), Toast.LENGTH_SHORT).show();
             Log.e(JSIDPlay2Service.class.getSimpleName(), "Error setting data source!", e);
         }
     }
