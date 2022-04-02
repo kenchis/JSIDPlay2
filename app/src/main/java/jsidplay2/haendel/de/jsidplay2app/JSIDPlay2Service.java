@@ -1,5 +1,6 @@
 package jsidplay2.haendel.de.jsidplay2app;
 
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -11,12 +12,10 @@ import android.media.MediaPlayer.OnPreparedListener;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.Environment;
 import android.os.IBinder;
 import android.os.PowerManager;
-import android.os.Process;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
@@ -28,31 +27,24 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.StringReader;
 import java.net.Authenticator;
-import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
-import exsid.AudioOp;
-import exsid.ChipSelect;
-import exsid.ClockSelect;
-import exsid.ExSID;
 import jsidplay2.haendel.de.jsidplay2app.config.IConfiguration;
 import jsidplay2.haendel.de.jsidplay2app.request.JSIDPlay2RESTRequest.RequestType;
-import sidblaster.hardsid.HardSIDImpl;
-import sidblaster.hardsid.WState;
+import jsidplay2.haendel.de.jsidplay2app.tab.HardwarePlayer;
+import jsidplay2.haendel.de.jsidplay2app.tab.HardwarePlayerType;
+import jsidplay2.haendel.de.jsidplay2app.tab.PlayListEntry;
 
 import static android.media.MediaPlayer.MEDIA_ERROR_SERVER_DIED;
 import static android.media.MediaPlayer.MEDIA_ERROR_UNKNOWN;
@@ -110,27 +102,10 @@ import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_VBR;
 
 public class JSIDPlay2Service extends Service implements OnPreparedListener, OnErrorListener, OnCompletionListener {
 
-    private enum State {
-        INIT,PLAY,QUIT
-    }
-
     private static final String JSIDPLAY2_JS2 = "jsidplay2.js2";
 
     public interface PlayListener {
         void play(int currentSong, PlayListEntry entry);
-    }
-
-    public static class PlayListEntry {
-
-        private String resource;
-
-        PlayListEntry(String resource) {
-            this.resource = resource;
-        }
-
-        public String getResource() {
-            return resource;
-        }
     }
 
     public class JSIDPlay2Binder extends Binder {
@@ -149,13 +124,7 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
     private List<PlayListEntry> playList;
     private MediaPlayer player;
 
-    private static HardSIDImpl hardSID;
-
-    private static ExSID exSID;
-    private static int exSidStatus = -1;
-
-    private volatile State state = State.QUIT;
-    private volatile boolean aborted;
+    private HardwarePlayer hardwarePlayer;
 
     public void setConfiguration(IConfiguration configuration) {
         this.configuration = configuration;
@@ -228,6 +197,7 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
         listener.play(playList.indexOf(currentEntry), currentEntry);
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void playSong(PlayListEntry entry) {
         try {
 
@@ -236,115 +206,27 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
             File file = new File(currentEntry.getResource());
             Toast.makeText(this, file.getName(), Toast.LENGTH_SHORT).show();
 
-            aborted = true;
-            while(state != State.QUIT) {
-                Thread.yield();
-            }
-
-            if (hardSID == null) {
-                hardSID = new HardSIDImpl(this);
-                hardSID.HardSID_Devices();
-                hardSID.HardSID_SetWriteBufferSize((byte) 0);
-                System.err.println("hardsid: " + hardSID.HardSID_Devices());
-            }
-            if (exSID == null) {
-                exSID = new ExSID();
-                exSidStatus = exSID.exSID_init(this);
-                System.err.println("exSID: " + exSidStatus);
-            }
-            if ((hardSID != null && hardSID.HardSID_Devices() > 0) || (exSID != null && exSidStatus == 0)) {
+            if (HardwarePlayer.getType(this) != HardwarePlayerType.NONE) {
                 Toast.makeText(this, "USB play", Toast.LENGTH_SHORT).show();
 
-                class RetrieveSidWrites extends AsyncTask<String, Void, StringBuilder> {
-
-                    private Exception exception;
-
-                    protected StringBuilder doInBackground(String... urls) {
-                        Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND + Process.THREAD_PRIORITY_MORE_FAVORABLE);
-
-                        try {
-                            Authenticator.setDefault(new Authenticator() {
-                                protected PasswordAuthentication getPasswordAuthentication() {
-                                    return new PasswordAuthentication(configuration.getUsername(),
-                                            configuration.getPassword().toCharArray());
-                                }
-                            });
-                            Uri uri = getURI(configuration, currentEntry.getResource(), true);
-                            HttpURLConnection conn = (HttpURLConnection) new URL(uri.toString()).openConnection();
-                            conn.setUseCaches(false);
-                            conn.setRequestMethod("GET");
-                            int statusCode = conn.getResponseCode();
-                            if (statusCode == HttpURLConnection.HTTP_OK) {
-
-                                aborted = false;
-                                state = State.INIT;
-                                if (exSidStatus == 0) {
-                                    exSID.exSID_audio_op(AudioOp.XS_AU_MUTE.getAudioOp());
-                                    exSID.exSID_clockselect(ClockSelect.XS_CL_PAL.getClockSelect());
-                                    exSID.exSID_audio_op(AudioOp.XS_AU_6581_8580.getAudioOp());
-                                    exSID.exSID_audio_op(AudioOp.XS_AU_UNMUTE.getAudioOp());
-                                    exSID.exSID_reset((byte) 0x0f);
-                                    exSID.exSID_chipselect(ChipSelect.XS_CS_BOTH.getChipSelect());
-                                } else {
-                                    hardSID.HardSID_Lock((byte) 0);
-                                    hardSID.HardSID_Reset((byte) 0);
-                                }
-
-                                state = State.PLAY;
-                                try (InputStream is = conn.getInputStream()) {
-                                    try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
-                                        String line = br.readLine();
-                                        while ((line = br.readLine()) != null && !aborted) {
-                                            String[] cols = line.split(",");
-                                            int cycles = Integer.parseInt(cols[1].trim().substring(1, cols[1].length() - 1));
-                                            int reg = Integer.parseInt(cols[2].trim().substring(2, cols[2].length() - 1), 16);
-                                            int data = Integer.parseInt(cols[3].trim().substring(2, cols[3].length() - 1), 16);
-
-                                            if (exSidStatus == 0) {
-                                                exSID.exSID_clkdwrite(cycles, (byte) (reg & 0x1f), (byte) data);
-                                            } else {
-                                                while (hardSID.HardSID_Try_Write((byte) 0, (short) cycles, (byte) (reg & 0x1f),
-                                                        (byte) (data)) == WState.BUSY)
-                                                    ;
-                                            }
-                                        }
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                                if (exSidStatus == 0) {
-                                    exSID.exSID_reset((byte) 0x00);
-                                } else {
-                                    if (!aborted) {
-                                        hardSID.HardSID_Flush((byte) 0);
-                                    }
-                                    hardSID.HardSID_Reset((byte) 0);
-                                    hardSID.HardSID_Unlock((byte) 0);
-                                }
-                            }
-                        } catch (Exception e) {
-                            this.exception = e;
-                        } finally {
-                            state = State.QUIT;
-                        }
-                        return null;
+                Authenticator.setDefault(new Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(configuration.getUsername(),
+                                configuration.getPassword().toCharArray());
                     }
+                });
 
-                    protected void onPostExecute(StringBuilder builder) {
-                        if (exception!=null) {
-                            ByteArrayOutputStream bout = new ByteArrayOutputStream();
-                            exception.printStackTrace(new PrintWriter(bout));
-                            Log.e(JSIDPlay2Service.class.getSimpleName(), bout.toString(), exception);
-                            return;
-                        } else {
-                            if (!aborted) {
-                                playNextSong();
-                            }
-                        }
-                        aborted = false;
-                    }
+                if (hardwarePlayer != null) {
+                    hardwarePlayer.terminate();
                 }
-                new RetrieveSidWrites().execute();
+                hardwarePlayer = new HardwarePlayer() {
+                    @Override
+                    public void end() {
+                        playNextSong();
+                    }
+                };
+                hardwarePlayer.execute(getURI(configuration, currentEntry.getResource(), true));
+
             } else {
                 player.reset();
 
@@ -382,7 +264,10 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
     }
 
     public void stop() {
-        aborted = true;
+        if (hardwarePlayer != null) {
+            hardwarePlayer.terminate();
+        }
+
         Toast.makeText(this, "JSIDPlay2 Stopped...", Toast.LENGTH_SHORT).show();
         stopMediaPlayer(player);
     }

@@ -24,21 +24,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.MimeTypeMap;
 import android.widget.TabHost;
-import android.widget.Toast;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Locale;
 
 import jsidplay2.haendel.de.jsidplay2app.JSIDPlay2Service.JSIDPlay2Binder;
-import jsidplay2.haendel.de.jsidplay2app.JSIDPlay2Service.PlayListEntry;
 import jsidplay2.haendel.de.jsidplay2app.JSIDPlay2Service.PlayListener;
 import jsidplay2.haendel.de.jsidplay2app.config.Configuration;
 import jsidplay2.haendel.de.jsidplay2app.config.IConfiguration;
@@ -46,11 +40,10 @@ import jsidplay2.haendel.de.jsidplay2app.request.FavoritesRequest;
 import jsidplay2.haendel.de.jsidplay2app.request.JSIDPlay2RESTRequest.RequestType;
 import jsidplay2.haendel.de.jsidplay2app.tab.ConfigurationTab;
 import jsidplay2.haendel.de.jsidplay2app.tab.GeneralTab;
+import jsidplay2.haendel.de.jsidplay2app.tab.PlayListEntry;
 import jsidplay2.haendel.de.jsidplay2app.tab.PlayListTab;
 import jsidplay2.haendel.de.jsidplay2app.tab.SidTab;
 import jsidplay2.haendel.de.jsidplay2app.tab.SidsTab;
-import sidblaster.hardsid.HardSIDImpl;
-import sidblaster.hardsid.WState;
 
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_BUFFER_SIZE;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_CBR;
@@ -106,7 +99,12 @@ import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_VBR;
 
 public class MainActivity extends Activity implements PlayListener {
 
-    private final static int REQUEST_WRITE_STORAGE = 112;
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
     private final static int REQUEST_BATTERY_OPTIMIZATION = 113;
 
 
@@ -195,11 +193,15 @@ public class MainActivity extends Activity implements PlayListener {
         tabHost.setCurrentTabByTag(GeneralTab.class.getSimpleName());
 
         if (isOverMarshmallow()) {
-            boolean hasPermission = (ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
-            if (!hasPermission) {
-                ActivityCompat.requestPermissions(MainActivity.this,
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_STORAGE);
+            int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+            if (permission != PackageManager.PERMISSION_GRANTED) {
+                // We don't have permission so prompt the user
+                ActivityCompat.requestPermissions(
+                        MainActivity.this,
+                        PERMISSIONS_STORAGE,
+                        REQUEST_EXTERNAL_STORAGE
+                );
             }
         }
     }
@@ -314,7 +316,7 @@ public class MainActivity extends Activity implements PlayListener {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
-            case REQUEST_WRITE_STORAGE: {
+            case REQUEST_EXTERNAL_STORAGE: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // reload my activity with permission granted or use the features what required
                     // the permission
@@ -480,7 +482,7 @@ public class MainActivity extends Activity implements PlayListener {
 
     public void justPlay(View view) {
         String resource = sidTab.getCurrentTune();
-        jsidplay2service.playSong(new JSIDPlay2Service.PlayListEntry(resource));
+        jsidplay2service.playSong(new PlayListEntry(resource));
     }
 
     // connect to the service
