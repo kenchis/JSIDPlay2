@@ -2,6 +2,8 @@ package sidblaster.hardsid;
 
 import android.content.Context;
 
+import com.ftdi.j2xx.D2xxManager;
+
 import sidblaster.Command;
 import sidblaster.CommandEnum;
 import sidblaster.ICommandDispatcher;
@@ -258,7 +260,7 @@ public class HardSIDImpl implements HardSID {
 	}
 
 	@Override
-	public void HardSID_SetWriteBufferSize(byte bufferSize) {
+	public void HardSID_SetWriteBufferSize(byte bufferSize) throws D2xxManager.D2xxException {
 		g_CommandDispatcher.setWriteBufferSize(bufferSize);
 	}
 

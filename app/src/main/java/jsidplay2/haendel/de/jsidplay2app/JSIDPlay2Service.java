@@ -18,6 +18,7 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Base64;
 import android.util.Log;
+import android.util.Pair;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -30,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.lang.reflect.Field;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.net.URI;
@@ -42,9 +44,11 @@ import java.util.Random;
 
 import jsidplay2.haendel.de.jsidplay2app.config.IConfiguration;
 import jsidplay2.haendel.de.jsidplay2app.request.JSIDPlay2RESTRequest.RequestType;
+import jsidplay2.haendel.de.jsidplay2app.request.TuneInfoRequest;
 import jsidplay2.haendel.de.jsidplay2app.tab.HardwarePlayer;
 import jsidplay2.haendel.de.jsidplay2app.tab.HardwarePlayerType;
 import jsidplay2.haendel.de.jsidplay2app.tab.PlayListEntry;
+import jsidplay2.haendel.de.jsidplay2app.tab.SidTab;
 
 import static android.media.MediaPlayer.MEDIA_ERROR_SERVER_DIED;
 import static android.media.MediaPlayer.MEDIA_ERROR_UNKNOWN;
@@ -102,6 +106,47 @@ import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_VBR;
 
 public class JSIDPlay2Service extends Service implements OnPreparedListener, OnErrorListener, OnCompletionListener {
 
+    private class MyTuneInfoRequest extends TuneInfoRequest {
+
+        private final Uri url;
+        private final boolean fakeStereo;
+
+        private MyTuneInfoRequest(String canonicalPath, Uri url, boolean fakeStereo) {
+            super("JSIDPlay2Service",  configuration, RequestType.INFO, canonicalPath);
+            this.url = url;
+            this.fakeStereo = fakeStereo;
+        }
+
+        public String getString(String key) {
+            return key;
+        }
+
+        @Override
+        @SuppressLint("StaticFieldLeak")
+        protected void onPostExecute(List<Pair<String, String>> out) {
+            if (out == null) {
+                return;
+            }
+            boolean stereo = false;
+            String model= "MOS6581";
+            for (Pair<String, String> r : out) {
+                if (r.first.equals("HVSCEntry.sidModel1")) {
+                    model = r.second;
+                } else if (r.first.equals("HVSCEntry.sidChipBase2")) {
+                    stereo = !r.second.equals("0");
+                }
+            }
+
+            hardwarePlayer = new HardwarePlayer(model, stereo, fakeStereo) {
+                @Override
+                public void end() {
+                    playNextSong();
+                }
+            };
+            hardwarePlayer.execute(url);
+        }
+    }
+
     private static final String JSIDPLAY2_JS2 = "jsidplay2.js2";
 
     public interface PlayListener {
@@ -124,7 +169,7 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
     private List<PlayListEntry> playList;
     private MediaPlayer player;
 
-    private HardwarePlayer hardwarePlayer;
+    private volatile HardwarePlayer hardwarePlayer;
 
     public void setConfiguration(IConfiguration configuration) {
         this.configuration = configuration;
@@ -197,7 +242,6 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
         listener.play(playList.indexOf(currentEntry), currentEntry);
     }
 
-    @SuppressLint("StaticFieldLeak")
     public void playSong(PlayListEntry entry) {
         try {
 
@@ -216,18 +260,12 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
             if (HardwarePlayer.getType(this) != HardwarePlayerType.NONE) {
                 Toast.makeText(this, "USB play", Toast.LENGTH_SHORT).show();
 
-                listener.play(playList.indexOf(currentEntry), currentEntry);
                 if (hardwarePlayer != null) {
                     hardwarePlayer.terminate();
                 }
-                hardwarePlayer = new HardwarePlayer() {
-                    @Override
-                    public void end() {
-                        playNextSong();
-                    }
-                };
-                hardwarePlayer.execute(getURI(configuration, currentEntry.getResource(), true));
+                new MyTuneInfoRequest(currentEntry.getResource(), getURI(configuration, currentEntry.getResource(), true), configuration.isFakeStereo()).execute();
 
+                listener.play(playList.indexOf(currentEntry), currentEntry);
             } else {
                 player.reset();
 

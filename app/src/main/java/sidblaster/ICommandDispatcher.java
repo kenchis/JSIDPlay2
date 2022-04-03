@@ -14,6 +14,6 @@ public abstract interface ICommandDispatcher {
 
 	public abstract int deviceCount() throws D2xxManager.D2xxException;
 
-	public abstract void setWriteBufferSize(int bufferSize);
+	public abstract void setWriteBufferSize(int bufferSize) throws D2xxManager.D2xxException;
 
 }

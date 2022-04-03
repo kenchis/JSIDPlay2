@@ -90,7 +90,8 @@ public class AsyncDispatcher implements ICommandDispatcher {
 	}
 
 	@Override
-	public void setWriteBufferSize(int bufferSize) {
+	public void setWriteBufferSize(int bufferSize) throws D2xxManager.D2xxException {
+		ensureInitialized(context);
 		receiver.setWriteBufferSize(bufferSize);
 	}
 

@@ -1,5 +1,7 @@
 package sidblaster.hardsid;
 
+import com.ftdi.j2xx.D2xxManager;
+
 import sidblaster.SIDType;
 
 public interface HardSID {
@@ -146,7 +148,7 @@ public interface HardSID {
 	 * @since SIDBlasterUSB v.515beta2
 	 * @since 2.03
 	 */
-	void HardSID_SetWriteBufferSize(byte bufferSize);
+	void HardSID_SetWriteBufferSize(byte bufferSize) throws D2xxManager.D2xxException;
 
 	SIDType HardSID_GetSIDType(byte DeviceID);
 

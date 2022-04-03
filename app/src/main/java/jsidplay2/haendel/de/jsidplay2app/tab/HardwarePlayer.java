@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import android.os.Process;
 import android.util.Log;
 
+import com.ftdi.j2xx.D2xxManager;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStreamReader;
@@ -26,15 +28,31 @@ public abstract class HardwarePlayer extends AsyncTask<Uri, Void, Boolean> {
     private static ExSID exSID;
     private static HardwarePlayerType type;
 
+    private final boolean stereo;
+    private final String model;
+    private final boolean fakeStereo;
+    private int lastBase;
+    private String lastModel;
+
     private volatile State state = State.QUIT;
 
     private Throwable throwable;
 
     public static HardwarePlayerType getType(Context context) {
         if (type == null) {
-            determineType(context);
+            try {
+                determineType(context);
+            } catch (D2xxManager.D2xxException e) {
+                Log.e(HardwarePlayer.class.getSimpleName(), "Error determine type", e);
+            }
         }
         return type;
+    }
+
+    public HardwarePlayer(String model, boolean stereo, boolean fakeStereo) {
+        this.model = model;
+        this.stereo = stereo;
+        this.fakeStereo = fakeStereo;
     }
 
     @Override
@@ -57,11 +75,12 @@ public abstract class HardwarePlayer extends AsyncTask<Uri, Void, Boolean> {
                     exSID.exSID_audio_op(AudioOp.XS_AU_6581_8580.getAudioOp());
                     exSID.exSID_audio_op(AudioOp.XS_AU_UNMUTE.getAudioOp());
                     exSID.exSID_reset((byte) 0x0f);
-                    exSID.exSID_chipselect(ChipSelect.XS_CS_BOTH.getChipSelect());
                 } else {
                     hardSID.HardSID_Lock((byte) 0);
                     hardSID.HardSID_Reset((byte) 0);
                 }
+                lastBase = -1;
+                lastModel = model;
 
                 state = State.PLAY;
                 try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()), 8192)) {
@@ -69,10 +88,25 @@ public abstract class HardwarePlayer extends AsyncTask<Uri, Void, Boolean> {
                     while ((line = br.readLine()) != null && state == State.PLAY) {
                         String[] cols = line.split(",");
                         int cycles = Integer.parseInt(cols[1].trim().substring(1, cols[1].length() - 1));
-                        int reg = Integer.parseInt(cols[2].trim().substring(2, cols[2].length() - 1), 16);
+                        int base = Integer.parseInt(cols[2].trim().substring(2, cols[2].length() - 3), 16);
+                        int reg = Integer.parseInt(cols[2].trim().substring(4, cols[2].length() - 1), 16);
                         int data = Integer.parseInt(cols[3].trim().substring(2, cols[3].length() - 1), 16);
 
                         if (type == HardwarePlayerType.EXSID) {
+                            if ((reg & 0x1f) > 0x18) {
+                                // "Ragga Run.sid" denies to work!
+                                continue;
+                            }
+                            if (lastBase != base) {
+                                if (!stereo && fakeStereo) {
+                                    exSID.exSID_chipselect(ChipSelect.XS_CS_BOTH.getChipSelect());
+                                    lastBase = base;
+                                } else {
+                                    exSID.exSID_chipselect(lastModel.equals("MOS8580")? ChipSelect.XS_CS_CHIP1.getChipSelect() : ChipSelect.XS_CS_CHIP0.getChipSelect());
+                                    lastBase = base;
+                                    lastModel = lastModel.equals("MOS6581")? "MOS8580": "MOS6581";
+                                }
+                            }
                             exSID.exSID_clkdwrite(cycles, (byte) (reg & 0x1f), (byte) data);
                         } else {
                             while (hardSID.HardSID_Try_Write((byte) 0, (short) cycles, (byte) (reg & 0x1f),
@@ -119,7 +153,7 @@ public abstract class HardwarePlayer extends AsyncTask<Uri, Void, Boolean> {
         }
     }
 
-    private static void determineType(Context context) {
+    private static void determineType(Context context) throws D2xxManager.D2xxException {
         type = HardwarePlayerType.NONE;
         if (hardSID == null) {
             hardSID = new HardSIDImpl(context);
