@@ -4,12 +4,17 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.hardware.usb.UsbDevice;
+import android.hardware.usb.UsbManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -107,6 +112,8 @@ public class MainActivity extends Activity implements PlayListener {
 
     private final static int REQUEST_BATTERY_OPTIMIZATION = 113;
 
+    private static final String ACTION_USB_PERMISSION =
+            "com.android.example.USB_PERMISSION";
 
     private class MyFavoritesDownloadRequest extends FavoritesRequest {
         private MyFavoritesDownloadRequest() {

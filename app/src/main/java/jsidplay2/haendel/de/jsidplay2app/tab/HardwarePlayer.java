@@ -1,6 +1,7 @@
 package jsidplay2.haendel.de.jsidplay2app.tab;
 
 import android.content.Context;
+import android.hardware.usb.UsbManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Process;
@@ -19,6 +20,8 @@ import exsid.AudioOp;
 import exsid.ChipSelect;
 import exsid.ClockSelect;
 import exsid.ExSID;
+import hardsid.HardSIDUSB;
+import hardsid.SysMode;
 import sidblaster.hardsid.HardSIDImpl;
 import sidblaster.hardsid.WState;
 
@@ -26,21 +29,23 @@ public abstract class HardwarePlayer extends AsyncTask<Uri, Void, Boolean> {
 
     private static HardSIDImpl hardSID;
     private static ExSID exSID;
+    private static HardSIDUSB hardSIDusb;
     private static HardwarePlayerType type;
 
     private final boolean stereo;
     private final String model;
     private final boolean fakeStereo;
+    private final UsbManager usbManager;
     private int lastBase;
 
     private volatile State state = State.QUIT;
 
     private Throwable throwable;
 
-    public static HardwarePlayerType getType(Context context) {
+    public static HardwarePlayerType getType(Context context, UsbManager usbManager) {
         if (type == null) {
             try {
-                determineType(context);
+                determineType(usbManager, context);
             } catch (D2xxManager.D2xxException e) {
                 Log.e(HardwarePlayer.class.getSimpleName(), "Error determine type", e);
             }
@@ -48,16 +53,18 @@ public abstract class HardwarePlayer extends AsyncTask<Uri, Void, Boolean> {
         return type;
     }
 
-    public HardwarePlayer(String model, boolean stereo, boolean fakeStereo) {
+    public HardwarePlayer(String model, boolean stereo, boolean fakeStereo, UsbManager usbManager) {
         this.model = model;
         this.stereo = stereo;
         this.fakeStereo = fakeStereo;
+        this.usbManager = usbManager;
     }
 
     @Override
     protected Boolean doInBackground(Uri... uris) {
         Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND + Process.THREAD_PRIORITY_MORE_FAVORABLE);
 
+        int chipNum = 0;
         try {
             HttpURLConnection conn = (HttpURLConnection) new URL(uris[0].toString()).openConnection();
             conn.setUseCaches(false);
@@ -80,9 +87,11 @@ public abstract class HardwarePlayer extends AsyncTask<Uri, Void, Boolean> {
                     } else {
                         exSID.exSID_chipselect(model.equals("MOS8580")? ChipSelect.XS_CS_CHIP1.getChipSelect() : ChipSelect.XS_CS_CHIP0.getChipSelect());
                     }
-                } else {
+                } else if (type == HardwarePlayerType.SIDBLASTER) {
                     hardSID.HardSID_Lock((byte) 0);
                     hardSID.HardSID_Reset((byte) 0);
+                } else {
+                    hardSIDusb.hardsid_usb_init(usbManager, true, SysMode.SIDPLAY);
                 }
                 lastBase = -1;
 
@@ -110,9 +119,19 @@ public abstract class HardwarePlayer extends AsyncTask<Uri, Void, Boolean> {
                                 lastBase = base;
                             }
                             exSID.exSID_clkdwrite(cycles, (byte) (reg & 0x1f), (byte) data);
-                        } else {
+                        } else if (type== HardwarePlayerType.SIDBLASTER) {
                             while (hardSID.HardSID_Try_Write((byte) 0, (short) cycles, (byte) (reg & 0x1f),
                                     (byte) (data)) == WState.BUSY)
+                                ;
+                        } else {
+                            while (cycles > 0xffff) {
+                                while (hardSIDusb.hardsid_usb_delay(0, 0xffff) == hardsid.WState.BUSY)
+                                    ;
+                                cycles -= 0xffff;
+                            }
+                            while (hardSIDusb.hardsid_usb_delay(0, cycles) == hardsid.WState.BUSY)
+                                ;
+                            while (hardSIDusb.hardsid_usb_write(0, (byte) ((chipNum << 5) | (reg & 0x1f)), (byte) data) == hardsid.WState.BUSY)
                                 ;
                         }
                     }
@@ -124,12 +143,25 @@ public abstract class HardwarePlayer extends AsyncTask<Uri, Void, Boolean> {
         } finally {
             if (type == HardwarePlayerType.EXSID) {
                 exSID.exSID_reset((byte) 0x00);
-            } else {
+            } else if (type == HardwarePlayerType.SIDBLASTER) {
                 if (state != State.ABORT) {
                     hardSID.HardSID_Flush((byte) 0);
                 }
                 hardSID.HardSID_Reset((byte) 0);
                 hardSID.HardSID_Unlock((byte) 0);
+            } else {
+                hardSIDusb.hardsid_usb_abortplay(0);
+                for (int reg = 0; reg < 0x32; reg++) {
+                    while (hardSIDusb.hardsid_usb_write(0, (byte) ((chipNum << 5) | reg), (byte) 0) == hardsid.WState.BUSY)
+                        ;
+                    while (hardSIDusb.hardsid_usb_delay(0, 4) == hardsid.WState.BUSY)
+                        ;
+                }
+                    ;
+                while (hardSIDusb.hardsid_usb_write(0, (byte) ((chipNum << 5) | 0xf), (byte) 0) == hardsid.WState.BUSY)
+                    ;
+                while (hardSIDusb.hardsid_usb_flush(0) == hardsid.WState.BUSY)
+                    ;
             }
             state = State.QUIT;
         }
@@ -155,7 +187,7 @@ public abstract class HardwarePlayer extends AsyncTask<Uri, Void, Boolean> {
         }
     }
 
-    private static void determineType(Context context) throws D2xxManager.D2xxException {
+    private static void determineType(UsbManager usbManager, Context context) throws D2xxManager.D2xxException {
         type = HardwarePlayerType.NONE;
         if (hardSID == null) {
             hardSID = new HardSIDImpl(context);
@@ -170,6 +202,13 @@ public abstract class HardwarePlayer extends AsyncTask<Uri, Void, Boolean> {
             int exSidStatus = exSID.exSID_init(context);
             if (exSidStatus == 0) {
                 type = HardwarePlayerType.EXSID;
+            }
+        }
+        if (hardSIDusb == null) {
+            hardSIDusb = new HardSIDUSB();
+            hardSIDusb.hardsid_usb_init(usbManager, true, SysMode.SIDPLAY);
+            if (hardSIDusb.hardsid_usb_getdevcount() > 0) {
+                type = HardwarePlayerType.HARDSID;
             }
         }
     }

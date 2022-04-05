@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.usb.UsbManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -137,7 +138,9 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
                 }
             }
 
-            hardwarePlayer = new HardwarePlayer(model, stereo, fakeStereo) {
+            UsbManager usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
+
+            hardwarePlayer = new HardwarePlayer(model, stereo, fakeStereo, usbManager) {
                 @Override
                 public void end() {
                     playNextSong();
@@ -257,7 +260,8 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
                 }
             });
 
-            if (HardwarePlayer.getType(this) != HardwarePlayerType.NONE) {
+            UsbManager usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
+            if (HardwarePlayer.getType(this, usbManager) != HardwarePlayerType.NONE) {
                 Toast.makeText(this, "USB play", Toast.LENGTH_SHORT).show();
 
                 if (hardwarePlayer != null) {

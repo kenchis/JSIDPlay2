@@ -33,10 +33,10 @@ public class D2XXManager {
 
 		D2xxManager.FtDeviceInfoListNode[] deviceList = new D2xxManager.FtDeviceInfoListNode[devCount];
 		manager.getDeviceInfoList(devCount, deviceList);
-		System.err.println("desc: " + deviceList[0].description);
 		if (devCount <= 0 || !deviceList[0].description.startsWith("SIDBlaster/USB")) {
 			return;
 		}
+		System.err.println("desc: " + deviceList[0].description);
 		D2xxManager.DriverParameters driveParameters = new D2xxManager.DriverParameters();
 		driveParameters.setReadTimeout(FT_READ_TIMEOUT);
 		FT_Device ft_device = manager.openByIndex(mContext, 0, driveParameters);
