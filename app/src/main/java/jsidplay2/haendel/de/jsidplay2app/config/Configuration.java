@@ -582,6 +582,31 @@ public class Configuration implements IConfiguration {
 	}
 
 
+	public String hardSID6581;
+
+	@Override
+	public String getHardSID6581() {
+		return hardSID6581;
+	}
+
+	@Override
+	public void setHardSID6581(String hardSID6581) {
+		this.hardSID6581 = hardSID6581;
+	}
+
+	public String hardSID8580;
+
+	@Override
+	public String getHardSID8580() {
+		return hardSID8580;
+	}
+
+	@Override
+	public void setHardSID8580(String hardSID8580) {
+		this.hardSID8580 = hardSID8580;
+	}
+
+
 
 	private boolean digiBoosted8580;
 

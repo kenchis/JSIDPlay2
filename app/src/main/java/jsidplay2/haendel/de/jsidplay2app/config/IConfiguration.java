@@ -55,6 +55,9 @@ public interface IConfiguration {
 	String PAR_THIRD_DELAY = "thirdDelay";
 	String PAR_PORT = "port";
 
+	String PAR_HARDSID6581 = "hardsid8581";
+	String PAR_HARDSID8580 = "hardsid8580";
+
 	String PAR_DIGI_BOOSTED_8580 = "digiBoosted8580";
 	String PAR_IS_VBR = "vbr";
 	String PAR_CBR = "cbr";
@@ -122,6 +125,9 @@ public interface IConfiguration {
 	String DEFAULT_MAIN_DELAY = "0";
 	String DEFAULT_SECOND_DELAY = "20";
 	String DEFAULT_THIRD_DELAY = "0";
+
+	String DEFAULT_HARDSID6581 = "1";
+	String DEFAULT_HARDSID8580 = "2";
 
 	String DEFAULT_CBR = "64";
 	String DEFAULT_VBR = "0";
@@ -323,6 +329,15 @@ public interface IConfiguration {
 	String getThirdDelay();
 
 	void setThirdDelay(String thirdDelay);
+
+
+	String getHardSID6581();
+
+	void setHardSID6581(String hardsid6581);
+
+	String getHardSID8580();
+
+	void setHardSID8580(String hardsid8580);
 
 
 

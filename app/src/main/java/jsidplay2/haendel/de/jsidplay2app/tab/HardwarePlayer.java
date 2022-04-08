@@ -66,19 +66,21 @@ public abstract class HardwarePlayer extends AsyncTask<Uri, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(Uri... uris) {
-//        Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND + Process.THREAD_PRIORITY_MORE_FAVORABLE);
         Log.d("HardwarePlayer", "init!");
 
         boolean stereo = false;
         String model= "MOS6581";
+        String stereoModel= "UNKNOWN";
+
         for (Pair<String, String> r : tuneInfos) {
             if (r.first.equals("HVSCEntry.sidModel1")) {
                 model = r.second;
+            } else if (r.first.equals("HVSCEntry.sidModel2")) {
+                stereoModel = r.second;
             } else if (r.first.equals("HVSCEntry.sidChipBase2")) {
                 stereo = !r.second.equals("0");
             }
         }
-        int chipNum = getModelDependantChipNum(model);
         try {
             HttpURLConnection conn = (HttpURLConnection) new URL(uris[0].toString()).openConnection();
             conn.setUseCaches(false);
@@ -106,7 +108,10 @@ public abstract class HardwarePlayer extends AsyncTask<Uri, Void, Boolean> {
                 } else {
                     hardSIDusb.hardsid_usb_init(usbManager, true, SysMode.SIDPLAY);
                 }
+
                 lastBase = -1;
+                int hardsid6581 = Integer.parseInt(configuration.getHardSID6581()) - 1;
+                int hardsid8580 = Integer.parseInt(configuration.getHardSID8580()) - 1;
 
                 try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()), 8192)) {
                     String line = br.readLine();
@@ -136,6 +141,22 @@ public abstract class HardwarePlayer extends AsyncTask<Uri, Void, Boolean> {
                                     (byte) (data)) == WState.BUSY)
                                 ;
                         } else {
+                            int chipNum = 0;
+                            if (base == 0xD40 || base == 0xD41) {
+                                chipNum = model.equals("MOS8580")? hardsid8580 : hardsid6581;
+                            } else if (chipCount > 1) {
+                                chipNum = model.equals("MOS8580")? hardsid6581 : hardsid8580;
+                                if (stereoModel.equals(model) && chipCount > 2) {
+                                    for (int i = 0; i < chipCount; i++) {
+                                        if (i != hardsid6581 && i != hardsid8580) {
+                                            chipNum = i;
+                                            break;
+                                        }
+                                    }
+                                }
+                            } else {
+                                continue;
+                            }
                             while (cycles > 0xffff) {
                                 while (hardSIDusb.hardsid_usb_delay(0, 0xffff) == hardsid.WState.BUSY)
                                     ;
@@ -221,47 +242,6 @@ public abstract class HardwarePlayer extends AsyncTask<Uri, Void, Boolean> {
             }
             chipCount = hardSIDusb.hardsid_usb_getsidcount(0);
         }
-    }
-
-    private Integer getModelDependantChipNum(final String chipModel) {
-/*        int sid6581 = config.getEmulationSection().getHardsid6581();
-        int sid8580 = config.getEmulationSection().getHardsid8580();
-
-        // use next free slot (prevent wrong type)
-        for (int chipNum = 0; chipNum < chipCount; chipNum++) {
-            if (!isChipNumAlreadyUsed(chipNum) && isChipModelMatching(chipModel, chipNum)) {
-                return chipNum;
-            }
-        }
-        // Nothing matched? use next free slot
-        for (int chipNum = 0; chipNum < chipCount; chipNum++) {
-            if (chipCount > 2 && (chipNum == sid6581 || chipNum == sid8580)) {
-                // more SIDs available than configured? still skip wrong type
-                continue;
-            }
-            if (!isChipNumAlreadyUsed(chipNum)) {
-                return chipNum;
-            }
-        }
-        // no slot left
-        return null;
-
- */
-    return 0;
-    }
-
-    private boolean isChipModelMatching(final String chipModel, int chipNum) {
-/*        int sid6581 = config.getEmulationSection().getHardsid6581();
-        int sid8580 = config.getEmulationSection().getHardsid8580();
-
-        return chipNum == sid6581 && chipModel == "MOS6581"
-                || chipNum == sid8580 && chipModel == "MOS8580";
- */
-        return true;
-    }
-
-    private boolean isChipNumAlreadyUsed(final int chipNum) {
-        return false; //return sids.stream().filter(sid -> chipNum == sid.getChipNum()).findFirst().isPresent();
     }
 
     public abstract void end();

@@ -139,6 +139,14 @@ public class ConfigurationTab extends TabBase {
 				case PAR_THIRD_DELAY:
 					configuration.setThirdDelay(newValue);
 					break;
+
+				case PAR_HARDSID6581:
+					configuration.setHardSID6581(newValue);
+					break;
+
+				case PAR_HARDSID8580:
+					configuration.setHardSID8580(newValue);
+					break;
 			}
 		}
 
@@ -373,6 +381,17 @@ public class ConfigurationTab extends TabBase {
 							PAR_THIRD_DELAY,
 							DEFAULT_THIRD_DELAY));
 
+			ui.setupSpinner(activity, hardSID6581,
+					new String[] {"1","2","3","4"},
+					PAR_HARDSID6581, preferences.getString(
+							PAR_HARDSID6581,
+							DEFAULT_HARDSID6581));
+
+			ui.setupSpinner(activity, hardSID8580,
+					new String[] {"1","2","3","4"},
+					PAR_HARDSID8580, preferences.getString(
+							PAR_HARDSID8580,
+							DEFAULT_HARDSID8580));
 		}
     }
 
@@ -393,6 +412,7 @@ public class ConfigurationTab extends TabBase {
 	private Spinner mainVolume,secondVolume,thirdVolume;
 	private Spinner mainBalance,secondBalance,thirdBalance;
 	private Spinner mainDelay,secondDelay,thirdDelay;
+	private Spinner hardSID6581, hardSID8580;
 
 	private TextView stereoFilter6581txt, stereoFilter8580txt,
 	reSIDfpStereoFilter6581txt, reSIDfpStereoFilter8580txt,
@@ -497,6 +517,12 @@ public class ConfigurationTab extends TabBase {
 				.findViewById(R.id.secondDelay);
 		thirdDelay = activity
 				.findViewById(R.id.thirdDelay);
+
+		hardSID6581 = activity
+				.findViewById(R.id.hardsid6581);
+
+		hardSID8580 = activity
+				.findViewById(R.id.hardsid8580);
 
 		thirdFilter6581 = activity
 				.findViewById(R.id.thirdFilter6581);

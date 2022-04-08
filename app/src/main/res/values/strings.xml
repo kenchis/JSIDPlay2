@@ -90,6 +90,8 @@
     <string name="mainDelay">Delay of SID in ms:</string>
     <string name="secondDelay">Delay of Stereo SID in ms:</string>
     <string name="thirdDelay">Delay of 3rd SID in ms:</string>
+    <string name="hardsid6581">HardSID 6581:</string>
+    <string name="hardsid8580">HardSID 8580:</string>
     <string name="fadeIn">Fade-in in sec.:</string>
     <string name="fadeOut">Fade-out in sec.:</string>
     <string name="about">Android App of JSIDPlay2 - Music Player &amp; C64 SID Chip Emulator\n
