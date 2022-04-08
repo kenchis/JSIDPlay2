@@ -4,8 +4,8 @@ import android.content.Context;
 import android.hardware.usb.UsbManager;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Process;
 import android.util.Log;
+import android.util.Pair;
 
 import com.ftdi.j2xx.D2xxManager;
 
@@ -15,6 +15,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 import exsid.AudioOp;
 import exsid.ChipSelect;
@@ -22,6 +23,7 @@ import exsid.ClockSelect;
 import exsid.ExSID;
 import hardsid.HardSIDUSB;
 import hardsid.SysMode;
+import jsidplay2.haendel.de.jsidplay2app.config.IConfiguration;
 import sidblaster.hardsid.HardSIDImpl;
 import sidblaster.hardsid.WState;
 
@@ -31,14 +33,14 @@ public abstract class HardwarePlayer extends AsyncTask<Uri, Void, Boolean> {
     private static ExSID exSID;
     private static HardSIDUSB hardSIDusb;
     private static HardwarePlayerType type;
+    private static int chipCount;
 
-    private final boolean stereo;
-    private final String model;
-    private final boolean fakeStereo;
     private final UsbManager usbManager;
-    private int lastBase;
+    private final IConfiguration configuration;
 
-    private volatile State state = State.QUIT;
+    private List<Pair<String, String>> tuneInfos;
+
+    private int lastBase;
 
     private Throwable throwable;
 
@@ -53,18 +55,30 @@ public abstract class HardwarePlayer extends AsyncTask<Uri, Void, Boolean> {
         return type;
     }
 
-    public HardwarePlayer(String model, boolean stereo, boolean fakeStereo, UsbManager usbManager) {
-        this.model = model;
-        this.stereo = stereo;
-        this.fakeStereo = fakeStereo;
+    public HardwarePlayer(UsbManager usbManager, IConfiguration configuration) {
         this.usbManager = usbManager;
+        this.configuration = configuration;
+    }
+
+    public void setTuneInfos(List<Pair<String, String>> tuneInfos) {
+        this.tuneInfos = tuneInfos;
     }
 
     @Override
     protected Boolean doInBackground(Uri... uris) {
-        Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND + Process.THREAD_PRIORITY_MORE_FAVORABLE);
+//        Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND + Process.THREAD_PRIORITY_MORE_FAVORABLE);
+        Log.d("HardwarePlayer", "init!");
 
-        int chipNum = 0;
+        boolean stereo = false;
+        String model= "MOS6581";
+        for (Pair<String, String> r : tuneInfos) {
+            if (r.first.equals("HVSCEntry.sidModel1")) {
+                model = r.second;
+            } else if (r.first.equals("HVSCEntry.sidChipBase2")) {
+                stereo = !r.second.equals("0");
+            }
+        }
+        int chipNum = getModelDependantChipNum(model);
         try {
             HttpURLConnection conn = (HttpURLConnection) new URL(uris[0].toString()).openConnection();
             conn.setUseCaches(false);
@@ -74,7 +88,6 @@ public abstract class HardwarePlayer extends AsyncTask<Uri, Void, Boolean> {
             int statusCode = conn.getResponseCode();
             if (statusCode == HttpURLConnection.HTTP_OK) {
 
-                state = State.INIT;
                 if (type == HardwarePlayerType.EXSID) {
                     exSID.exSID_audio_op(AudioOp.XS_AU_MUTE.getAudioOp());
                     exSID.exSID_clockselect(ClockSelect.XS_CL_PAL.getClockSelect());
@@ -82,7 +95,7 @@ public abstract class HardwarePlayer extends AsyncTask<Uri, Void, Boolean> {
                     exSID.exSID_audio_op(AudioOp.XS_AU_UNMUTE.getAudioOp());
                     exSID.exSID_reset((byte) 0x0f);
 
-                    if (!stereo && fakeStereo) {
+                    if (!stereo && configuration.isFakeStereo()) {
                         exSID.exSID_chipselect(ChipSelect.XS_CS_BOTH.getChipSelect());
                     } else {
                         exSID.exSID_chipselect(model.equals("MOS8580")? ChipSelect.XS_CS_CHIP1.getChipSelect() : ChipSelect.XS_CS_CHIP0.getChipSelect());
@@ -95,10 +108,9 @@ public abstract class HardwarePlayer extends AsyncTask<Uri, Void, Boolean> {
                 }
                 lastBase = -1;
 
-                state = State.PLAY;
                 try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()), 8192)) {
                     String line = br.readLine();
-                    while ((line = br.readLine()) != null && state == State.PLAY) {
+                    while ((line = br.readLine()) != null && !isCancelled()) {
                         String[] cols = line.split(",");
                         int cycles = Integer.parseInt(cols[1].trim().substring(1, cols[1].length() - 1));
                         int base = Integer.parseInt(cols[2].trim().substring(2, cols[2].length() - 2), 16);
@@ -136,7 +148,8 @@ public abstract class HardwarePlayer extends AsyncTask<Uri, Void, Boolean> {
                         }
                     }
                 }
-                return state == State.ABORT;
+                Log.d("HardwarePlayer", "about to exit!");
+                return isCancelled();
             }
         } catch (Throwable e) {
             this.throwable = e;
@@ -144,31 +157,33 @@ public abstract class HardwarePlayer extends AsyncTask<Uri, Void, Boolean> {
             if (type == HardwarePlayerType.EXSID) {
                 exSID.exSID_reset((byte) 0x00);
             } else if (type == HardwarePlayerType.SIDBLASTER) {
-                if (state != State.ABORT) {
+                if (!isCancelled()) {
                     hardSID.HardSID_Flush((byte) 0);
                 }
                 hardSID.HardSID_Reset((byte) 0);
                 hardSID.HardSID_Unlock((byte) 0);
             } else {
-                hardSIDusb.hardsid_usb_abortplay(0);
-                for (int reg = 0; reg < 0x32; reg++) {
-                    while (hardSIDusb.hardsid_usb_write(0, (byte) ((chipNum << 5) | reg), (byte) 0) == hardsid.WState.BUSY)
+                for (int i=0; i < chipCount; i++) {
+                    hardSIDusb.hardsid_usb_abortplay(0);
+                    for (int reg = 0; reg < 0x32; reg++) {
+                        while (hardSIDusb.hardsid_usb_write(0, (byte) ((i << 5) | reg), (byte) 0) == hardsid.WState.BUSY)
+                            ;
+                        while (hardSIDusb.hardsid_usb_delay(0, 4) == hardsid.WState.BUSY)
+                            ;
+                    }
+                    while (hardSIDusb.hardsid_usb_write(0, (byte) ((i << 5) | 0xf), (byte) 0) == hardsid.WState.BUSY)
                         ;
-                    while (hardSIDusb.hardsid_usb_delay(0, 4) == hardsid.WState.BUSY)
+                    while (hardSIDusb.hardsid_usb_flush(0) == hardsid.WState.BUSY)
                         ;
                 }
-                    ;
-                while (hardSIDusb.hardsid_usb_write(0, (byte) ((chipNum << 5) | 0xf), (byte) 0) == hardsid.WState.BUSY)
-                    ;
-                while (hardSIDusb.hardsid_usb_flush(0) == hardsid.WState.BUSY)
-                    ;
             }
-            state = State.QUIT;
+            Log.d("HardwarePlayer", "exit!");
         }
         return true;
     }
 
     protected void onPostExecute(Boolean aborted) {
+        Log.d("HardwarePlayer", "onPostExecute init!");
         if (throwable != null) {
             ByteArrayOutputStream bout = new ByteArrayOutputStream();
             throwable.printStackTrace(new PrintWriter(bout));
@@ -178,13 +193,7 @@ public abstract class HardwarePlayer extends AsyncTask<Uri, Void, Boolean> {
                 end();
             }
         }
-    }
-
-    public void terminate() {
-        while(state != State.QUIT) {
-            state = State.ABORT;
-            Thread.yield();
-        }
+        Log.d("HardwarePlayer", "onPostExecute exit!");
     }
 
     private static void determineType(UsbManager usbManager, Context context) throws D2xxManager.D2xxException {
@@ -210,7 +219,49 @@ public abstract class HardwarePlayer extends AsyncTask<Uri, Void, Boolean> {
             if (hardSIDusb.hardsid_usb_getdevcount() > 0) {
                 type = HardwarePlayerType.HARDSID;
             }
+            chipCount = hardSIDusb.hardsid_usb_getsidcount(0);
         }
+    }
+
+    private Integer getModelDependantChipNum(final String chipModel) {
+/*        int sid6581 = config.getEmulationSection().getHardsid6581();
+        int sid8580 = config.getEmulationSection().getHardsid8580();
+
+        // use next free slot (prevent wrong type)
+        for (int chipNum = 0; chipNum < chipCount; chipNum++) {
+            if (!isChipNumAlreadyUsed(chipNum) && isChipModelMatching(chipModel, chipNum)) {
+                return chipNum;
+            }
+        }
+        // Nothing matched? use next free slot
+        for (int chipNum = 0; chipNum < chipCount; chipNum++) {
+            if (chipCount > 2 && (chipNum == sid6581 || chipNum == sid8580)) {
+                // more SIDs available than configured? still skip wrong type
+                continue;
+            }
+            if (!isChipNumAlreadyUsed(chipNum)) {
+                return chipNum;
+            }
+        }
+        // no slot left
+        return null;
+
+ */
+    return 0;
+    }
+
+    private boolean isChipModelMatching(final String chipModel, int chipNum) {
+/*        int sid6581 = config.getEmulationSection().getHardsid6581();
+        int sid8580 = config.getEmulationSection().getHardsid8580();
+
+        return chipNum == sid6581 && chipModel == "MOS6581"
+                || chipNum == sid8580 && chipModel == "MOS8580";
+ */
+        return true;
+    }
+
+    private boolean isChipNumAlreadyUsed(final int chipNum) {
+        return false; //return sids.stream().filter(sid -> chipNum == sid.getChipNum()).findFirst().isPresent();
     }
 
     public abstract void end();

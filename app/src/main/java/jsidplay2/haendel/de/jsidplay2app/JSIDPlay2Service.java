@@ -13,6 +13,7 @@ import android.media.MediaPlayer.OnPreparedListener;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.Environment;
 import android.os.IBinder;
@@ -42,6 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
 
 import jsidplay2.haendel.de.jsidplay2app.config.IConfiguration;
 import jsidplay2.haendel.de.jsidplay2app.request.JSIDPlay2RESTRequest.RequestType;
@@ -107,15 +109,17 @@ import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_VBR;
 
 public class JSIDPlay2Service extends Service implements OnPreparedListener, OnErrorListener, OnCompletionListener {
 
+    private volatile HardwarePlayer hardwarePlayer;
+
     private class MyTuneInfoRequest extends TuneInfoRequest {
 
         private final Uri url;
-        private final boolean fakeStereo;
+        private final IConfiguration configuration;
 
-        private MyTuneInfoRequest(String canonicalPath, Uri url, boolean fakeStereo) {
+        private MyTuneInfoRequest(String canonicalPath, Uri url, IConfiguration configuration) {
             super("JSIDPlay2Service",  configuration, RequestType.INFO, canonicalPath);
             this.url = url;
-            this.fakeStereo = fakeStereo;
+            this.configuration = configuration;
         }
 
         public String getString(String key) {
@@ -128,24 +132,18 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
             if (out == null) {
                 return;
             }
-            boolean stereo = false;
-            String model= "MOS6581";
-            for (Pair<String, String> r : out) {
-                if (r.first.equals("HVSCEntry.sidModel1")) {
-                    model = r.second;
-                } else if (r.first.equals("HVSCEntry.sidChipBase2")) {
-                    stereo = !r.second.equals("0");
-                }
-            }
-
             UsbManager usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
 
-            hardwarePlayer = new HardwarePlayer(model, stereo, fakeStereo, usbManager) {
+            if (hardwarePlayer != null) {
+                hardwarePlayer.cancel(true);
+            }
+            hardwarePlayer = new HardwarePlayer(usbManager, configuration) {
                 @Override
                 public void end() {
                     playNextSong();
                 }
             };
+            hardwarePlayer.setTuneInfos(out);
             hardwarePlayer.execute(url);
         }
     }
@@ -171,8 +169,6 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
     private PlayListEntry currentEntry;
     private List<PlayListEntry> playList;
     private MediaPlayer player;
-
-    private volatile HardwarePlayer hardwarePlayer;
 
     public void setConfiguration(IConfiguration configuration) {
         this.configuration = configuration;
@@ -251,7 +247,6 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
             this.currentEntry = entry;
 
             File file = new File(currentEntry.getResource());
-            Toast.makeText(this, file.getName(), Toast.LENGTH_SHORT).show();
 
             Authenticator.setDefault(new Authenticator() {
                 protected PasswordAuthentication getPasswordAuthentication() {
@@ -262,15 +257,14 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
 
             UsbManager usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
             if (HardwarePlayer.getType(this, usbManager) != HardwarePlayerType.NONE) {
-                Toast.makeText(this, "USB play", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "USB play" + file.getName(), Toast.LENGTH_SHORT).show();
 
-                if (hardwarePlayer != null) {
-                    hardwarePlayer.terminate();
-                }
-                new MyTuneInfoRequest(currentEntry.getResource(), getURI(configuration, currentEntry.getResource(), true), configuration.isFakeStereo()).execute();
+                stop();
+                new MyTuneInfoRequest(currentEntry.getResource(), getURI(configuration, currentEntry.getResource(), true), configuration).execute();
 
                 listener.play(playList.indexOf(currentEntry), currentEntry);
             } else {
+                Toast.makeText(this, file.getName(), Toast.LENGTH_SHORT).show();
                 player.reset();
 
                 byte[] toEncrypt = (configuration.getUsername() + ":" + configuration.getPassword()).getBytes();
@@ -308,10 +302,8 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
 
     public void stop() {
         if (hardwarePlayer != null) {
-            hardwarePlayer.terminate();
+            hardwarePlayer.cancel(true);
         }
-
-        Toast.makeText(this, "JSIDPlay2 Stopped...", Toast.LENGTH_SHORT).show();
         stopMediaPlayer(player);
     }
 
