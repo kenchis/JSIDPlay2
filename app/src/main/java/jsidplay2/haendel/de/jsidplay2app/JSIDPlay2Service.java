@@ -257,7 +257,7 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
 
             UsbManager usbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
             if (HardwarePlayer.getType(this, usbManager) != HardwarePlayerType.NONE) {
-                Toast.makeText(this, "USB play" + file.getName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "USB play: " + file.getName(), Toast.LENGTH_SHORT).show();
 
                 stop();
                 new MyTuneInfoRequest(currentEntry.getResource(), getURI(configuration, currentEntry.getResource(), true), configuration).execute();
