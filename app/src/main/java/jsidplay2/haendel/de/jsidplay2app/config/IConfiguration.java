@@ -66,6 +66,10 @@ public interface IConfiguration {
 	String PAR_VC_BIT_RATE_MOBILE = "vcBitRateMobile";
 	String PAR_VC_BIT_RATE_WLAN = "vcBitRateWLAN";
 
+	String PAR_STATUS = "status";
+	String PAR_JIFFYDOS = "jiffydos";
+	String PAR_PRESS_SPACE_INTERVAL = "pressSpaceInterval";
+
 	String HTTP = "HTTP";
 	String HTTPS = "HTTPS";
 
@@ -135,6 +139,10 @@ public interface IConfiguration {
 	String DEFAULT_VC_BIT_RATE_MOBILE = "480000";
 
 	String DEFAULT_VC_BIT_RATE_WLAN = "600000";
+
+	String DEFAULT_STATUS = Boolean.TRUE.toString();
+	String DEFAULT_JIFFYDOS = Boolean.FALSE.toString();
+	String DEFAULT_PRESS_SPACE_INTERVAL = "90";
 
 	String getHostname();
 
@@ -386,5 +394,17 @@ public interface IConfiguration {
 	String getVCBitRateWLAN();
 
 	void setVCBitRateWLAN(String newValue);
+
+	boolean isStatus();
+
+	void setStatus(boolean status);
+
+	boolean isJiffydos();
+
+	void setJiffydos(boolean jiffydos);
+
+	String getPressSpaceInterval();
+
+	void setPressSpaceInterval(String pressSpaceInterval);
 
 }

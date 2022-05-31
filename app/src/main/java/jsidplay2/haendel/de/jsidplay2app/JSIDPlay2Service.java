@@ -66,6 +66,7 @@ import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_ENABLE
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FADE_IN;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FADE_OUT;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FAKE_STEREO;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_PRESS_SPACE_INTERVAL;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_REVERB;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_VOICE1;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_VOICE2;
@@ -106,6 +107,8 @@ import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_FILTER_8580;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_VOLUME;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_VBR;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_STATUS;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_JIFFYDOS;
 
 public class JSIDPlay2Service extends Service implements OnPreparedListener, OnErrorListener, OnCompletionListener {
 
@@ -414,7 +417,10 @@ public class JSIDPlay2Service extends Service implements OnPreparedListener, OnE
             query.append("vcBitRate=").append(configuration.getVCBitRateMobile()).append("&");
         }
         query.append(PAR_CBR).append("=").append(configuration.getCbr()).append("&");
-        query.append(PAR_VBR).append("=").append(configuration.getVbr());
+        query.append(PAR_VBR).append("=").append(configuration.getVbr()).append("&");
+        query.append(PAR_STATUS).append("=").append(configuration.isStatus()).append("&");
+        query.append(PAR_JIFFYDOS).append("=").append(configuration.isJiffydos()).append("&");
+        query.append(PAR_PRESS_SPACE_INTERVAL).append("=").append(getNumber(configuration.getPressSpaceInterval()));
         if (realDeal) {
             query.append("&audio=SID_REG");
         }

@@ -74,6 +74,7 @@ import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_3
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_3SID_VOICE2;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_3SID_VOICE3;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_MUTE_3SID_VOICE4;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_PRESS_SPACE_INTERVAL;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_REVERB;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FILTER_6581;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_FILTER_8580;
@@ -101,6 +102,8 @@ import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_FILTER_8580;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_VOLUME;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_VBR;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_STATUS;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_JIFFYDOS;
 
 public class MainActivity extends Activity implements PlayListener {
 
@@ -278,7 +281,10 @@ public class MainActivity extends Activity implements PlayListener {
             query.append("vcBitRate=").append(configuration.getVCBitRateMobile()).append("&");
         }
         query.append(PAR_CBR).append("=").append(configuration.getCbr()).append("&");
-        query.append(PAR_VBR).append("=").append(configuration.getVbr());
+        query.append(PAR_VBR).append("=").append(configuration.getVbr()).append("&");
+        query.append(PAR_STATUS).append("=").append(configuration.isStatus()).append("&");
+        query.append(PAR_JIFFYDOS).append("=").append(configuration.isJiffydos()).append("&");
+        query.append(PAR_PRESS_SPACE_INTERVAL).append("=").append(getNumber(configuration.getPressSpaceInterval()));
         if (download) {
             query.append("&download").append("=").append("true");
         }

@@ -726,4 +726,42 @@ public class Configuration implements IConfiguration {
 		this.vcBitRateWLAN = vcBitRateWLAN;
 	}
 
+	private boolean status;
+
+	@Override
+	public boolean isStatus() {
+		return status;
+	}
+
+	@Override
+	public void setStatus(boolean status) {
+		this.status = status;
+
+	}
+
+	private boolean jiffydos;
+
+	@Override
+	public boolean isJiffydos() {
+		return jiffydos;
+	}
+
+	@Override
+	public void setJiffydos(boolean jiffydos) {
+		this.jiffydos = jiffydos;
+
+	}
+
+	private String pressSpaceInterval;
+
+	@Override
+	public void setPressSpaceInterval(String pressSpaceInterval) {
+		this.pressSpaceInterval = pressSpaceInterval;
+	}
+
+	@Override
+	public String getPressSpaceInterval() {
+		return pressSpaceInterval;
+	}
+
 }

@@ -130,4 +130,7 @@ This program is free software; you can redistribute it and/or modify\n
     <string name="vbr">VBR Quality (WLAN)</string>
     <string name="vcBitRateMobile">vcBitRate (mobile)</string>
     <string name="vcBitRateWLAN">vcBitRate (WLAN)</string>
+    <string name="status">Show status</string>
+    <string name="jiffydos">Use JiffyDOS</string>
+    <string name="pressSpaceInterval">press space automatically every N seconds</string>
 </resources>

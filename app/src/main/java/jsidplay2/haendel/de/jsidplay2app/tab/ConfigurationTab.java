@@ -187,6 +187,9 @@ public class ConfigurationTab extends TabBase {
 				case PAR_PORT:
 					configuration.setPort(newValue);
 					break;
+				case PAR_PRESS_SPACE_INTERVAL:
+					configuration.setPressSpaceInterval(newValue);
+					break;
 			}
 		}
 
@@ -246,6 +249,12 @@ public class ConfigurationTab extends TabBase {
 					break;
 				case PAR_SINGLE_SONG:
 					configuration.setSingleSong(newValue);
+					break;
+				case PAR_STATUS:
+					configuration.setStatus(newValue);
+					break;
+				case PAR_JIFFYDOS:
+					configuration.setJiffydos(newValue);
 					break;
 			}
 		}
@@ -441,6 +450,7 @@ public class ConfigurationTab extends TabBase {
 		port = activity.findViewById(R.id.port);
 		EditText fadeIn = activity.findViewById(R.id.fadeIn);
 		EditText fadeOut = activity.findViewById(R.id.fadeOut);
+		EditText pressSpaceInterval = activity.findViewById(R.id.pressSpaceInterval);
 		CheckBox enableDatabase = activity.findViewById(R.id.enableDatabase);
 		CheckBox singleSong = activity.findViewById(R.id.singleSong);
 		CheckBox loop = activity.findViewById(R.id.loop);
@@ -460,6 +470,8 @@ public class ConfigurationTab extends TabBase {
 		CheckBox mute3SidVoice4 = activity.findViewById(R.id.muteSid3Voice4);
 		CheckBox digiBoosted8580 = activity
 				.findViewById(R.id.digiBoosted8580);
+		CheckBox status = activity.findViewById(R.id.status);
+		CheckBox jiffydos = activity.findViewById(R.id.jiffydos);
 		Spinner emulation = activity.findViewById(R.id.emulation);
 		Spinner defaultModel = activity.findViewById(R.id.defaultModel);
 		Spinner samplingMethod = activity.findViewById(R.id.samplingMethod);
@@ -561,6 +573,8 @@ public class ConfigurationTab extends TabBase {
 				DEFAULT_FADE_IN);
 		ui.setupEditText(fadeOut, PAR_FADE_OUT,
 				DEFAULT_FADE_OUT);
+		ui.setupEditText(pressSpaceInterval, PAR_PRESS_SPACE_INTERVAL,
+				DEFAULT_PRESS_SPACE_INTERVAL);
 
 		ui.setupCheckBox(enableDatabase, PAR_ENABLE_DATABASE,
 				DEFAULT_ENABLE_DATABASE);
@@ -582,6 +596,8 @@ public class ConfigurationTab extends TabBase {
 		ui.setupCheckBox(mute3SidVoice4, PAR_MUTE_3SID_VOICE4, DEFAULT_MUTE_3SID_VOICE4);
 		ui.setupCheckBox(digiBoosted8580, PAR_DIGI_BOOSTED_8580,
 				DEFAULT_DIGI_BOOSTED_8580);
+		ui.setupCheckBox(status, PAR_STATUS, DEFAULT_STATUS);
+		ui.setupCheckBox(jiffydos, PAR_JIFFYDOS, DEFAULT_JIFFYDOS);
 
 		ui.setupSpinner(activity, emulation, new String[] { RESID, RESIDFP },
 				PAR_EMULATION, RESIDFP);
