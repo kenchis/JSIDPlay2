@@ -1007,6 +1007,13 @@
                         android:layout_height="wrap_content"
                         android:onClick="downloadPlayList"
                         android:text="@string/downloadPlayList" />
+
+                    <Button
+                        android:id="@+id/removePlayList"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="removePlayList"
+                        android:text="@string/removePlayList" />
                 </LinearLayout>
 
 

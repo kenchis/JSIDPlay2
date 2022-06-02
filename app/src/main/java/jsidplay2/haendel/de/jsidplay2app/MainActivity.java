@@ -444,6 +444,30 @@ public class MainActivity extends Activity implements PlayListener {
         alert.show();
     }
 
+    public void removePlayList(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Remove Playlist?");
+        builder.setCancelable(true);
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                try {
+                    jsidplay2service.removeAll();
+                } catch (IOException e) {
+                    Log.e(appName, e.getMessage(), e);
+                }
+                playListTab.removeAll();
+                dialog.cancel();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
     private void setRandomized(boolean randomized) {
         this.randomized = randomized;
         if (jsidplay2service != null) {

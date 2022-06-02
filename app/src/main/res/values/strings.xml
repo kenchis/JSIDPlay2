@@ -121,6 +121,7 @@ This program is free software; you can redistribute it and/or modify\n
     <string name="frequency">Frequency:</string>
     <string name="stop">Stop</string>
     <string name="downloadPlayList">Download Playlist</string>
+    <string name="removePlayList">Remove Playlist</string>
     <string name="next">Next</string>
     <string name="removeFavorite">Remove</string>
     <string name="random">Random</string>
