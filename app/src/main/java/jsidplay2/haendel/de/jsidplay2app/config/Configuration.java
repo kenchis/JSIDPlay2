@@ -608,6 +608,32 @@ public class Configuration implements IConfiguration {
 
 
 
+	public String text2speechType;
+
+	@Override
+	public String getText2SpeechType() {
+		return text2speechType;
+	}
+
+	@Override
+	public void setText2SpeechType(String text2speechType) {
+		this.text2speechType = text2speechType;
+	}
+
+	public String text2speechLocale;
+
+	@Override
+	public String getText2SpeechLocale() {
+		return text2speechLocale;
+	}
+
+	@Override
+	public void setText2SpeechLocale(String text2speechLocale) {
+		this.text2speechLocale = text2speechLocale;
+	}
+
+
+
 	private boolean digiBoosted8580;
 
 	@Override

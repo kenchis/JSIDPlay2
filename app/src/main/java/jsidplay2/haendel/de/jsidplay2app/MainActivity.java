@@ -96,6 +96,8 @@ import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_SECOND
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_SINGLE_SONG;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_STEREO_FILTER_6581;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_STEREO_FILTER_8580;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_TEXT2SPEECHTYPE;
+import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_TEXT2SPEECHLOCALE;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_BALANCE;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_DELAY;
 import static jsidplay2.haendel.de.jsidplay2app.config.IConfiguration.PAR_THIRD_FILTER_6581;
@@ -284,7 +286,9 @@ public class MainActivity extends Activity implements PlayListener {
         query.append(PAR_VBR).append("=").append(configuration.getVbr()).append("&");
         query.append(PAR_STATUS).append("=").append(configuration.isStatus()).append("&");
         query.append(PAR_JIFFYDOS).append("=").append(configuration.isJiffydos()).append("&");
-        query.append(PAR_PRESS_SPACE_INTERVAL).append("=").append(getNumber(configuration.getPressSpaceInterval()));
+        query.append(PAR_PRESS_SPACE_INTERVAL).append("=").append(getNumber(configuration.getPressSpaceInterval())).append("&");
+        query.append(PAR_TEXT2SPEECHTYPE).append("=").append(configuration.getText2SpeechType()).append("&");
+        query.append(PAR_TEXT2SPEECHLOCALE).append("=").append(configuration.getText2SpeechLocale());
         if (download) {
             query.append("&download").append("=").append("true");
         }

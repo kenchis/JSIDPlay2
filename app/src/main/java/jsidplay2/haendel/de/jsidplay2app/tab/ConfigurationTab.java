@@ -147,6 +147,14 @@ public class ConfigurationTab extends TabBase {
 				case PAR_HARDSID8580:
 					configuration.setHardSID8580(newValue);
 					break;
+
+				case PAR_TEXT2SPEECHTYPE:
+					configuration.setText2SpeechType(newValue);
+					break;
+
+				case PAR_TEXT2SPEECHLOCALE:
+					configuration.setText2SpeechLocale(newValue);
+					break;
 			}
 		}
 
@@ -401,6 +409,18 @@ public class ConfigurationTab extends TabBase {
 					PAR_HARDSID8580, preferences.getString(
 							PAR_HARDSID8580,
 							DEFAULT_HARDSID8580));
+
+			ui.setupSpinner(activity, text2SpeechType,
+					new String[] {"NONE","PICO2WAVE","ESPEAK"},
+					PAR_TEXT2SPEECHTYPE, preferences.getString(
+							PAR_TEXT2SPEECHTYPE,
+							DEFAULT_TEXT2SPEECHTYPE));
+
+			ui.setupSpinner(activity, text2SpeechLocale,
+					new String[] {"AUTO","de","en"},
+					PAR_TEXT2SPEECHLOCALE, preferences.getString(
+							PAR_TEXT2SPEECHLOCALE,
+							DEFAULT_TEXT2SPEECHLOCALE));
 		}
     }
 
@@ -422,6 +442,7 @@ public class ConfigurationTab extends TabBase {
 	private Spinner mainBalance,secondBalance,thirdBalance;
 	private Spinner mainDelay,secondDelay,thirdDelay;
 	private Spinner hardSID6581, hardSID8580;
+	private Spinner text2SpeechType, text2SpeechLocale;
 
 	private TextView stereoFilter6581txt, stereoFilter8580txt,
 	reSIDfpStereoFilter6581txt, reSIDfpStereoFilter8580txt,
@@ -535,6 +556,12 @@ public class ConfigurationTab extends TabBase {
 
 		hardSID8580 = activity
 				.findViewById(R.id.hardsid8580);
+
+		text2SpeechType = activity
+				.findViewById(R.id.text2SpeechType);
+
+		text2SpeechLocale = activity
+				.findViewById(R.id.text2SpeechLocale);
 
 		thirdFilter6581 = activity
 				.findViewById(R.id.thirdFilter6581);

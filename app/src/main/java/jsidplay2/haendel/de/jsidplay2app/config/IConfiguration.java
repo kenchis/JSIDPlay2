@@ -58,6 +58,9 @@ public interface IConfiguration {
 	String PAR_HARDSID6581 = "hardsid8581";
 	String PAR_HARDSID8580 = "hardsid8580";
 
+	String PAR_TEXT2SPEECHTYPE = "textToSpeechType";
+	String PAR_TEXT2SPEECHLOCALE = "textToSpeechLocale";
+
 	String PAR_DIGI_BOOSTED_8580 = "digiBoosted8580";
 	String PAR_IS_VBR = "vbr";
 	String PAR_CBR = "cbr";
@@ -132,6 +135,9 @@ public interface IConfiguration {
 
 	String DEFAULT_HARDSID6581 = "1";
 	String DEFAULT_HARDSID8580 = "2";
+
+	String DEFAULT_TEXT2SPEECHTYPE = "PICO2WAVE";
+	String DEFAULT_TEXT2SPEECHLOCALE = "AUTO";
 
 	String DEFAULT_CBR = "64";
 	String DEFAULT_VBR = "0";
@@ -346,6 +352,16 @@ public interface IConfiguration {
 	String getHardSID8580();
 
 	void setHardSID8580(String hardsid8580);
+
+
+
+	String getText2SpeechType();
+
+	void setText2SpeechType(String text2SpeechType);
+
+	String getText2SpeechLocale();
+
+	void setText2SpeechLocale(String text2SpeechLocale);
 
 
 
