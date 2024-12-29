@@ -6,7 +6,7 @@ Just install latest version of  JSIDPlay2 (https://haendel.ddns.net/~ken/jsidpla
 On the main window click on "built-in App Server" then click Start
 For further requirements and explanations click on "RESTful Services Usage"
 
-Launch the app (install latest build from here: http://haendel.ddns.net/~ken/jsidplay2app.apk)
+Launch the app (install latest build from here: https://haendel.ddns.net/~ken/jsidplay2app.apk)
 
 Then replace haendel.ddns.net with your hostname or experiment with my instance of JSIDPlay2.
 
