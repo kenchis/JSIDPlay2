@@ -2,7 +2,7 @@
 App for JSIDPlay2
 
 This App connects to the Commodore 64 emulator JSIDPlay2 running on any host port 8080 or 8443.
-Just install latest version of  JSIDPlay2 (http://haendel.ddns.net/~ken/jsidplay2-4.2.zip)
+Just install latest version of  JSIDPlay2 (https://haendel.ddns.net/~ken/jsidplay2-4.11-win.zip)
 On the main window click on "built-in App Server" then click Start
 For further requirements and explanations click on "RESTful Services Usage"
 
